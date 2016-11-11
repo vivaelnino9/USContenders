@@ -1,25 +1,18 @@
 from django.db import models
-import django_tables2 as tables
 
-class Rosters(models.Model):
-    id = models.SmallIntegerField(blank=True, null=False, primary_key=True)
-    teams = models.CharField(max_length=100, blank=True, null=True)
-    rank = models.SmallIntegerField(blank=True, null=True)
-    captain = models.CharField(max_length=100, blank=True, null=True)
-    co_captain = models.CharField(max_length=100, blank=True, null=True)
-    member1 = models.CharField(max_length=100, blank=True, null=True)
-    member2 = models.CharField(max_length=100, blank=True, null=True)
-    member3 = models.CharField(max_length=100, blank=True, null=True)
-    member4 = models.CharField(max_length=100, blank=True, null=True)
-    member5 = models.CharField(max_length=100, blank=True, null=True)
-    member6 = models.CharField(max_length=100, blank=True, null=True)
-    active = models.CharField(max_length=100, blank=True, null=True)
-    server = models.CharField(max_length=100, blank=True, null=True)
 
+class Roster(models.Model):
+    team = models.CharField(max_length=50)
+    rank = models.PositiveIntegerField()
+    captain = models.CharField(max_length=50)
+    co_captain = models.CharField(max_length=50)
+    member1 = models.CharField(max_length=50)
+    member2 = models.CharField(max_length=50)
+    member3 = models.CharField(max_length=50)
+    member4 = models.CharField(max_length=50)
+    member5 = models.CharField(max_length=50)
+    member6 = models.CharField(max_length=50)
+    active = models.CharField(max_length=50)
+    server = models.CharField(max_length=50)
     class Meta:
-        managed = False
-        db_table = 'rosters'
-
-class RostersTable(tables.Table):
-    class Meta:
-        model = Rosters
+        db_table = 'roster'
