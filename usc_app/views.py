@@ -16,7 +16,3 @@ def roster_table(request):
         'per_page': 38
     }).configure(table)
     return render(request, 'roster_table.html', {'table': table,})
-def get_current_path(request):
-    return {
-       'current_path': request.get_full_path()
-     }
