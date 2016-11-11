@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,600');
+
+/* endfonts */
+
 .alert-debug {
     color: black;
     background-color: white;
@@ -9,7 +13,7 @@
     border-color: #eed3d7;
 }
 
-/* This is a fix for the bootstrap4 alpha release */
+/* Nav */
 
 @media (max-width: 47.9em) {
     .navbar-nav .nav-item {
@@ -24,3 +28,54 @@
         float: none !important;
     }
 }
+#active {
+    color: rgba(255, 255, 255, .9);
+}
+div.container {
+    margin-left: 0;
+}
+a.navbar-brand {
+    margin-right: 100px;
+}
+div#content {
+    margin-left: 30px;
+    margin-right: 100px;
+}
+
+/* endnav*/
+
+
+/* Table */
+
+.table {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+.orderable.rank a, .orderable.team a, .orderable.server a, td a {
+    color: #373a3c;
+}
+td a, thead tr {
+    font-weight: 600;
+}
+tr, tr th {
+    text-align: center;
+}
+th.orderable>a {
+    padding-right: 20px;
+    background: url('/static/img/arrow-inactive-up.png') right center no-repeat;
+}
+th.orderable.asc>a {
+    background-image: url('/static/img/arrow-active-up.png');
+}
+th.orderable.desc>a {
+    background-image: url('/static/img/arrow-active-down.png');
+}
+table, th, td {
+    border: 1px solid #d3d3d3;
+    border-width: thin;
+}
+thead tr {
+    background-color: #d3d3d3;
+}
+
+/* endtable*/

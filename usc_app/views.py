@@ -1,12 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django_tables2 import RequestConfig
 
 from usc_app.models import *
+from usc_app.table import *
 
 def index(request):
     return render(request, 'index.html')
 
-def rosters_list(request):
-    queryset = Rosters.objects.all()
-    table = RostersTable(queryset)
-    return render(request, 'rosters_list.html', {'table': table})
+def roster_table(request):
+    queryset = Roster.objects.all()
+    table = RosterTable(queryset)
+    table.order_by = 'rank'
+    RequestConfig(request, paginate={
+        'per_page': 38
+    }).configure(table)
+    return render(request, 'roster_table.html', {'table': table,})
+def get_current_path(request):
+    return {
+       'current_path': request.get_full_path()
+     }

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load django_tables2 %}
+
+{% block content %}
+{% render_table table %}
+<script>
+for (var i = 1; i < 39; i++){
+  var id = '#R' + String(i), color;
+  if (i < 6)
+    color = "#9fc5e8";
+  else if (i >= 6 && i < 21)
+    color = "#ffe38e";
+  else if (i >= 21 && i < 36)
+    color = "#dddddd";
+  else
+    color = "#eab786";
+
+  $(id).css("background-color",color);
+}
+
+
+{% if request.GET.urlencode == '' or request.GET.urlencode == 'sort=rank' or request.GET.urlencode == 'sort=-rank'%}
+// if table is being sorted by rank
+  var is_ascending
+  {% if request.GET.urlencode == '' or request.GET.urlencode == 'sort=rank' %}
+  // if sort is in ascending order
+    =true
+  {% else %}
+  // sort is not ascending order
+    =false
+  {% endif %};
+
+  var line = '7px solid #c9c9c9'; // border width
+  var list = ['#R5','#R20','#R36']; // rows needed (dividers between tiers)
+  for(element in list){
+    if (is_ascending)
+      element < 2 ? $(list[element]).css("border-bottom",line) : $(list[element]).css("border-top",line);
+    else
+      element < 2 ? $(list[element]).css("border-top",line) : $(list[element]).css("border-bottom",line);
+  }
+{% endif %}
+
+$( ".pagination" ).remove();
+</script>
+
+{% endblock %}
