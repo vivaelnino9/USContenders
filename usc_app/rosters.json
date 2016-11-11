@@ -1,0 +1,686 @@
+[
+ {
+   "pk": 1,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Beaver Boys",
+      "rank": 28,
+      "captain": "DobisPR",
+      "co_captain": "Dolby",
+      "member1": "Lazyday",
+      "member2": "Jues by dre",
+      "member3": "Dooker",
+      "member4": "Atl",
+      "member5": "STRFKD",
+      "member6": "DobisPR",
+      "active": "09/01/2016",
+      "server": "Sphere"
+   }
+},
+ {
+   "pk": 2,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Block Lobster",
+      "rank": 8,
+      "captain": "Anze Capitar",
+      "co_captain": "mathnasium",
+      "member1": "banzai",
+      "member2": "alchemist",
+      "member3": "i'm high",
+      "member4": "popsic",
+      "member5": "aaron",
+      "member6": "Anze Capitar",
+      "active": "05/01/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 3,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "CircleJukers",
+      "rank": 25,
+      "captain": "ssa",
+      "co_captain": "Sir Cle Jerk",
+      "member1": "TheIndian",
+      "member2": "Stronk",
+      "member3": "GarryGegrich",
+      "member4": "boogieidm",
+      "member5": "L S X",
+      "member6": "ssa",
+      "active": "08/27/2016",
+      "server": "Origin"
+   }
+},
+ {
+   "pk": 4,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Corrupt Pures",
+      "rank": 33,
+      "captain": "Andre",
+      "co_captain": "Remy",
+      "member1": "Shiny",
+      "member2": "Jordai",
+      "member3": "H00DZ",
+      "member4": "Alex",
+      "member5": "Holydreams",
+      "member6": "Andre",
+      "active": "09/14/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 5,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "C.R.E.A.M.",
+      "rank": 29,
+      "captain": "MDK",
+      "co_captain": "Psychic",
+      "member1": "Trituin",
+      "member2": "Markam",
+      "member3": "Mastercard78",
+      "member4": "Theseus",
+      "member5": "A$AP Tanador",
+      "member6": "MDK",
+      "active": "04/14/2016",
+      "server": "Centra"
+   }
+},
+ {
+   "pk": 6,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Death Cap for Cutie",
+      "rank": 5,
+      "captain": "Bal McCartny",
+      "co_captain": "q42",
+      "member1": "Fronj",
+      "member2": "Thick Shady",
+      "member3": "Mufro",
+      "member4": "toastymangoz",
+      "member5": "Bal McCartny",
+      "member6": "Rex Kwon Do",
+      "active": "03/27/2015",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 7,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "D-Tent Boys",
+      "rank": 3,
+      "captain": "Milk Steak",
+      "co_captain": "AnnaKendrick",
+      "member1": "coys",
+      "member2": "Tpr",
+      "member3": "lukemoo",
+      "member4": "Fatal",
+      "member5": "DudeMcGuy",
+      "member6": "Milk Steak",
+      "active": "04/12/2016",
+      "server": "Origin"
+   }
+},
+ {
+   "pk": 8,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Fourplay",
+      "rank": 32,
+      "captain": "Clouds",
+      "co_captain": "Probably Lag",
+      "member1": "Epiphany",
+      "member2": "Cyanide",
+      "member3": "Ballywood",
+      "member4": "HayBunny",
+      "member5": "The Ninja",
+      "member6": "Clouds",
+      "active": "05/10/2016",
+      "server": "Centra"
+   }
+},
+ {
+   "pk": 9,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Gasping for Flair",
+      "rank": 4,
+      "captain": "Jinjo",
+      "co_captain": "Team",
+      "member1": "Bamboozler",
+      "member2": "CalvinBall",
+      "member3": "DrunkDefense",
+      "member4": "Cucurrucucu",
+      "member5": "Anne Frank",
+      "member6": "STRFKR",
+      "active": "02/27/2015",
+      "server": "Sphere"
+   }
+},
+ {
+   "pk": 10,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Good Kid, C.A.P. City",
+      "rank": 11,
+      "captain": "Rattpack",
+      "co_captain": "bluejays",
+      "member1": "J.A. Capp",
+      "member2": "BallGasol",
+      "member3": "FLY",
+      "member4": "Herbert",
+      "member5": "Dope Francis",
+      "member6": "Rattpack",
+      "active": "04/20/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 11,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "HogWild",
+      "rank": 23,
+      "captain": "HorseHungHog",
+      "co_captain": "mrpieface",
+      "member1": "LacyIsntFat",
+      "member2": "Stall2Hammer",
+      "member3": "Hurr1cane",
+      "member4": "Hunky Dory",
+      "member5": "",
+      "member6": "HorseHungHog",
+      "active": "03/05/2015",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 12,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Hydrochloric Flaccid",
+      "rank": 36,
+      "captain": "SportManiac",
+      "co_captain": "LaBeefyman96",
+      "member1": "Juke Dough",
+      "member2": "Hawksong",
+      "member3": "Bomberguy",
+      "member4": "Timeboy",
+      "member5": "Dethos",
+      "member6": "Sportmaniac",
+      "active": "10/27/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 13,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Juke Blox Heroes",
+      "rank": 10,
+      "captain": "Morpheus_",
+      "co_captain": "Perpetualist",
+      "member1": "OG_Diddles",
+      "member2": "Prjct",
+      "member3": "Warriors",
+      "member4": "JohnHurt",
+      "member5": "Kamikaze",
+      "member6": "Crowman",
+      "active": "09/01/2016",
+      "server": "Sphere"
+   }
+},
+ {
+   "pk": 14,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Jukes and Cats Alumni",
+      "rank": 17,
+      "captain": "iAaronK",
+      "co_captain": "UnderTheBall",
+      "member1": "Nilus",
+      "member2": "DUBSTEP",
+      "member3": "superdiglett",
+      "member4": "IPT",
+      "member5": "Kitten Panda",
+      "member6": "iAaronK",
+      "active": "04/27/2015",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 15,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "London WASDs",
+      "rank": 14,
+      "captain": "Tim Hortons",
+      "co_captain": "888",
+      "member1": "Button Bill",
+      "member2": "moobear",
+      "member3": "Taurus",
+      "member4": "heinousanus",
+      "member5": "Laserpig",
+      "member6": "Tim Hortons",
+      "active": "04/29/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 16,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "lulnenko",
+      "rank": 21,
+      "captain": "Dance",
+      "co_captain": "JBaayBaay",
+      "member1": "June",
+      "member2": "P K Subball",
+      "member3": "SpaceTiger",
+      "member4": "",
+      "member5": "SpaceTiger",
+      "member6": "d0pe",
+      "active": "3/7/2016",
+      "server": "Redesign"
+   }
+},
+ {
+   "pk": 17,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Mickey Mouse Poperation",
+      "rank": 6,
+      "captain": "CB13",
+      "co_captain": "Lu",
+      "member1": "Anti-Re",
+      "member2": "QBreezy",
+      "member3": "",
+      "member4": "",
+      "member5": "",
+      "member6": "CB13",
+      "active": "04/02/2016",
+      "server": "Origin"
+   }
+},
+ {
+   "pk": 18,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "MEME*TEAM",
+      "rank": 37,
+      "captain": "LEBRON*JAMES",
+      "co_captain": "Brake",
+      "member1": "MrJoehobo",
+      "member2": "beastmode",
+      "member3": "",
+      "member4": "",
+      "member5": "",
+      "member6": "LEBRON*JAMES",
+      "active": "10/30/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 19,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Pequeños Pandas",
+      "rank": 24,
+      "captain": "THE DOT",
+      "co_captain": "refined",
+      "member1": "Maddox",
+      "member2": "Cbtexan04",
+      "member3": "Kid Clutch",
+      "member4": "theirryonre",
+      "member5": "catpuke",
+      "member6": "THE DOT",
+      "active": "07/20/2016",
+      "server": "Origin"
+   }
+},
+ {
+   "pk": 20,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Pi-romaniacs",
+      "rank": 13,
+      "captain": "globus-lag",
+      "co_captain": "BallAnka",
+      "member1": "Pseudomonas",
+      "member2": "boogie",
+      "member3": "Bumballbee",
+      "member4": "Abram",
+      "member5": "-Batman-",
+      "member6": "globus-lag",
+      "active": "01/25/2016",
+      "server": "Pi"
+   }
+},
+ {
+   "pk": 21,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "POP-tarts",
+      "rank": 35,
+      "captain": "Guap",
+      "co_captain": "Hunna",
+      "member1": "Schubbaca",
+      "member2": "billybobst",
+      "member3": "",
+      "member4": "",
+      "member5": "",
+      "member6": "",
+      "active": "10/26/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 22,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Portal Kombat",
+      "rank": 12,
+      "captain": "Apopalypse",
+      "co_captain": "Iron_Ball",
+      "member1": "YAC",
+      "member2": "Curry",
+      "member3": "Acuraun",
+      "member4": "BigBird",
+      "member5": "Eggo",
+      "member6": "Apopalypse",
+      "active": "03/14/2015",
+      "server": "Centra"
+   }
+},
+ {
+   "pk": 23,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Primetime Cappin",
+      "rank": 18,
+      "captain": "Dusk",
+      "co_captain": "Rexer",
+      "member1": "Zvonvock",
+      "member2": "Googy",
+      "member3": "EphewSeekay",
+      "member4": "P0P",
+      "member5": "",
+      "member6": "Dusk",
+      "active": "06/19/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 24,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Reformed Buddies",
+      "rank": 34,
+      "captain": "Daffodil",
+      "co_captain": "StevePotato",
+      "member1": "Gman8181",
+      "member2": "Envy",
+      "member3": "MEGATRON",
+      "member4": "Atomic",
+      "member5": "",
+      "member6": "",
+      "active": "10/01/2016",
+      "server": "Sphere"
+   }
+},
+ {
+   "pk": 25,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Ronarcycles",
+      "rank": 38,
+      "captain": "Ron Hextball",
+      "co_captain": "bicycle",
+      "member1": "BarryAllen",
+      "member2": "ROFL",
+      "member3": "dontgetjuked",
+      "member4": "D4NK_JUK3R",
+      "member5": "RoomFor2nds",
+      "member6": "Ron Hextball",
+      "active": "11/04/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 26,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "SOCL",
+      "rank": 30,
+      "captain": "Hat Tricks",
+      "co_captain": "",
+      "member1": "Too Crunk",
+      "member2": "Denna",
+      "member3": "wubblet",
+      "member4": "",
+      "member5": "",
+      "member6": "Hat Tricks",
+      "active": "04/25/2016",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 27,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Spheremongers",
+      "rank": 7,
+      "captain": "oh_snap!",
+      "co_captain": "Koala",
+      "member1": "Frozty",
+      "member2": "Dat Cap",
+      "member3": "sidewalk",
+      "member4": "WowSuchPro",
+      "member5": "BALLDON'TLIE",
+      "member6": "oh_snap!",
+      "active": "10/07/2014",
+      "server": "Sphere"
+   }
+},
+ {
+   "pk": 28,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Spjork and the Seven Jorks",
+      "rank": 15,
+      "captain": "McNerdy",
+      "co_captain": "Dr. Juke",
+      "member1": "Spjork",
+      "member2": "Hooblagoo",
+      "member3": "Fapst3r",
+      "member4": "1600vam",
+      "member5": "air\"m\"jordan",
+      "member6": "McNerdy",
+      "active": "08/03/2016",
+      "server": "Centra"
+   }
+},
+ {
+   "pk": 29,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "TC Ballaz",
+      "rank": 20,
+      "captain": "Poeticalto",
+      "co_captain": "TagProfessor",
+      "member1": "2P1S",
+      "member2": "BallCostanza",
+      "member3": "Squeeb",
+      "member4": "RollinStoned",
+      "member5": "WhiteBallker",
+      "member6": "Poeticalto",
+      "active": "09/08/2016",
+      "server": "Sphere"
+   }
+},
+ {
+   "pk": 30,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Team 3",
+      "rank": 1,
+      "captain": "jjpoole",
+      "co_captain": "intercest",
+      "member1": "Sam-",
+      "member2": "Dor",
+      "member3": "C Bivvey",
+      "member4": "Risk",
+      "member5": "JubJubs",
+      "member6": "jjpoole",
+      "active": "02/20/2015",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 31,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Thanks Daddy",
+      "rank": 2,
+      "captain": "Sababall",
+      "co_captain": "Warden",
+      "member1": "no name",
+      "member2": "lighght",
+      "member3": "Intrepid",
+      "member4": "Some Paul",
+      "member5": "imagoat",
+      "member6": "Renegade",
+      "active": "08/27/2015",
+      "server": "Origin"
+   }
+},
+ {
+   "pk": 32,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "The Powerup Girls",
+      "rank": 27,
+      "captain": "Apidae",
+      "co_captain": "Ludo",
+      "member1": "LEXX",
+      "member2": "Tonto",
+      "member3": "Moon Moon",
+      "member4": "TunaMaster",
+      "member5": "Tuned",
+      "member6": "Apidae",
+      "active": "07/03/2014",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 33,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "The Royal Tagginballs",
+      "rank": 19,
+      "captain": "WarpedPotato",
+      "co_captain": "Buttsnake",
+      "member1": "ZipZop",
+      "member2": "pineapple",
+      "member3": "424242",
+      "member4": "archedrapier",
+      "member5": "KateEarl, MD",
+      "member6": "WarpedPotato",
+      "active": "02/18/2016",
+      "server": "Origin"
+   }
+},
+ {
+   "pk": 34,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Truman Had Re",
+      "rank": 9,
+      "captain": "Eldenn",
+      "co_captain": "Abs",
+      "member1": "WRIG",
+      "member2": "Stdz",
+      "member3": "K1nn1ck",
+      "member4": "Puggins",
+      "member5": "TennisBall",
+      "member6": "Eldenn",
+      "active": "03/05/2015",
+      "server": "Origin"
+   }
+},
+ {
+   "pk": 35,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Where's Balldo?",
+      "rank": 26,
+      "captain": "BG",
+      "co_captain": "PengWin",
+      "member1": "DeezNutz",
+      "member2": "CalcPie314",
+      "member3": "serf",
+      "member4": "Ballzilla",
+      "member5": "",
+      "member6": "BG",
+      "active": "02/21/2014",
+      "server": "Origin"
+   }
+},
+ {
+   "pk": 36,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "Why So Serious?",
+      "rank": 16,
+      "captain": "JDoeMonopoly",
+      "co_captain": "veezy",
+      "member1": "Crees",
+      "member2": "Ess",
+      "member3": "#SelfySyntax",
+      "member4": "Knox",
+      "member5": "Ajax",
+      "member6": "JDoeMonopoly",
+      "active": "07/11/2014",
+      "server": "Radius"
+   }
+},
+ {
+   "pk": 37,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "02-D2",
+      "rank": 22,
+      "captain": "Jorge118",
+      "co_captain": "fractal",
+      "member1": "Scrapper8o",
+      "member2": "long balls",
+      "member3": "Ultron",
+      "member4": "sleepy",
+      "member5": "np",
+      "member6": "Jorge118",
+      "active": "11/17/2015",
+      "server": "Sphere"
+   }
+},
+ {
+   "pk": 38,
+   "model": "usc_app.roster",
+   "fields": {
+      "team": "7 Angry Balls",
+      "rank": 31,
+      "captain": "Stojakovic",
+      "co_captain": "Spiller",
+      "member1": "KOBE*BRYANT",
+      "member2": "wanker-->",
+      "member3": "wayne",
+      "member4": "Iblis",
+      "member5": "Private Major",
+      "member6": "Stojakovic",
+      "active": "07/30/2016",
+      "server": "Centra"
+   }
+}
+]
