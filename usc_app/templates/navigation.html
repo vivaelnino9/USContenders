@@ -13,7 +13,7 @@
             <a class="nav-link" {% if request.path == '/' %}id="active"{% endif %}href="{% url 'index' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {% if request.path == '/rosters/' %}id="active"{% endif %}href="{% url 'rosters' %}">Rosters</a>
+            <a class="nav-link" {% if request.path == '/rosters' %}id="active"{% endif %}href="{% url 'rosters' %}">Rosters</a>
           </li>
         </ul>
       </div>
