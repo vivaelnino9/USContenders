@@ -1,7 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,600');
+@import url('https://fonts.googleapis.com/css?family=Lato:300,700');
 
 /* endfonts */
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+body {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+}
 .alert-debug {
     color: black;
     background-color: white;
@@ -13,8 +22,85 @@
     border-color: #eed3d7;
 }
 
+/* Pageheader */
+
+.headerwrap {
+    /*background: url(/static/img/soviet_ballers.png);*/
+    background-color: #d3d3d3;
+    background-repeat: no-repeat;
+    background-size: 161px;
+    background-position: 50% 79%;
+    min-height: 300px;
+    padding-top: 100px;
+    margin-top: -20px;
+    width: 100%;
+}
+#diamond {
+    background-color: #9fc5e8;
+}
+#gold {
+    background-color: #ffe38e;
+}
+#silver {
+    background-color: #dddddd;
+}
+#bronze {
+    background-color: #eab786;
+}
+.noshowteam {
+    display: none;
+}
+.TickerNews {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    font-weight: 300;
+}
+.ti_wrapper {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    height: 50px;
+    background-color: gray;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+    z-index: 3;
+}
+.ti_slide {
+    width: 30000px;
+    position: relative;
+    left: 0;
+    top: 0;
+}
+.ti_content {
+    width: 8000px;
+    position: relative;
+    float: left;
+    color: #fff;
+}
+.ti_news {
+    float: left;
+}
+
+/* endPageheader */
+
+
 /* Nav */
 
+.navbar.navbar-fixed-top.navbar-light.bg-faded, .container {
+    width: 100%;
+}
+.navbar-light .navbar-brand {
+    color: white;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, .4);
+}
+.navbar-light .navbar-nav .nav-link.active {
+    color: rgba(255, 255, 255, 1);
+}
+div#bs-navbar-collapse-1 {
+    font-weight: 300;
+}
 @media (max-width: 47.9em) {
     .navbar-nav .nav-item {
         float: none;
@@ -29,16 +115,18 @@
     }
 }
 #active {
-    color: rgba(255, 255, 255, .9);
+    color: rgba(255, 255, 255, .7);
 }
 div.container {
-    margin-left: 0;
+    margin: 0px 0px 0px 0px;
+    padding-left: 0;
+    padding-right: 0;
+    max-width: 1426px;
+}
+#header {
+    margin-left: 100px;
 }
 a.navbar-brand {
-    margin-right: 100px;
-}
-div#content {
-    margin-left: 30px;
     margin-right: 100px;
 }
 
@@ -47,9 +135,18 @@ div#content {
 
 /* Table */
 
+.table-container {
+    margin: 40px 0px 40px 0px;
+}
+.table {
+    width: 1360px;
+    height: auto;
+    margin-left: 40px;
+    margin-right: 40px;
+}
 .table {
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13.5px;
 }
 .orderable.rank a, .orderable.team a, .orderable.server a, td a {
     color: #373a3c;
@@ -70,7 +167,7 @@ th.orderable.asc>a {
 th.orderable.desc>a {
     background-image: url('/static/img/arrow-active-down.png');
 }
-table, th, td {
+table.table, td {
     border: 1px solid #d3d3d3;
     border-width: thin;
 }
@@ -79,3 +176,169 @@ thead tr {
 }
 
 /* endtable*/
+
+
+/* Team Page */
+
+.teamPage {
+    margin-right: -15px;
+    margin-left: -15px;
+    background: #222;
+    display: flex;
+}
+#sideBar {
+    box-shadow: 3px 4px 4px 1px rgba(0, 0, 0, .25);
+    z-index: 4;
+    background: gray;
+    padding-bottom: 40px;
+}
+.sideBarHeader {
+    padding-left: 25px;
+    color: #fff;
+    margin-bottom: 20px;
+    color: white;
+    font-weight: 900;
+}
+#sideBarHeader {
+    color: #d3d3d3;
+}
+.sideBarTable {
+    margin-left: 25px;
+    border: transparent;
+}
+.sideBarTableRow {
+    margin-left: 55px;
+    font-size: 1.1em;
+    color: #bfbdbd;
+    border: solid transparent;
+}
+.sideBarTableRank {
+    text-align: center;
+    border: solid transparent;
+}
+.sideBarTableTeam {
+    padding-left: 0px;
+    color: #fff;
+    text-align: left;
+}
+#sideBarTableTeam {
+    color: #d3d3d3;
+    font-weight: 300;
+}
+#teamInfo {
+    padding: 10px 0px 30px 0px;
+    background-color: #f2f2f2;
+    display: block;
+}
+.statcard {
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    padding: 0px 0px 0px 0px;
+    margin-left: 33px
+}
+#teamName {
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    margin-left: 0px;
+}
+.teamNameHeader {
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    margin-bottom: 10px;
+    /*margin-top: 20px;*/
+}
+.subTeamName {
+    margin-bottom: 5px;
+}
+.subTeamNameRow {
+    border-right: 1px #969696 solid;
+    padding: 8px 20px 8px 20px;
+}
+.crown {
+    margin-bottom: 3px;
+    margin-right: 10px;
+}
+#subTeamServer {
+    border-right: 1px #fff solid;
+}
+.roster {
+    padding-bottom: 20px;
+    width: 100%;
+}
+.rosterTable {
+    margin: 0 auto;
+    width: 30%;
+}
+.smallCardHeader {
+    margin-bottom: 20px;
+    color: white;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    font-size: 25px;
+    font-weight: 700;
+    padding: 10px;
+    text-align: center;
+    background: gray!important;
+}
+.rosterInfo {
+    border: transparent;
+}
+.player {
+    font-size: 1.35rem;
+    font-weight: bold;
+    text-align: : center;
+}
+.teamsToChallenge {
+    height: 100%;
+    padding-bottom: 20px;
+    width: 100%;
+    margin-right: 5px;
+    margin-bottom: 15px;
+}
+.challengeTable {
+    margin: 0 auto;
+}
+.challengeHeader {
+    padding-left: 20px;
+    text-decoration: underline;
+}
+#challengeRank {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+#challengeTeam {
+    padding-left: 20px;
+}
+.challengeRow {
+    text-align: center;
+    border: transparent;
+    padding-left: 20px;
+}
+#challengeCellRank {
+    max-width: 20px;
+    padding-left: 10px;
+}
+#challengeCellTeam {
+    padding-left: 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.challengeTeamLink {
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+@media only screen and (max-width: 700px) {
+    .subTeamNameRow {
+        padding: 4px 10px 4px 10px!important;
+        font-size: 12px;
+    }
+}
+
+/* endTeamPage */

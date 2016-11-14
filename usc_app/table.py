@@ -1,10 +1,11 @@
 import django_tables2 as tables
 from usc_app.models import *
 from django.core.urlresolvers import reverse
+from django_tables2.utils import A
 
 class RosterTable(tables.Table):
     id = tables.Column(orderable=False)
-    team = tables.LinkColumn('rosters', verbose_name="Team",)
+    team = tables.LinkColumn('team',args=[A('team')], verbose_name="Team",)
     rank = tables.Column(verbose_name="Rank")
     captain = tables.Column(orderable=False, verbose_name="Captain")
     co_captain = tables.Column(

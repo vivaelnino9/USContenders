@@ -1,0 +1,31 @@
+<div class="headerwrap" {% if rank < 6 %} id="diamond"{% elif rank >= 6 and rank <= 20 %}id="gold"{% elif rank >= 20 and rank <= 35 %}id="silver"{% elif rank > 35 %}id="bronze"{% endif %}>
+		<div class="container {% if not request.path %}noshowteam{% endif %}" id="header">
+			<div class="row">
+				<div class="col-lg-6">
+					<h1 style="font-weight:900;font-family: 'Lato', sans-serif;">USContenders</h1>
+					<form class="form-inline" role="form" action="/search.php" method="get">
+					  <div class="form-group">
+          <input style="height: 46px;width: 300px;" type="search" name="s" placeholder="e.g. Tantrew or Balladega Nights" results="5" value="">
+					  </div>
+					  <button type="submit" class="btn btn-warning btn-lg">Search</button>
+					</form>
+				</div>
+				<div class="col-lg-6">
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="TickerNews" id="ticker">
+  <div class="ti_wrapper">
+    <div class="ti_slide">
+      <div class="ti_content">
+        <div class="ti_news"><span class="spanclass" style="margin-right:50px;"><b>Recent News:</b></span>
+          <span style="margin-right:40px;">This is a test!</span>
+          <span style="margin-right:40px;">This is a just another test!</span>
+          <span style="margin-right:40px;">Yet again, this is a test!</span>
+          <span style="margin-right:40px;"></span>
+          <span style="margin-right:40px;"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
