@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'usc_app',
     'django_tables2',
+    'mathfilters',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -127,6 +128,9 @@ ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
