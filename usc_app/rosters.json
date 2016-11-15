@@ -1,10 +1,10 @@
 [
  {
    "pk": 1,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Beaver Boys",
-      "rank": 28,
+      "rank": 26,
       "captain": "DobisPR",
       "co_captain": "Dolby",
       "member1": "Lazyday",
@@ -13,34 +13,38 @@
       "member4": "Atl",
       "member5": "STRFKD",
       "member6": "DobisPR",
-      "active": "09/01/2016",
-      "server": "Sphere"
+      "firstActive": "09/01/2016",
+      "daysActive": 74,
+      "server": "Sphere",
+      "logo": ""
    }
 },
  {
    "pk": 2,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Block Lobster",
       "rank": 8,
       "captain": "Anze Capitar",
-      "co_captain": "mathnasium",
+      "co_captain": "alchemist",
       "member1": "banzai",
-      "member2": "alchemist",
+      "member2": "mathnasium",
       "member3": "i'm high",
       "member4": "popsic",
       "member5": "aaron",
       "member6": "Anze Capitar",
-      "active": "05/01/2016",
-      "server": "Radius"
+      "firstActive": "05/01/2016",
+      "daysActive": 197,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
    "pk": 3,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "CircleJukers",
-      "rank": 25,
+      "rank": 23,
       "captain": "ssa",
       "co_captain": "Sir Cle Jerk",
       "member1": "TheIndian",
@@ -49,16 +53,18 @@
       "member4": "boogieidm",
       "member5": "L S X",
       "member6": "ssa",
-      "active": "08/27/2016",
-      "server": "Origin"
+      "firstActive": "08/27/2016",
+      "daysActive": 79,
+      "server": "Origin",
+      "logo": ""
    }
 },
  {
    "pk": 4,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Corrupt Pures",
-      "rank": 33,
+      "rank": 31,
       "captain": "Andre",
       "co_captain": "Remy",
       "member1": "Shiny",
@@ -67,16 +73,18 @@
       "member4": "Alex",
       "member5": "Holydreams",
       "member6": "Andre",
-      "active": "09/14/2016",
-      "server": "Radius"
+      "firstActive": "09/14/2016",
+      "daysActive": 61,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
    "pk": 5,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "C.R.E.A.M.",
-      "rank": 29,
+      "rank": 27,
       "captain": "MDK",
       "co_captain": "Psychic",
       "member1": "Trituin",
@@ -85,13 +93,15 @@
       "member4": "Theseus",
       "member5": "A$AP Tanador",
       "member6": "MDK",
-      "active": "04/14/2016",
-      "server": "Centra"
+      "firstActive": "04/14/2016",
+      "daysActive": 214,
+      "server": "Centra",
+      "logo": ""
    }
 },
  {
    "pk": 6,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Death Cap for Cutie",
       "rank": 5,
@@ -103,16 +113,18 @@
       "member4": "toastymangoz",
       "member5": "Bal McCartny",
       "member6": "Rex Kwon Do",
-      "active": "03/27/2015",
-      "server": "Radius"
+      "firstActive": "03/27/2015",
+      "daysActive": 598,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
    "pk": 7,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "D-Tent Boys",
-      "rank": 3,
+      "rank": 2,
       "captain": "Milk Steak",
       "co_captain": "AnnaKendrick",
       "member1": "coys",
@@ -121,16 +133,18 @@
       "member4": "Fatal",
       "member5": "DudeMcGuy",
       "member6": "Milk Steak",
-      "active": "04/12/2016",
-      "server": "Origin"
+      "firstActive": "04/12/2016",
+      "daysActive": 216,
+      "server": "Origin",
+      "logo": ""
    }
 },
  {
    "pk": 8,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Fourplay",
-      "rank": 32,
+      "rank": 30,
       "captain": "Clouds",
       "co_captain": "Probably Lag",
       "member1": "Epiphany",
@@ -139,13 +153,15 @@
       "member4": "HayBunny",
       "member5": "The Ninja",
       "member6": "Clouds",
-      "active": "05/10/2016",
-      "server": "Centra"
+      "firstActive": "05/10/2016",
+      "daysActive": 188,
+      "server": "Centra",
+      "logo": ""
    }
 },
  {
    "pk": 9,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Gasping for Flair",
       "rank": 4,
@@ -157,13 +173,15 @@
       "member4": "Cucurrucucu",
       "member5": "Anne Frank",
       "member6": "STRFKR",
-      "active": "02/27/2015",
-      "server": "Sphere"
+      "firstActive": "02/27/2015",
+      "daysActive": 626,
+      "server": "Sphere",
+      "logo": ""
    }
 },
  {
    "pk": 10,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Good Kid, C.A.P. City",
       "rank": 11,
@@ -175,16 +193,18 @@
       "member4": "Herbert",
       "member5": "Dope Francis",
       "member6": "Rattpack",
-      "active": "04/20/2016",
-      "server": "Radius"
+      "firstActive": "04/20/2016",
+      "daysActive": 208,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
    "pk": 11,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "HogWild",
-      "rank": 23,
+      "rank": 22,
       "captain": "HorseHungHog",
       "co_captain": "mrpieface",
       "member1": "LacyIsntFat",
@@ -193,31 +213,35 @@
       "member4": "Hunky Dory",
       "member5": "",
       "member6": "HorseHungHog",
-      "active": "03/05/2015",
-      "server": "Radius"
+      "firstActive": "03/05/2015",
+      "daysActive": 620,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
    "pk": 12,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Hydrochloric Flaccid",
-      "rank": 36,
+      "rank": 34,
       "captain": "SportManiac",
       "co_captain": "LaBeefyman96",
       "member1": "Juke Dough",
       "member2": "Hawksong",
       "member3": "Bomberguy",
       "member4": "Timeboy",
-      "member5": "Dethos",
+      "member5": "",
       "member6": "Sportmaniac",
-      "active": "10/27/2016",
-      "server": "Radius"
+      "firstActive": "10/27/2016",
+      "daysActive": 18,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
    "pk": 13,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Juke Blox Heroes",
       "rank": 10,
@@ -225,20 +249,22 @@
       "co_captain": "Perpetualist",
       "member1": "OG_Diddles",
       "member2": "Prjct",
-      "member3": "Warriors",
+      "member3": "FragrantFowl",
       "member4": "JohnHurt",
       "member5": "Kamikaze",
-      "member6": "Crowman",
-      "active": "09/01/2016",
-      "server": "Sphere"
+      "member6": "Razgriz",
+      "firstActive": "09/01/2016",
+      "daysActive": 74,
+      "server": "Sphere",
+      "logo": ""
    }
 },
  {
    "pk": 14,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Jukes and Cats Alumni",
-      "rank": 17,
+      "rank": 18,
       "captain": "iAaronK",
       "co_captain": "UnderTheBall",
       "member1": "Nilus",
@@ -247,16 +273,18 @@
       "member4": "IPT",
       "member5": "Kitten Panda",
       "member6": "iAaronK",
-      "active": "04/27/2015",
-      "server": "Radius"
+      "firstActive": "04/27/2015",
+      "daysActive": 567,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
    "pk": 15,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "London WASDs",
-      "rank": 14,
+      "rank": 15,
       "captain": "Tim Hortons",
       "co_captain": "888",
       "member1": "Button Bill",
@@ -265,52 +293,18 @@
       "member4": "heinousanus",
       "member5": "Laserpig",
       "member6": "Tim Hortons",
-      "active": "04/29/2016",
-      "server": "Radius"
+      "firstActive": "04/29/2016",
+      "daysActive": 199,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
    "pk": 16,
-   "model": "usc_app.roster",
-   "fields": {
-      "team": "lulnenko",
-      "rank": 21,
-      "captain": "Dance",
-      "co_captain": "JBaayBaay",
-      "member1": "June",
-      "member2": "P K Subball",
-      "member3": "SpaceTiger",
-      "member4": "",
-      "member5": "SpaceTiger",
-      "member6": "d0pe",
-      "active": "3/7/2016",
-      "server": "Redesign"
-   }
-},
- {
-   "pk": 17,
-   "model": "usc_app.roster",
-   "fields": {
-      "team": "Mickey Mouse Poperation",
-      "rank": 6,
-      "captain": "CB13",
-      "co_captain": "Lu",
-      "member1": "Anti-Re",
-      "member2": "QBreezy",
-      "member3": "",
-      "member4": "",
-      "member5": "",
-      "member6": "CB13",
-      "active": "04/02/2016",
-      "server": "Origin"
-   }
-},
- {
-   "pk": 18,
-   "model": "usc_app.roster",
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "MEME*TEAM",
-      "rank": 37,
+      "rank": 35,
       "captain": "LEBRON*JAMES",
       "co_captain": "Brake",
       "member1": "MrJoehobo",
@@ -319,16 +313,18 @@
       "member4": "",
       "member5": "",
       "member6": "LEBRON*JAMES",
-      "active": "10/30/2016",
-      "server": "Radius"
+      "firstActive": "10/30/2016",
+      "daysActive": 15,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
-   "pk": 19,
-   "model": "usc_app.roster",
+   "pk": 17,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Pequeños Pandas",
-      "rank": 24,
+      "rank": 20,
       "captain": "THE DOT",
       "co_captain": "refined",
       "member1": "Maddox",
@@ -337,13 +333,15 @@
       "member4": "theirryonre",
       "member5": "catpuke",
       "member6": "THE DOT",
-      "active": "07/20/2016",
-      "server": "Origin"
+      "firstActive": "07/20/2016",
+      "daysActive": 117,
+      "server": "Origin",
+      "logo": ""
    }
 },
  {
-   "pk": 20,
-   "model": "usc_app.roster",
+   "pk": 18,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Pi-romaniacs",
       "rank": 13,
@@ -355,16 +353,18 @@
       "member4": "Abram",
       "member5": "-Batman-",
       "member6": "globus-lag",
-      "active": "01/25/2016",
-      "server": "Pi"
+      "firstActive": "01/25/2016",
+      "daysActive": 294,
+      "server": "Pi",
+      "logo": ""
    }
 },
  {
-   "pk": 21,
-   "model": "usc_app.roster",
+   "pk": 19,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "POP-tarts",
-      "rank": 35,
+      "rank": 33,
       "captain": "Guap",
       "co_captain": "Hunna",
       "member1": "Schubbaca",
@@ -373,13 +373,15 @@
       "member4": "",
       "member5": "",
       "member6": "",
-      "active": "10/26/2016",
-      "server": "Radius"
+      "firstActive": "10/26/2016",
+      "daysActive": 19,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
-   "pk": 22,
-   "model": "usc_app.roster",
+   "pk": 20,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Portal Kombat",
       "rank": 12,
@@ -391,16 +393,18 @@
       "member4": "BigBird",
       "member5": "Eggo",
       "member6": "Apopalypse",
-      "active": "03/14/2015",
-      "server": "Centra"
+      "firstActive": "03/14/2015",
+      "daysActive": 611,
+      "server": "Centra",
+      "logo": ""
    }
 },
  {
-   "pk": 23,
-   "model": "usc_app.roster",
+   "pk": 21,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Primetime Cappin",
-      "rank": 18,
+      "rank": 14,
       "captain": "Dusk",
       "co_captain": "Rexer",
       "member1": "Zvonvock",
@@ -409,16 +413,38 @@
       "member4": "P0P",
       "member5": "",
       "member6": "Dusk",
-      "active": "06/19/2016",
-      "server": "Radius"
+      "firstActive": "06/19/2016",
+      "daysActive": 148,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
-   "pk": 24,
-   "model": "usc_app.roster",
+   "pk": 22,
+   "model": "usc_app.teamroster",
+   "fields": {
+      "team": "Radius Renegades",
+      "rank": 37,
+      "captain": "Snekster",
+      "co_captain": "Heat Miser",
+      "member1": "Banana Man",
+      "member2": "Kelvin",
+      "member3": "AnthonyDavis",
+      "member4": "Johnsooun",
+      "member5": "Ken M.",
+      "member6": "Snekster",
+      "firstActive": "11/10/2016",
+      "daysActive": 4,
+      "server": "Radius",
+      "logo": ""
+   }
+},
+ {
+   "pk": 23,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Reformed Buddies",
-      "rank": 34,
+      "rank": 32,
       "captain": "Daffodil",
       "co_captain": "StevePotato",
       "member1": "Gman8181",
@@ -427,16 +453,18 @@
       "member4": "Atomic",
       "member5": "",
       "member6": "",
-      "active": "10/01/2016",
-      "server": "Sphere"
+      "firstActive": "10/01/2016",
+      "daysActive": 44,
+      "server": "Sphere",
+      "logo": ""
    }
 },
  {
-   "pk": 25,
-   "model": "usc_app.roster",
+   "pk": 24,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Ronarcycles",
-      "rank": 38,
+      "rank": 36,
       "captain": "Ron Hextball",
       "co_captain": "bicycle",
       "member1": "BarryAllen",
@@ -445,16 +473,18 @@
       "member4": "D4NK_JUK3R",
       "member5": "RoomFor2nds",
       "member6": "Ron Hextball",
-      "active": "11/04/2016",
-      "server": "Radius"
+      "firstActive": "11/04/2016",
+      "daysActive": 10,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
-   "pk": 26,
-   "model": "usc_app.roster",
+   "pk": 25,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "SOCL",
-      "rank": 30,
+      "rank": 28,
       "captain": "Hat Tricks",
       "co_captain": "",
       "member1": "Too Crunk",
@@ -463,13 +493,15 @@
       "member4": "",
       "member5": "",
       "member6": "Hat Tricks",
-      "active": "04/25/2016",
-      "server": "Radius"
+      "firstActive": "04/25/2016",
+      "daysActive": 203,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
-   "pk": 27,
-   "model": "usc_app.roster",
+   "pk": 26,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Spheremongers",
       "rank": 7,
@@ -481,16 +513,18 @@
       "member4": "WowSuchPro",
       "member5": "BALLDON'TLIE",
       "member6": "oh_snap!",
-      "active": "10/07/2014",
-      "server": "Sphere"
+      "firstActive": "10/07/2014",
+      "daysActive": 769,
+      "server": "Sphere",
+      "logo": ""
    }
 },
  {
-   "pk": 28,
-   "model": "usc_app.roster",
+   "pk": 27,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Spjork and the Seven Jorks",
-      "rank": 15,
+      "rank": 16,
       "captain": "McNerdy",
       "co_captain": "Dr. Juke",
       "member1": "Spjork",
@@ -499,16 +533,18 @@
       "member4": "1600vam",
       "member5": "air\"m\"jordan",
       "member6": "McNerdy",
-      "active": "08/03/2016",
-      "server": "Centra"
+      "firstActive": "08/03/2016",
+      "daysActive": 103,
+      "server": "Centra",
+      "logo": ""
    }
 },
  {
-   "pk": 29,
-   "model": "usc_app.roster",
+   "pk": 28,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "TC Ballaz",
-      "rank": 20,
+      "rank": 9,
       "captain": "Poeticalto",
       "co_captain": "TagProfessor",
       "member1": "2P1S",
@@ -517,13 +553,15 @@
       "member4": "RollinStoned",
       "member5": "WhiteBallker",
       "member6": "Poeticalto",
-      "active": "09/08/2016",
-      "server": "Sphere"
+      "firstActive": "09/08/2016",
+      "daysActive": 67,
+      "server": "Sphere",
+      "logo": ""
    }
 },
  {
-   "pk": 30,
-   "model": "usc_app.roster",
+   "pk": 29,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Team 3",
       "rank": 1,
@@ -535,16 +573,18 @@
       "member4": "Risk",
       "member5": "JubJubs",
       "member6": "jjpoole",
-      "active": "02/20/2015",
-      "server": "Radius"
+      "firstActive": "02/20/2015",
+      "daysActive": 633,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
-   "pk": 31,
-   "model": "usc_app.roster",
+   "pk": 30,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Thanks Daddy",
-      "rank": 2,
+      "rank": 3,
       "captain": "Sababall",
       "co_captain": "Warden",
       "member1": "no name",
@@ -553,16 +593,18 @@
       "member4": "Some Paul",
       "member5": "imagoat",
       "member6": "Renegade",
-      "active": "08/27/2015",
-      "server": "Origin"
+      "firstActive": "08/27/2015",
+      "daysActive": 445,
+      "server": "Origin",
+      "logo": ""
    }
 },
  {
-   "pk": 32,
-   "model": "usc_app.roster",
+   "pk": 31,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "The Powerup Girls",
-      "rank": 27,
+      "rank": 25,
       "captain": "Apidae",
       "co_captain": "Ludo",
       "member1": "LEXX",
@@ -571,13 +613,15 @@
       "member4": "TunaMaster",
       "member5": "Tuned",
       "member6": "Apidae",
-      "active": "07/03/2014",
-      "server": "Radius"
+      "firstActive": "07/03/2014",
+      "daysActive": 865,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
-   "pk": 33,
-   "model": "usc_app.roster",
+   "pk": 32,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "The Royal Tagginballs",
       "rank": 19,
@@ -589,16 +633,18 @@
       "member4": "archedrapier",
       "member5": "KateEarl, MD",
       "member6": "WarpedPotato",
-      "active": "02/18/2016",
-      "server": "Origin"
+      "firstActive": "02/18/2016",
+      "daysActive": 270,
+      "server": "Origin",
+      "logo": ""
    }
 },
  {
-   "pk": 34,
-   "model": "usc_app.roster",
+   "pk": 33,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Truman Had Re",
-      "rank": 9,
+      "rank": 6,
       "captain": "Eldenn",
       "co_captain": "Abs",
       "member1": "WRIG",
@@ -607,16 +653,18 @@
       "member4": "Puggins",
       "member5": "TennisBall",
       "member6": "Eldenn",
-      "active": "03/05/2015",
-      "server": "Origin"
+      "firstActive": "03/05/2015",
+      "daysActive": 620,
+      "server": "Origin",
+      "logo": ""
    }
 },
  {
-   "pk": 35,
-   "model": "usc_app.roster",
+   "pk": 34,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Where's Balldo?",
-      "rank": 26,
+      "rank": 24,
       "captain": "BG",
       "co_captain": "PengWin",
       "member1": "DeezNutz",
@@ -625,16 +673,18 @@
       "member4": "Ballzilla",
       "member5": "",
       "member6": "BG",
-      "active": "02/21/2014",
-      "server": "Origin"
+      "firstActive": "02/21/2014",
+      "daysActive": 997,
+      "server": "Origin",
+      "logo": ""
    }
 },
  {
-   "pk": 36,
-   "model": "usc_app.roster",
+   "pk": 35,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "Why So Serious?",
-      "rank": 16,
+      "rank": 17,
       "captain": "JDoeMonopoly",
       "co_captain": "veezy",
       "member1": "Crees",
@@ -643,16 +693,18 @@
       "member4": "Knox",
       "member5": "Ajax",
       "member6": "JDoeMonopoly",
-      "active": "07/11/2014",
-      "server": "Radius"
+      "firstActive": "07/11/2014",
+      "daysActive": 857,
+      "server": "Radius",
+      "logo": ""
    }
 },
  {
-   "pk": 37,
-   "model": "usc_app.roster",
+   "pk": 36,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "02-D2",
-      "rank": 22,
+      "rank": 21,
       "captain": "Jorge118",
       "co_captain": "fractal",
       "member1": "Scrapper8o",
@@ -661,16 +713,18 @@
       "member4": "sleepy",
       "member5": "np",
       "member6": "Jorge118",
-      "active": "11/17/2015",
-      "server": "Sphere"
+      "firstActive": "11/17/2015",
+      "daysActive": 363,
+      "server": "Sphere",
+      "logo": ""
    }
 },
  {
-   "pk": 38,
-   "model": "usc_app.roster",
+   "pk": 37,
+   "model": "usc_app.teamroster",
    "fields": {
       "team": "7 Angry Balls",
-      "rank": 31,
+      "rank": 29,
       "captain": "Stojakovic",
       "co_captain": "Spiller",
       "member1": "KOBE*BRYANT",
@@ -679,8 +733,10 @@
       "member4": "Iblis",
       "member5": "Private Major",
       "member6": "Stojakovic",
-      "active": "07/30/2016",
-      "server": "Centra"
+      "firstActive": "07/30/2016",
+      "daysActive": 107,
+      "server": "Centra",
+      "logo": ""
    }
 }
 ]
