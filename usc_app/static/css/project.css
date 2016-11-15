@@ -97,6 +97,7 @@ body {
 }
 .navbar-light .navbar-nav .nav-link.active {
     color: rgba(255, 255, 255, 1);
+    font-weight: 600;
 }
 div#bs-navbar-collapse-1 {
     font-weight: 300;
@@ -221,9 +222,13 @@ thead tr {
     color: #fff;
     text-align: left;
 }
-#sideBarTableTeam {
+.sideBarTableTeamLink {
     color: #d3d3d3;
     font-weight: 300;
+}
+#selfTeam {
+    color: #fff;
+    font-weight: bold;
 }
 #teamInfo {
     padding: 10px 0px 30px 0px;
