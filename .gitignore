@@ -4,4 +4,5 @@ staticfiles
 .env
 db.sqlite3
 .DS_Store
-.json
+rosters.json
+stats.json
