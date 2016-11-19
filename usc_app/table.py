@@ -50,3 +50,49 @@ class RosterTable(tables.Table):
         row_attrs = {
             'id': lambda record: 'R' + str(record.rank)
         }
+class StatsTable(tables.Table):
+    change = tables.Column(
+        orderable=False,
+        verbose_name="▲▼",
+        attrs={'td': {'id': 'change'}},
+    )
+    streak = tables.Column(
+        orderable=False,
+        verbose_name="Streak",
+        attrs={'td': {'id': 'streak'}},
+    )
+    highestRank = tables.Column(
+        orderable=False,
+        verbose_name="Highest Rank",
+        attrs={'td': {'id': 'highestRank'}}
+    )
+    uscmRank = tables.Column(orderable=False,verbose_name="USCM Rank")
+    challengeOut = tables.Column(
+        orderable=False,
+        verbose_name="Challenges Out",
+        attrs={'td': {'id': 'challengeOut'}}
+    )
+    challengeIn = tables.Column(
+        orderable=False,
+        verbose_name="Challenges In",
+        attrs={'td': {'id': 'challengeIn'}}
+    )
+    GP = tables.Column(orderable=False,)
+    W = tables.Column(orderable=False,)
+    L = tables.Column(orderable=False,)
+    D = tables.Column(orderable=False,)
+    F = tables.Column(orderable=False,)
+    CF = tables.Column(orderable=False,)
+    CA = tables.Column(orderable=False,)
+    CD = tables.Column(orderable=False,)
+    CDperG = tables.Column(orderable=False,verbose_name="CD/G")
+    class Meta:
+        model = TeamStats
+        exclude = ('id','lastActive','team')
+        attrs = {
+            'class': 'subTeamName',
+            'align': 'center',
+            'th': {
+                'id' : 'statTableHeader'
+            }
+        }

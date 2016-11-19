@@ -264,12 +264,21 @@ thead tr {
     border-right: 1px #969696 solid;
     padding: 8px 20px 8px 20px;
 }
+#positive {
+    background-color: #b6d7a8;
+}
+#negative {
+    background-color: #ea9999;
+}
 .crown {
     margin-bottom: 3px;
     margin-right: 10px;
 }
 #subTeamServer {
     border-right: 1px #fff solid;
+}
+#statTableHeader {
+    padding: 0px 5px 0px 5px;
 }
 .roster {
     padding-bottom: 20px;

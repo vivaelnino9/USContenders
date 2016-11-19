@@ -1,5 +1,5 @@
 <div class="headerwrap" {% if rank < 6 %} id="diamond"{% elif rank >= 6 and rank <= 20 %}id="gold"{% elif rank >= 20 and rank <= 35 %}id="silver"{% elif rank > 35 %}id="bronze"{% endif %}>
-		<div class="container {% if not request.path %}noshowteam{% endif %}" id="header">
+		<div class="container {% if 'team' in request.path %}noshowteam{% endif %}" id="header">
 			<div class="row">
 				<div class="col-lg-6">
 					<h1 style="font-weight:900;font-family: 'Lato', sans-serif;">USContenders</h1>

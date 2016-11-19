@@ -1,6 +1,8 @@
-{% extends "base.html" %} {% load staticfiles mathfilters %}
+{% extends "base.html" %}
+{% load staticfiles mathfilters django_tables2 %}
 
 {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
 <div class="teamPage">
   <div class="col-lg-2" id="sideBar">
     <h2 class="sideBarHeader">Teams<br><small id="sideBarHeader">(League Rank)</small></h2>
@@ -15,7 +17,7 @@
   </div>
   <div class="col-lg-10" id="teamInfo">
     <div class="col-lg-12 statcard" id="teamName">
-      <h1 class="teamNameHeader">{{ team.team }}</h1>
+      <h1 class="teamNameHeader">{{ team.team }}</h1><br>
       <table class="subTeamName" align='center'>
         <tr>
           <th class="subTeamNameRow">
@@ -25,6 +27,7 @@
           <th class="subTeamNameRow" id="subTeamServer">{{ team.server }}</th>
         </tr>
       </table>
+      {% render_table table %}
     </div>
     <div class="col-lg-3 statcard">
       <div class="roster">
@@ -52,7 +55,7 @@
       <div class="teamsToChallenge">
         <div class="smallCardHeader">Teams to Challenge</div>
         <table class="challengeTable">
-          {% if not test|length_is:"0" %}
+          {% if not challengers|length_is:"0" %}
           <tr>
 						<th class="challengeHeader" id="challengeRank">Rank</th>
             <th class="challengeHeader" id="challengeTeam">Team</th>
@@ -61,18 +64,20 @@
             <th class="challengeHeader">Streak</th>
             <th class="challengeHeader">Last Active</th>
           </tr>
-          {% for rank,roster in test.items %}
+          {% for roster in challengers %}
           <tr>
-            <td class="challengeRow" id="challengeCellRank">{{ rank }}</td>
-            <td class="challengeRow" id="challengeCellTeam"><a class="challengeTeamLink" href="{% url 'team' roster.team %}">{{ roster.team }}</a><br></td>
-            <td class="challengeRow">{{ roster.challengeIn }}</td>
-            <td class="challengeRow">{{ roster.challengeOut }}</td>
+            <td class="challengeRow" id="challengeCellRank">{{ roster.0 }}</td>
+            <td class="challengeRow" id="challengeCellTeam"><a class="challengeTeamLink" href="{% url 'team' roster.1.team %}">{{ roster.1.team }}</a><br></td>
+            <td class="challengeRow" id="challengeCellIn" {% if roster.1.challengeIn == 2 %}style="color:red;"{% endif %}>
+              {{ roster.1.challengeIn }}</td>
+            <td class="challengeRow" >
+              {{ roster.1.challengeOut }}</td>
             <td class="challengeRow">
-              {% if roster.streak < 0 %}{{ roster.streak|abs }}L
-              {% elif roster.streak > 0 %}{{ roster.streak }}W
-              {% else %}1D{% endif %}
+              {% if roster.1.streak < 0 %}{{ roster.1.streak|abs }}L
+              {% elif roster.1.streak > 0 %}{{ roster.1.streak }}W
+              {% else %}—{% endif %}
             </td>
-            <td class="challengeRow">{{ roster.lastActive }}</td>
+            <td class="challengeRow">{{ roster.1.lastActive }}</td>
           </tr>
           {% endfor %}
           {% else %}
@@ -83,4 +88,17 @@
     </div>
   </div>
 </div>
+<script>
+{% if stats.streak < 0 %}$('#streak').attr('id', 'negative');{% elif stats.streak > 0 %}$('#streak').attr('id', 'positive');{% else %}{% endif %}
+{% if stats.challengeOut == 2 %}$('#challengeOut').attr('id', 'negative');{% endif %}
+{% if stats.challengeIn == 2 %}$('#challengeIn').attr('id', 'negative');{% endif %}
+{% if stats.highestRank < 6 %}$('#highestRank').attr('id', 'diamond');
+{% elif stats.highestRank >= 6 and stats.highestRank < 21 %}$('#highestRank').attr('id', 'gold');
+{% elif stats.highestRank >= 21 and stats.highestRank < 36 %}$('#highestRank').attr('id', 'silver');
+{% elif stats.highestRank >= 36 %}$('#highestRank').attr('id', 'bronze');{% endif %}
+{% if stats.change < 0 %}
+  $('#change').attr('id','negative').replaceWith('<td class="change" id="negative">' + '▼' + String({{ stats.change|abs }}) + '</td>');{% endif %}
+{% if stats.change %}
+  $('#change').attr('id','positive').replaceWith('<td class="change" id="positive">' + '▲' + String({{ stats.change }}) + '</td>');{% endif %}
+</script>
 {% endblock %}

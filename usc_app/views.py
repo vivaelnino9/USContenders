@@ -4,6 +4,7 @@ from django_tables2 import RequestConfig
 from django.shortcuts import get_object_or_404
 from usc_app.models import *
 from usc_app.table import *
+import operator
 
 def index(request):
     return render(request, 'index.html')
@@ -17,22 +18,25 @@ def roster_table(request):
     }).configure(table)
     return render(request, 'roster_table.html', {'table': table,})
 def team_page(request,team_name):
-    baseurl = request.get_full_path()
     rosters = TeamRoster.objects.all().order_by('rank')
-    team = get_object_or_404(TeamRoster, team=team_name)
-    test = {}
+    # team = get_object_or_404(TeamRoster,team=team_name)
+    # stats = get_object_or_404(TeamStats,team=team_name)
+    team = TeamRoster.objects.filter(team=team_name).first()
+    stats = TeamStats.objects.filter(team=team_name).first()
+    queryset = TeamStats.objects.filter(team=team.team)
+    table = StatsTable(queryset)
+    challengers = {}
     rank = int(team.rank)
-    count = 0
     for roster in rosters:
-        if rank - roster.rank <= 4 and rank - roster. rank > 0:
-            # test.append(get_object_or_404(TeamStats, team=roster.team))
-            test[roster.rank]= get_object_or_404(TeamStats, team=roster.team)
-        count+=1
-    # queryset = Roster.objects.all()
-    return render_to_response('team_page.html',{
-        'team':team,
-        'baseurl': baseurl,
-        'rosters':rosters,
-        'test':test,
-        'rank':rank
+        # Create list of challengers (teams 4 spots above current team)
+        if rank - roster.rank <= 4 and rank - roster.rank > 0:
+            challengers[roster.rank]= get_object_or_404(TeamStats, team=roster.team)
+    sorted_challengers = sorted(challengers.items(), key=operator.itemgetter(0)) #Sort challengers list by key(rank)
+    return render(request,'team_page.html',{
+        'team':team, # for team page
+        'rosters':rosters, # for side bar
+        'table':table, # for team stats under team name
+        'stats':stats, # for team stats highlighting
+        'challengers':sorted_challengers, # for teams to challenge
+        'rank':rank # for page header
     });
