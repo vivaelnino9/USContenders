@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^rosters', views.roster_table, name='rosters'),
     url(r'^team/(?P<team_name>[\w|\W]+)/$',views.team_page, name='team'),
+    url(r'^player/(?P<player_name>[\w|\W]+)/$',views.player_page, name='player'),
     # url(r'^register/$', views.register, name='register'),
     # url(r'^login/$', views.user_login, name='login'),
     # url(r'^logout/$', views.user_logout, name='logout'),

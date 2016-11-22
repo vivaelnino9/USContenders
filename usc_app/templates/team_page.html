@@ -4,17 +4,7 @@
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
 <div class="teamPage">
-  <div class="col-lg-2" id="sideBar">
-    <h2 class="sideBarHeader">Teams<br><small id="sideBarHeader">(League Rank)</small></h2>
-    <table class="sideBarTable">
-      {% for roster in rosters %}
-      <tr class="sideBarTableRow">
-        <td class="sideBarTableRank">{{ roster.rank }}</td>
-        <td class="sideBarTableTeam"><a class="sideBarTableTeamLink" {% if roster.team == team.team %}id="selfTeam"{% endif %} href="{% url 'team' roster.team %}">{{ roster.team }}</a></td>
-      </tr>
-      {% endfor %}
-    </table>
-  </div>
+  {% include "sidebar.html" %}
   <div class="col-lg-10" id="teamInfo">
     <div class="col-lg-12 statcard" id="teamName">
       <h1 class="teamNameHeader">{{ team.team }}</h1><br>
@@ -33,7 +23,7 @@
       <div class="roster">
         <div class="smallCardHeader">Roster</div>
         <table class="rosterTable">
-          <tr><td class="rosterInfo"><a class="player" href="#">{{ team.captain }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' 'WarpedPotato' %}">{{ team.captain }}</a></td></tr>
           <tr><td class="rosterInfo"><a class="player" href="#">{{ team.co_captain }}</a></td></tr>
           {% if team.member1 and team.member1 != team.captain %}
           <tr><td class="rosterInfo"><a class="player" href="#">{{ team.member1 }}</a></td></tr>

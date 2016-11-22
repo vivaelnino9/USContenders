@@ -40,3 +40,8 @@ def team_page(request,team_name):
         'challengers':sorted_challengers, # for teams to challenge
         'rank':rank # for page header
     });
+def player_page(request,player_name):
+    rosters = TeamRoster.objects.all().order_by('rank')
+    return render(request,'player_page.html',{
+        'rosters':rosters,
+    })
