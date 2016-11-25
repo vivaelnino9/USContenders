@@ -23,20 +23,20 @@
       <div class="roster">
         <div class="smallCardHeader">Roster</div>
         <table class="rosterTable">
-          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' 'WarpedPotato' %}">{{ team.captain }}</a></td></tr>
-          <tr><td class="rosterInfo"><a class="player" href="#">{{ team.co_captain }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.captain %}">{{ team.captain }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.co_captain %}">{{ team.co_captain }}</a></td></tr>
           {% if team.member1 and team.member1 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="#">{{ team.member1 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member1 %}">{{ team.member1 }}</a></td></tr>
           {% if team.member2 and team.member2 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="#">{{ team.member2 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member2 %}">{{ team.member2 }}</a></td></tr>
           {% if team.member3 and team.member3 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="#">{{ team.member3 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member3 %}">{{ team.member3 }}</a></td></tr>
           {% if team.member4 and team.member4 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="#">{{ team.member4 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member4 %}">{{ team.member4 }}</a></td></tr>
           {% if team.member5 and team.member5 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="#">{{ team.member5 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member5 %}">{{ team.member5 }}</a></td></tr>
           {% if team.member6 and team.member6 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="#">{{ team.member6 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member6 %}">{{ team.member6 }}</a></td></tr>
           {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}
         </table>
       </div>
