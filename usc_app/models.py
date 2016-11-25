@@ -3,6 +3,12 @@ from django.db import models
 
 class Player(models.Model):
     name = models.CharField(max_length=50)
+    roster = models.ForeignKey(
+        "usc_app.Roster",
+        related_name='roster',
+        verbose_name='Team',
+        blank=True,null=True
+    )
     minutes = models.PositiveIntegerField(blank=True,null=True)
     tags = models.PositiveIntegerField(blank=True,null=True)
     captures = models.PositiveIntegerField(blank=True,null=True)

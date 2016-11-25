@@ -9,7 +9,7 @@
             <div class="statcard" id="playerStatCard">
               <h1 class="playerHeader">{{ player.name }}</h1>
               <table class="playerTables" align='center'>
-                  <tr><th class="playerTeam"><a href="#">Soviet Ballers</a></th></tr>
+                  <tr><th class="playerTeam"><a href="{% url 'team' player.roster.team %}">{{ player.roster.team }}</a></th></tr>
               </table>
               <div class="playerTeamLogo">
                 <img class="logoImage" src={% static 'img/soviet_ballers.png' %} />
