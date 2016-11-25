@@ -15,6 +15,9 @@ class Player(models.Model):
     hold = models.CharField(max_length=10,blank=True,null=True)
     returns = models.PositiveIntegerField(blank=True,null=True)
 
+    class Meta:
+        db_table = 'player'
+        
     def __str__(self):
         return self.name
 
