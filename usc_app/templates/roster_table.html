@@ -4,5 +4,5 @@
 {% block content %}
 {% render_table table %}
 <script src="{% static 'js/roster_table.js' %}"></script>
-
+<script>document.getElementsByClassName("pagination")[0].innerHTML = "";</script>
 {% endblock %}

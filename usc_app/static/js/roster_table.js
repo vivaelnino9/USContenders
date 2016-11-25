@@ -11,4 +11,3 @@ for (var i = 1; i < 38; i++){
 
   document.getElementById(id).style.backgroundColor = color;
 }
-document.getElementsByClassName("pagination")[0].innerHTML = "";
