@@ -45,7 +45,9 @@ def team_page(request,team_name):
 def player_page(request,player_name):
     rosters = Roster.objects.all().order_by('rank')
     player = Player.objects.filter(name=player_name).first()
+    rank = player.roster.rank
     return render(request,'player_page.html',{
         'rosters':rosters,
         'player':player,
+        'rank':rank,
     })
