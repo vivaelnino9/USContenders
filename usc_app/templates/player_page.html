@@ -7,7 +7,7 @@
         <div class="col-lg-4">
           <div class="nameHolder">
             <div class="statcard" id="playerStatCard">
-              <h1 class="playerHeader">WarpedPotato</h1>
+              <h1 class="playerHeader">{{ player.name }}</h1>
               <table class="playerTables" align='center'>
                   <tr><th class="playerTeam"><a href="#">Soviet Ballers</a></th></tr>
               </table>
@@ -50,11 +50,11 @@
                 <h1 class="careerStatHeader">Career Stats</h1>
                 <table class="careerStatTable" align=center>
                     <tr>
-                        <th class='careernumber'>827</th>
-                        <th class='careernumber'>1209</th>
-                        <th class='careernumber'>18</th>
-                        <th class='careernumber'>48:21</th>
-                        <th class='careernumber'>1036</th>
+                        <th class='careernumber'>{% if player.minutes != None %}{{ player.minutes }}{% else %}0{% endif %}</th>
+                        <th class='careernumber'>{% if player.tags != None %}{{ player.tags }}{% else %}0{% endif %}</th>
+                        <th class='careernumber'>{% if player.tags != None %}{{ player.tags }}{% else %}0{% endif %}</th>
+                        <th class='careernumber'>{% if player.hold %}{{ player.hold }}{% else %}00:00{% endif %}</th>
+                        <th class='careernumber'>{% if player.returns != None %}{{ player.returns }}{% else %}0{% endif %}</th>
                     </tr>
                     <tr align=center>
                         <th class='statheader'>Minutes</th>

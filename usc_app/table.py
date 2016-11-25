@@ -6,45 +6,53 @@ from django_tables2.utils import A
 class RosterTable(tables.Table):
     team = tables.LinkColumn('team',args=[A('team')], verbose_name="Team",)
     rank = tables.Column(verbose_name="Rank")
-    captain = tables.Column(orderable=False, verbose_name="Captain")
-    co_captain = tables.Column(
+    captain = tables.LinkColumn('player',args=[A('captain')],orderable=False, verbose_name="Captain")
+    co_captain = tables.LinkColumn(
+        'player',args=[A('co_captain')],
         orderable=False,
         verbose_name="Co-Captain"
         # default="",
     )
-    member1 = tables.Column(
+    member1 = tables.LinkColumn(
+        'player',args=[A('member1')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
-    member2 = tables.Column(
+    member2 = tables.LinkColumn(
+        'player',args=[A('member2')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
-    member3 = tables.Column(
+    member3 = tables.LinkColumn(
+        'player',args=[A('member3')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
-    member4 = tables.Column(
+    member4 = tables.LinkColumn(
+        'player',args=[A('member4')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
-    member5 = tables.Column(
+    member5 = tables.LinkColumn(
+        'player',args=[A('member5')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
-    member6 = tables.Column(
+    member6 = tables.LinkColumn(
+        'player',args=[A('member6')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
     server = tables.Column(verbose_name="Server")
     class Meta:
-        model = TeamRoster
+        model = Roster
+        sequence = ('team','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','server')
         exclude = ('id','firstActive','daysActive','logo')
         attrs = {'class': 'table'}
         row_attrs = {
@@ -87,7 +95,7 @@ class StatsTable(tables.Table):
     CD = tables.Column(orderable=False,)
     CDperG = tables.Column(orderable=False,verbose_name="CD/G")
     class Meta:
-        model = TeamStats
+        model = Stats
         exclude = ('id','lastActive','team')
         attrs = {
             'class': 'subTeamName',
