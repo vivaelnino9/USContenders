@@ -19,7 +19,7 @@ class TeamRosterAdminForm(forms.ModelForm):
     model = Roster
 
 class TeamRosterAdmin(admin.ModelAdmin):
-    fields = ['team','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','firstActive','daysActive','server','logo']
+    fields = ['team','abv','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','firstActive','daysActive','server','logo']
     list_display = (
         'team', 'rank',
     )
@@ -40,3 +40,15 @@ class TeamStatsAdmin(admin.ModelAdmin):
     list_per_page = 10
     form = TeamRosterAdminForm
 admin.site.register(Stats,TeamStatsAdmin)
+
+class ChallengeAdminForm(forms.ModelForm):
+    model = Challenge
+
+class ChallengeAdmin(admin.ModelAdmin):
+    list_display = ('challenger', 'challenged','map','challenge_date','forfeit_date','void_date','play_date')
+    list_filter = ['challenger','challenged']
+    search_fields = ['challenger','challenged']
+    list_per_page = 10
+    form = ChallengeAdminForm
+
+admin.site.register(Challenge,ChallengeAdmin)

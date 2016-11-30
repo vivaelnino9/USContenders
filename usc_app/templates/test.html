@@ -1,0 +1,11 @@
+{% for game,teams in soup.items %}
+{{ game }} - {{ teams.0 }}({{ teams.2 }}) vs {{ teams.1 }}({{ teams.3 }})
+on {{ teams.4 }}  (https://tagpro.eu/?match={{ game|slice:"1:" }})
+<br><br>
+{% endfor %}
+
+{% for team in teams %}
+{{ team.rank }}
+{% endfor %}
+
+{{ test }}

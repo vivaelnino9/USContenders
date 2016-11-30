@@ -53,7 +53,7 @@ class RosterTable(tables.Table):
     class Meta:
         model = Roster
         sequence = ('team','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','server')
-        exclude = ('id','firstActive','daysActive','logo')
+        exclude = ('id','firstActive','daysActive','logo','abv')
         attrs = {'class': 'table'}
         row_attrs = {
             'id': lambda record: 'R' + str(record.rank)

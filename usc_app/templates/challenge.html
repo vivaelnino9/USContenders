@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post" action="/challenge/">
+  {% csrf_token %}
+  {{ form }}
+  <button class="form-submit btn btn-lg btn-primary btn-block" type="submit" name="submit">Register</button>
+</form>
+{% endblock %}

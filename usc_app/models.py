@@ -1,5 +1,6 @@
 from django.db import models
-
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 class Player(models.Model):
     name = models.CharField(max_length=50)
@@ -17,13 +18,14 @@ class Player(models.Model):
 
     class Meta:
         db_table = 'player'
-        
+
     def __str__(self):
         return self.name
 
 
 class Roster(models.Model):
     team = models.CharField(max_length=50)
+    abv = models.CharField(max_length=3)
     rank = models.PositiveIntegerField()
     captain = models.ForeignKey(
         Player,
@@ -92,6 +94,8 @@ class Roster(models.Model):
     )
     class Meta:
         db_table = 'roster'
+    def __str__(self):
+        return self.team
 
 class Stats(models.Model):
      change = models.IntegerField(null=True,blank=True)
@@ -113,3 +117,20 @@ class Stats(models.Model):
      CDperG = models.IntegerField(null=True,blank=True)
      class Meta:
          db_table = 'stats'
+
+class Challenge(models.Model):
+    challenger = models.ForeignKey(
+        Roster,
+        related_name='challenger',
+        verbose_name='Challenger',
+    )
+    challenged = models.ForeignKey(
+        Roster,
+        related_name='challenged',
+        verbose_name='Challenged',
+    )
+    map = models.CharField(max_length=50)
+    challenge_date = models.DateTimeField(default=datetime.now())
+    forfeit_date = models.DateTimeField(default=datetime.now()+timedelta(days=5))
+    void_date = models.DateTimeField(default=datetime.now()+timedelta(days=14))
+    play_date = models.DateTimeField(blank=True,null=True)
