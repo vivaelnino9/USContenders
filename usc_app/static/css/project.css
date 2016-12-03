@@ -130,6 +130,10 @@ div.container {
 a.navbar-brand {
     margin-right: 100px;
 }
+.nav-item.dropdown {
+    float: right;
+    padding-right: 100px;
+}
 
 /* endnav*/
 
@@ -149,7 +153,7 @@ a.navbar-brand {
     font-family: 'Open Sans', sans-serif;
     font-size: 13.5px;
 }
-.orderable.rank a, .orderable.team a, .orderable.server a, td a {
+.orderable.rank a, .orderable.team_name a, .orderable.server a, td a {
     color: #373a3c;
 }
 td a, thead tr {
