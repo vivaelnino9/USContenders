@@ -15,6 +15,5 @@ urlpatterns = [
     url(r'^register/$', views.captain_register, name='register'),
     url(r'^login/$', views.captain_login, name='login'),
     url(r'^logout/$', views.captain_logout, name='logout'),
-    # url(r'^profile/(?P<inv_user_id>[0-9]+)/$', views.profile, name='profile'),
 
 ]
