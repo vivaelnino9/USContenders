@@ -1,10 +1,12 @@
-<div class="col-lg-2" id="sideBar" style= {% if 'team' in request.path or 'player' in request.path %}"display:inline-block;"{% else %}"display:none;"{% endif %}>
+<div class="col-lg-2" id="sideBar" style= {% if 'roster' not in request.path %}"display:inline-block;"{% else %}"display:none;"{% endif %}>
   <h2 class="sideBarHeader">Teams<br><small id="sideBarHeader">(League Rank)</small></h2>
   <table class="sideBarTable">
     {% for roster in rosters %}
     <tr class="sideBarTableRow">
       <td class="sideBarTableRank">{{ roster.rank }}</td>
-      <td class="sideBarTableTeam"><a class="sideBarTableTeamLink" {% if roster.team == team.team or roster.team == player.roster.team %}id="selfTeam"{% endif %} href="{% url 'team' roster.team %}">{{ roster.team }}</a></td>
+      <td class="sideBarTableTeam"><a class="sideBarTableTeamLink"
+        {% if roster.team_name == team.team_name or roster.team_name == captain.team.team_name or roster.team_name == player.co_captain.all.0.team_name or roster.team_name == player.member1.all.0.team_name or roster.team_name == player.member2.all.0.team_name or roster.team_name == player.member3.all.0.team_name or roster.team_name == player.member4.all.0.team_name or roster.team_name == player.member5.all.0.team_name or roster.team_name == player.member6.all.0.team_name %}
+        id="selfTeam"{% endif %} href="{% url 'team' roster.team_name %}">{{ roster.team_name }}</a></td>
     </tr>
     {% endfor %}
   </table>

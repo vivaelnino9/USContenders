@@ -4,11 +4,11 @@ from django.core.urlresolvers import reverse
 from django_tables2.utils import A
 
 class RosterTable(tables.Table):
-    team = tables.LinkColumn('team',args=[A('team')], verbose_name="Team",)
+    team_name = tables.LinkColumn('team',args=[A('team_name')], verbose_name="Team",)
     rank = tables.Column(verbose_name="Rank")
-    captain = tables.LinkColumn('player',args=[A('captain')],orderable=False, verbose_name="Captain")
+    captain = tables.LinkColumn('player',args=[A('team_name'),A('captain')],orderable=False, verbose_name="Captain")
     co_captain = tables.LinkColumn(
-        'player',args=[A('co_captain')],
+        'player',args=[A('team_name'),A('co_captain')],
         orderable=False,
         verbose_name="Co-Captain"
         # default="",
@@ -52,7 +52,7 @@ class RosterTable(tables.Table):
     server = tables.Column(verbose_name="Server")
     class Meta:
         model = Roster
-        sequence = ('team','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','server')
+        sequence = ('team_name','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','server')
         exclude = ('id','firstActive','daysActive','logo','abv')
         attrs = {'class': 'table'}
         row_attrs = {

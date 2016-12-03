@@ -7,7 +7,7 @@
   {% include "sidebar.html" %}
   <div class="col-lg-10" id="teamInfo">
     <div class="col-lg-12 statcard" id="teamName">
-      <h1 class="teamNameHeader">{{ team.team }}</h1><br>
+      <h1 class="teamNameHeader">{{ team.team_name }}</h1><br>
       <table class="subTeamName" align='center'>
         <tr>
           <th class="subTeamNameRow">
@@ -23,21 +23,22 @@
       <div class="roster">
         <div class="smallCardHeader">Roster</div>
         <table class="rosterTable">
-          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.captain %}">{{ team.captain }}</a></td></tr>
-          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.co_captain %}">{{ team.co_captain }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.captain %}">{{ team.captain }}</a></td></tr>
+          {% if team.co_captain %}
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.co_captain %}">{{ team.co_captain }}</a></td></tr>
           {% if team.member1 and team.member1 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member1 %}">{{ team.member1 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member1 %}">{{ team.member1 }}</a></td></tr>
           {% if team.member2 and team.member2 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member2 %}">{{ team.member2 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member2 %}">{{ team.member2 }}</a></td></tr>
           {% if team.member3 and team.member3 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member3 %}">{{ team.member3 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member3 %}">{{ team.member3 }}</a></td></tr>
           {% if team.member4 and team.member4 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member4 %}">{{ team.member4 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member4 %}">{{ team.member4 }}</a></td></tr>
           {% if team.member5 and team.member5 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member5 %}">{{ team.member5 }}</a></td></tr>
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member5 %}">{{ team.member5 }}</a></td></tr>
           {% if team.member6 and team.member6 != team.captain %}
-          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team.member6 %}">{{ team.member6 }}</a></td></tr>
-          {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}
+          <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member6 %}">{{ team.member6 }}</a></td></tr>
+          {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}
         </table>
       </div>
     </div>
@@ -45,7 +46,7 @@
       <div class="teamsToChallenge">
         <div class="smallCardHeader">Teams to Challenge</div>
         <table class="challengeTable">
-          {% if not challengers|length_is:"0" %}
+          {% if not canChallenge|length_is:"0" %}
           <tr>
 						<th class="challengeHeader" id="challengeRank">Rank</th>
             <th class="challengeHeader" id="challengeTeam">Team</th>
@@ -54,20 +55,20 @@
             <th class="challengeHeader">Streak</th>
             <th class="challengeHeader">Last Active</th>
           </tr>
-          {% for roster in challengers %}
+          {% for rank,roster in canChallenge.items %}
           <tr>
-            <td class="challengeRow" id="challengeCellRank">{{ roster.0 }}</td>
-            <td class="challengeRow" id="challengeCellTeam"><a class="challengeTeamLink" href="{% url 'team' roster.1.team %}">{{ roster.1.team }}</a><br></td>
-            <td class="challengeRow" id="challengeCellIn" {% if roster.1.challengeIn == 2 %}style="color:red;"{% endif %}>
-              {{ roster.1.challengeIn }}</td>
+            <td class="challengeRow" id="challengeCellRank">{{ rank }}</td>
+            <td class="challengeRow" id="challengeCellTeam"><a class="challengeTeamLink" href="{% url 'team' roster.0.team %}">{{ roster.0.team }}</a><br></td>
+            <td class="challengeRow" id="challengeCellIn" {% if roster.0.challengeIn == 2 %}style="color:red;"{% endif %}>
+              {{ roster.0.challengeIn }}</td>
             <td class="challengeRow" >
-              {{ roster.1.challengeOut }}</td>
+              {{ roster.0.challengeOut }}</td>
             <td class="challengeRow">
-              {% if roster.1.streak < 0 %}{{ roster.1.streak|abs }}L
-              {% elif roster.1.streak > 0 %}{{ roster.1.streak }}W
-              {% else %}—{% endif %}
+              {% if roster.0.streak < 0 %}{{ roster.0.streak|abs }}L
+              {% elif roster.0.streak > 0 %}{{ roster.0.streak }}W
+              {% else %}{% endif %}
             </td>
-            <td class="challengeRow">{{ roster.1.lastActive }}</td>
+            <td class="challengeRow">{{ roster.0.lastActive }}</td>
           </tr>
           {% endfor %}
           {% else %}

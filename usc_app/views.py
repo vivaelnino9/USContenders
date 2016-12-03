@@ -1,18 +1,16 @@
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
-from django_tables2 import RequestConfig
-from django.shortcuts import get_object_or_404
-from usc_app.models import *
-from usc_app.table import *
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
-from urllib.request import urlopen
 import json
-import operator
-from base64 import decodestring
-from django.db.models import F
-from django.forms import modelformset_factory
-from .forms import ChallengeForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django_tables2 import RequestConfig
+from urllib.request import urlopen
+
+from .models import *
+from .table import *
+from .forms import *
+
+from bs4 import BeautifulSoup
 
 def index(request):
     return render(request, 'index.html')
@@ -31,34 +29,33 @@ def roster_table(request):
     })
 def team_page(request,team_name):
     rosters = Roster.objects.all().order_by('rank')
-    team = Roster.objects.filter(team=team_name).first()
+    team = Roster.objects.filter(team_name=team_name).first()
     stats = Stats.objects.filter(team=team_name).first()
-    queryset = Stats.objects.filter(team=team.team)
+    queryset = Stats.objects.filter(team=team_name)
     table = StatsTable(queryset)
-    challengers = {}
+    canChallenge = team.getChallengers
     challenges = Challenge.objects.filter(challenger=team.id)
     rank = int(team.rank)
-    for roster in rosters:
-        # Create list of challengers (teams 4 spots above current team)
-        if rank - roster.rank <= 4 and rank - roster.rank > 0:
-            challengers[roster.rank]= get_object_or_404(Stats, team=roster.team)
-    sorted_challengers = sorted(challengers.items(), key=operator.itemgetter(0)) #Sort challengers list by key(rank)
     return render(request,'team_page.html',{
         'team':team, # for team page
         'rosters':rosters, # for side bar
         'table':table, # for team stats under team name
         'stats':stats, # for team stats highlighting
-        'challengers':sorted_challengers, # for teams to challenge
+        'canChallenge':canChallenge, # for teams to challenge
         'rank':rank, # for page header
         'challenges':challenges
     });
-def player_page(request,player_name):
+def player_page(request,player_name,team_name):
     rosters = Roster.objects.all().order_by('rank')
     player = Player.objects.filter(name=player_name).first()
-    rank = player.roster.rank
+    captain = Captain.objects.filter(name=player_name).first()
+    team = Roster.objects.filter(team_name=team_name).first()
+    rank = team.rank
     return render(request,'player_page.html',{
         'rosters':rosters,
         'player':player,
+        'captain':captain,
+        'team':team.team_name,
         'rank':rank,
     })
 def challenge(request):
@@ -69,6 +66,72 @@ def challenge(request):
     else:
         form = ChallengeForm()
     return render(request, 'challenge.html', {'form': form})
+def captain_register(request):
+    registered = False
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        captain_form = CaptainForm(data=request.POST);
+
+        if user_form.is_valid() and captain_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+
+            captain = captain_form.save(commit=False)
+            captain.user = user
+            captain.name = user.username
+
+            user.first_name = captain.team.team_name
+
+            user.save()
+            captain.save()
+
+            Roster.objects.filter(team_name=captain.team).update(captain=captain)
+            registered = True
+        else:
+            print(user_form.errors, captain_form.errors)
+
+    else:
+        user_form = UserForm()
+        captain_form = CaptainForm()
+
+    return render(request,
+                  'register.html',
+                  {'user_form': user_form,
+                  'captain_form': captain_form,
+                  'registered': registered,
+                  'errors':user_form.errors,
+    })
+def captain_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('rosters'))
+            else:
+                return render(request, 'redirect.html', {
+                    'title': 'Account Disabled',
+                    'heading': 'Banned',
+                    'content': 'Your account has been disabled. Contact an administrator.',
+                    'url_arg': 'index',
+                    'url_text': 'Back to homepage'
+            })
+
+        else:
+            return render(request, 'redirect.html', {
+                'title': 'Invalid Login',
+                'heading': 'Incorrect Login',
+                'content': 'Invalid login details for: {0}'.format(username),
+                'url_arg': 'login',
+                'url_text': 'Back to login'
+            })
+    else:
+        return render(request, 'login.html', {})
+def captain_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
 def test(request):
     teams = Roster.objects.values_list('abv', flat=True)
     # test = ['Red','Blue']
