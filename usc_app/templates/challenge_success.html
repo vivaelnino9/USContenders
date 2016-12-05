@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ error }}
+<div class="challenge" style="padding-top:100px;">
+  <h1 style="text-align:center;">Challenge Submitted!</h1>
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>#</th>
+        <th>Challenger</th>
+        <th>Challenged</th>
+        <th>Map</th>
+        <th>Challenge Date</th>
+        <th>Forfeit Date</th>
+        <th>Void Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>{{ challenge.challenger }}</td>
+        <td>{{ challenge.challenged }}</td>
+        <td>{{ challenge.map }}</td>
+        <td>{{ challenge.challenge_date }}</td>
+        <td>{{ challenge.forfeit_date }}</td>
+        <td>{{ challenge.void_date }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

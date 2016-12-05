@@ -481,3 +481,12 @@ thead tr {
 }
 
 /* endPlayerPage */
+
+
+/* Challenge */
+
+.thead-inverse th {
+    background-color: #0275d8;
+}
+
+/* endChallenge */

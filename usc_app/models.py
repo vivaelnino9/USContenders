@@ -109,23 +109,83 @@ class Roster(models.Model):
         return challengers
 
 class Stats(models.Model):
-     change = models.IntegerField(null=True,blank=True)
+     change = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
      team = models.CharField(max_length=50)
-     streak = models.IntegerField(null=True,blank=True)
-     highestRank = models.PositiveIntegerField(null=True,blank=True)
-     uscmRank = models.PositiveIntegerField(null=True,blank=True)
+     streak = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     highestRank = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     uscmRank = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
      lastActive = models.CharField(max_length=50,blank=True)
-     challengeOut = models.PositiveIntegerField(null=True,blank=True)
-     challengeIn = models.PositiveIntegerField(null=True,blank=True)
-     GP = models.PositiveIntegerField(null=True,blank=True)
-     W = models.IntegerField(null=True,blank=True)
-     L = models.IntegerField(null=True,blank=True)
-     D = models.IntegerField(null=True,blank=True)
-     F = models.IntegerField(null=True,blank=True)
-     CF = models.IntegerField(null=True,blank=True)
-     CA = models.IntegerField(null=True,blank=True)
-     CD = models.IntegerField(null=True,blank=True)
-     CDperG = models.IntegerField(null=True,blank=True)
+     challengeOut = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     challengeIn = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     GP = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     W = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     L = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     D = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     F = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     CF = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     CA = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     CD = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+     CDperG = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
      class Meta:
          db_table = 'stats'
 

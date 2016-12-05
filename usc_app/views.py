@@ -1,4 +1,5 @@
 import json
+from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -11,6 +12,8 @@ from .table import *
 from .forms import *
 
 from bs4 import BeautifulSoup
+from django.core.validators import ValidationError
+from django.utils.translation import gettext as _
 
 def index(request):
     return render(request, 'index.html')
@@ -43,7 +46,7 @@ def team_page(request,team_name):
         'stats':stats, # for team stats highlighting
         'canChallenge':canChallenge, # for teams to challenge
         'rank':rank, # for page header
-        'challenges':challenges
+        'challenges':challenges,
     });
 def player_page(request,player_name,team_name):
     rosters = Roster.objects.all().order_by('rank')
@@ -58,14 +61,39 @@ def player_page(request,player_name,team_name):
         'team':team.team_name,
         'rank':rank,
     })
+@login_required
 def challenge(request):
+    challenger = Stats.objects.filter(team=request.user.first_name).first()
+    challengeOut = challenger.challengeOut
+    error = (challengeOut + 1) > 2
     if request.method == 'POST': # If the form has been submitted...
-        form = ChallengeForm(request.POST) # A form bound to the POST data
-        if form.is_valid():
-            form.save()
+        form = ChallengeForm(request.POST,request=request) # A form bound to the POST data
+            # raise ValidationError(_('You already have 2 challenges out!'),code='invalid')
+        if form.is_valid() and not error:
+            challenge= form.save(commit=False)
+            captain = Captain.objects.filter(name=request.user.username).first()
+            challenge.challenger = Roster.objects.filter(captain=captain.id).first()
+            challenge.save()
+            return render(request, 'challenge_success.html',{
+                'challenge':challenge,
+            })
+        else:
+            print(form.errors)
     else:
-        form = ChallengeForm()
-    return render(request, 'challenge.html', {'form': form})
+        if error:
+            return render(request, 'redirect.html', {
+                'title': 'Invalid Challenge',
+                'content': 'You already have 2 challenges out!',
+                'url_arg': 'index',
+                'url_text': 'Back to homepage',
+        })
+        form = ChallengeForm(request=request)
+    return render(request, 'challenge.html', {
+        'form': form,
+    })
+@login_required
+def challenge_success(request):
+    return render(request, 'challenge_success.html', {})
 def captain_register(request):
     registered = False
     if request.method == 'POST':
