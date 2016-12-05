@@ -83,7 +83,7 @@
 {% if stats.streak < 0 %}$('#streak').attr('id', 'negative');{% elif stats.streak > 0 %}$('#streak').attr('id', 'positive');{% else %}{% endif %}
 {% if stats.challengeOut == 2 %}$('#challengeOut').attr('id', 'negative');{% endif %}
 {% if stats.challengeIn == 2 %}$('#challengeIn').attr('id', 'negative');{% endif %}
-{% if stats.highestRank < 6 %}$('#highestRank').attr('id', 'diamond');
+{% if stats.highestRank > 0 and stats.highestRank < 6 %}$('#highestRank').attr('id', 'diamond');
 {% elif stats.highestRank >= 6 and stats.highestRank < 21 %}$('#highestRank').attr('id', 'gold');
 {% elif stats.highestRank >= 21 and stats.highestRank < 36 %}$('#highestRank').attr('id', 'silver');
 {% elif stats.highestRank >= 36 %}$('#highestRank').attr('id', 'bronze');{% endif %}
