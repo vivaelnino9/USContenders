@@ -104,8 +104,7 @@ class Roster(models.Model):
         for roster in rosters:
             # Create list of challengers (teams 4 spots above current team)
             if self.rank - roster.rank <= 4 and self.rank - roster.rank > 0:
-                challengers[roster.rank]= Stats.objects.filter(team=roster.team_name)
-        # sorted_challengers = sorted(challengers.items(), key=operator.itemgetter(0))
+                challengers[roster.rank]= Stats.objects.filter(team=roster.team_name).first()
         return challengers
 
 class Stats(models.Model):
