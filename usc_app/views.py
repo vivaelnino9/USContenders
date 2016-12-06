@@ -33,20 +33,32 @@ def roster_table(request):
 def team_page(request,team_name):
     rosters = Roster.objects.all().order_by('rank')
     team = Roster.objects.filter(team_name=team_name).first()
+    userTeam = Roster.objects.filter(team_name=request.user.first_name).first()
+    own_page = False
+    if userTeam.team_name == team_name:
+        own_page = True
+    challenged = False
+    if Challenge.objects.filter(challenger=userTeam.id).filter(challenged=team.id):
+        challenged = True
     stats = Stats.objects.filter(team=team_name).first()
+    userStats = Stats.objects.filter(team=userTeam.team_name).first()
     queryset = Stats.objects.filter(team=team_name)
     table = StatsTable(queryset)
     canChallenge = team.getChallengers
     challenges = Challenge.objects.filter(challenger=team.id)
     rank = int(team.rank)
     return render(request,'team_page.html',{
-        'team':team, # for team page
         'rosters':rosters, # for side bar
-        'table':table, # for team stats under team name
+        'team':team, # for team page
+        'userTeam':userTeam, # team of user visiting page
+        'own_page':own_page, # true if user visiting own page
+        'challenged':challenged, # true if user has challenge against team_page
         'stats':stats, # for team stats highlighting
+        'userStats':userStats, # for userTeam stats
+        'table':table, # for team stats under team name
         'canChallenge':canChallenge, # for teams to challenge
+        'challenges':challenges,  # list of challenges team has out
         'rank':rank, # for page header
-        'challenges':challenges,
     });
 def player_page(request,player_name,team_name):
     rosters = Roster.objects.all().order_by('rank')
@@ -68,7 +80,6 @@ def challenge(request):
     error = (challengeOut + 1) > 2
     if request.method == 'POST': # If the form has been submitted...
         form = ChallengeForm(request.POST,request=request) # A form bound to the POST data
-            # raise ValidationError(_('You already have 2 challenges out!'),code='invalid')
         if form.is_valid() and not error:
             challenge= form.save(commit=False)
             captain = Captain.objects.filter(name=request.user.username).first()
@@ -90,6 +101,49 @@ def challenge(request):
         form = ChallengeForm(request=request)
     return render(request, 'challenge.html', {
         'form': form,
+    })
+@login_required
+def challenge_with_arg(request,team_challenged):
+    challenger = Stats.objects.filter(team=request.user.first_name).first()
+    challenged = Stats.objects.filter(team=team_challenged).first()
+    challengingTeam = Roster.objects.filter(team_name=challenger.team).first()
+    challengedTeam = Roster.objects.filter(team_name=team_challenged).first()
+    existingChallenge = Challenge.objects.filter(challenger=challengingTeam.id).filter(challenged=challengedTeam.id)
+    challengeOut = challenger.challengeOut
+    error = (challengeOut + 1) > 2
+    if request.method == 'POST': # If the form has been submitted...
+        form = ChallengeArgForm(request.POST) # A form bound to the POST data
+        if form.is_valid() and not error and not existingChallenge:
+            challenge= form.save(commit=False)
+            challenge.challenger = challengingTeam
+            challenge.challenged = challengedTeam
+            challenge.save()
+            return render(request, 'challenge_success.html',{
+                'challenge':challenge,
+            })
+        else:
+            if existingChallenge:
+                return render(request, 'redirect.html', {
+                    'title': 'Invalid Challenge',
+                    'content': 'You already have a challenge out against that team!',
+                    'url_arg': 'index',
+                    'url_text': 'Back to homepage',
+            })
+            else:
+                print(form.errors)
+    else:
+        if error:
+            return render(request, 'redirect.html', {
+                'title': 'Invalid Challenge',
+                'content': 'You already have 2 challenges out!',
+                'url_arg': 'index',
+                'url_text': 'Back to homepage',
+        })
+        form = ChallengeArgForm()
+    return render(request, 'challenge.html', {
+        'form': form,
+        'challenger':challenger,
+        'challenged':challenged,
     })
 @login_required
 def challenge_success(request):

@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^player/(?P<team_name>[\w|\W]+)/(?P<player_name>[\w|\W]+)/$',views.player_page, name='player'),
     url(r'^test',views.test, name='test'),
     url(r'^challenge/$', views.challenge, name='challenge'),
+    url(r'^challenge/(?P<team_challenged>[\w|\W]+)/$', views.challenge_with_arg, name='challenge_arg'),
     url(r'^register/$', views.captain_register, name='register'),
     url(r'^login/$', views.captain_login, name='login'),
     url(r'^logout/$', views.captain_logout, name='logout'),

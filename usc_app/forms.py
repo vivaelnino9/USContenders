@@ -31,6 +31,13 @@ class ChallengeForm(forms.ModelForm):
                         params={'team':challenged.team_name },
                     )
         return challenged
+
+class ChallengeArgForm(forms.ModelForm):
+    map = forms.CharField(label='Map', max_length=50)
+
+    class Meta:
+        model = Challenge
+        fields = ('map',)
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 

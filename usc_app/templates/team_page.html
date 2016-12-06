@@ -7,7 +7,16 @@
   {% include "sidebar.html" %}
   <div class="col-lg-10" id="teamInfo">
     <div class="col-lg-12 statcard" id="teamName">
-      <h1 class="teamNameHeader">{{ team.team_name }}</h1><br>
+      <h1 class="teamNameHeader">{{ team.team_name }}</h1>
+      {% for rank,roster in userTeam.getChallengers.items %}
+      {% if roster.team == team.team_name %}
+        {% if roster.challengeIn == 2 or userStats.challengeOut == 2 or challenged%}
+        <button type="button" class="btn btn-lg btn-primary" disabled>Challenge</button><br><br>
+        {% else %}
+        <a href="{% url 'challenge_arg' team.team_name %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
+        {% endif %}
+      {% endif %}
+      {% endfor %}
       <table class="subTeamName" align='center'>
         <tr>
           <th class="subTeamNameRow">
@@ -58,17 +67,17 @@
           {% for rank,roster in canChallenge.items %}
           <tr>
             <td class="challengeRow" id="challengeCellRank">{{ rank }}</td>
-            <td class="challengeRow" id="challengeCellTeam"><a class="challengeTeamLink" href="{% url 'team' roster.0.team %}">{{ roster.0.team }}</a><br></td>
+            <td class="challengeRow" id="challengeCellTeam"><a class="challengeTeamLink" href="{% url 'team' roster.team %}">{{ roster.team }}</a><br></td>
             <td class="challengeRow" id="challengeCellIn" {% if roster.0.challengeIn == 2 %}style="color:red;"{% endif %}>
-              {{ roster.0.challengeIn }}</td>
+              {{ roster.challengeIn }}</td>
             <td class="challengeRow" >
-              {{ roster.0.challengeOut }}</td>
+              {{ roster.challengeOut }}</td>
             <td class="challengeRow">
-              {% if roster.0.streak < 0 %}{{ roster.0.streak|abs }}L
-              {% elif roster.0.streak > 0 %}{{ roster.0.streak }}W
+              {% if roster.streak < 0 %}{{ roster.streak|abs }}L
+              {% elif roster.streak > 0 %}{{ roster.streak }}W
               {% else %}{% endif %}
             </td>
-            <td class="challengeRow">{{ roster.0.lastActive }}</td>
+            <td class="challengeRow">{{ roster.lastActive }}</td>
           </tr>
           {% endfor %}
           {% else %}
