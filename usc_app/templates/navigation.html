@@ -24,6 +24,7 @@
               {% if user.is_authenticated %}
               {% if user.username != 'admin' %}
               <a class="dropdown-item" href="{% url 'player' user.first_name user.username %}">Profile</a>
+              <a class="dropdown-item" href="{% url 'challenge' %}">Make Challenge</a>
               {% endif %}
               <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
               {% else %}
