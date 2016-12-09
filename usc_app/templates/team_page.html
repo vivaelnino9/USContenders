@@ -68,16 +68,16 @@
           <tr>
             <td class="challengeRow" id="challengeCellRank">{{ rank }}</td>
             <td class="challengeRow" id="challengeCellTeam"><a class="challengeTeamLink" href="{% url 'team' roster.team %}">{{ roster.team }}</a><br></td>
-            <td class="challengeRow" id="challengeCellIn" {% if roster.0.challengeIn == 2 %}style="color:red;"{% endif %}>
+            <td class="challengeRow" id="challengeCellIn" {% if roster.challengeIn == 2 %}style="color:red;"{% endif %}>
               {{ roster.challengeIn }}</td>
             <td class="challengeRow" >
               {{ roster.challengeOut }}</td>
             <td class="challengeRow">
               {% if roster.streak < 0 %}{{ roster.streak|abs }}L
               {% elif roster.streak > 0 %}{{ roster.streak }}W
-              {% else %}{% endif %}
+              {% else %}--{% endif %}
             </td>
-            <td class="challengeRow">{{ roster.lastActive }}</td>
+            <td class="challengeRow">{% if roster.lastActive %}{{ roster.lastActive }}{% else %}--{% endif %}</td>
           </tr>
           {% endfor %}
           {% else %}
