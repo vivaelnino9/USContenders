@@ -18,8 +18,8 @@ class ChallengeForm(forms.ModelForm):
         canChallenge = challenger.getChallengers()
         ranks = []
         for rank,challenged in canChallenge.items():
-            existingChallenge = Challenge.objects.filter(challenger=challenger.id).filter(challenged=challenged[0].id)
-            if challenged[0].challengeIn < 2 and not existingChallenge:
+            existingChallenge = Challenge.objects.filter(challenger=challenger.id).filter(challenged=challenged.id).filter(played=False)
+            if challenged.challengeIn < 2 and not existingChallenge:
                 ranks.append(rank)
         self.fields['challenged'] = forms.ModelChoiceField(queryset=Roster.objects.exclude(team_name=challenger.team_name).filter(rank__in=ranks), required=True, help_text="Choose who to challenge!")
     def clean_challenged(self):

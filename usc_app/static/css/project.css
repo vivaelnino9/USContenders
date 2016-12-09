@@ -11,6 +11,9 @@ body {
     font-family: 'Lato', sans-serif;
     font-weight: 700;
 }
+thead a {
+    color: #373a3c;
+}
 .alert-debug {
     color: black;
     background-color: white;
@@ -138,7 +141,7 @@ a.navbar-brand {
 /* endnav*/
 
 
-/* Table */
+/* Roster Table */
 
 .table-container {
     margin: 40px 0px 40px 0px;
@@ -180,7 +183,7 @@ thead tr {
     background-color: #d3d3d3;
 }
 
-/* endtable*/
+/* endRosterTable*/
 
 
 /* Team Page */
@@ -487,6 +490,9 @@ thead tr {
 
 .thead-inverse th {
     background-color: #0275d8;
+}
+#PTrue {
+    background-color: lightgrey;
 }
 
 /* endChallenge */

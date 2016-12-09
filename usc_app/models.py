@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.db.models import F
 
 class Player(models.Model):
     name = models.CharField(max_length=50)
@@ -21,7 +22,7 @@ class Player(models.Model):
 
 class Roster(models.Model):
     team_name = models.CharField(max_length=50)
-    abv = models.CharField(max_length=3)
+    abv = models.CharField(max_length=4)
     rank = models.PositiveIntegerField()
     captain = models.ForeignKey(
         'usc_app.Captain',
@@ -94,7 +95,7 @@ class Roster(models.Model):
         return self.team_name
 
     def save(self, *args, **kwargs):
-        stats = Stats(team=self.team_name)
+        stats = Stats(team=self.team_name,abv=self.abv)
         stats.save()
         super(Roster, self).save(*args, **kwargs)
 
@@ -108,87 +109,95 @@ class Roster(models.Model):
         return challengers
 
 class Stats(models.Model):
-     change = models.IntegerField(
+    change = models.IntegerField(
         null=True,
         blank=True,
         default=0
     )
-     team = models.CharField(max_length=50)
-     streak = models.IntegerField(
+    team = models.CharField(max_length=50)
+    abv = models.CharField(max_length=4)
+    streak = models.IntegerField(
         null=True,
         blank=True,
         default=0
     )
-     highestRank = models.PositiveIntegerField(
+    highestRank = models.PositiveIntegerField(
         null=True,
         blank=True,
         default=0
     )
-     uscmRank = models.PositiveIntegerField(
+    uscmRank = models.PositiveIntegerField(
         null=True,
         blank=True,
         default=0
     )
-     lastActive = models.CharField(max_length=50,blank=True)
-     challengeOut = models.PositiveIntegerField(
+    lastActive = models.CharField(max_length=50,blank=True)
+    challengeOut = models.PositiveIntegerField(
         null=True,
         blank=True,
         default=0
     )
-     challengeIn = models.PositiveIntegerField(
+    challengeIn = models.PositiveIntegerField(
         null=True,
         blank=True,
         default=0
     )
-     GP = models.PositiveIntegerField(
+    GP = models.PositiveIntegerField(
         null=True,
         blank=True,
         default=0
     )
-     W = models.IntegerField(
+    W = models.IntegerField(
         null=True,
         blank=True,
         default=0
     )
-     L = models.IntegerField(
+    L = models.IntegerField(
         null=True,
         blank=True,
         default=0
     )
-     D = models.IntegerField(
+    D = models.IntegerField(
         null=True,
         blank=True,
         default=0
     )
-     F = models.IntegerField(
+    F = models.IntegerField(
         null=True,
         blank=True,
         default=0
     )
-     CF = models.IntegerField(
+    CF = models.IntegerField(
         null=True,
         blank=True,
         default=0
     )
-     CA = models.IntegerField(
+    CA = models.IntegerField(
         null=True,
         blank=True,
         default=0
     )
-     CD = models.IntegerField(
+    CD = models.IntegerField(
         null=True,
         blank=True,
         default=0
     )
-     CDperG = models.IntegerField(
+    CDperG = models.IntegerField(
+        verbose_name='CD/G',
         null=True,
         blank=True,
         default=0
     )
-     class Meta:
-         db_table = 'stats'
+    class Meta:
+        db_table = 'stats'
+
+    def update(self):
+        self.CD = self.CF - self.CA
+        if self.GP > 0:
+            self.CDperG = self.CD / self.GP
 
 class Challenge(models.Model):
+    played = models.BooleanField(default=False,verbose_name='Played?')
     challenger = models.ForeignKey(
         Roster,
         related_name='challenger',
@@ -199,11 +208,89 @@ class Challenge(models.Model):
         related_name='challenged',
         verbose_name='Challenged',
     )
-    map = models.CharField(max_length=50)
-    challenge_date = models.DateTimeField(default=datetime.now())
-    forfeit_date = models.DateTimeField(default=datetime.now()+timedelta(days=5))
-    void_date = models.DateTimeField(default=datetime.now()+timedelta(days=14))
-    play_date = models.DateTimeField(blank=True,null=True)
+    map = models.CharField(max_length=50,verbose_name='Map')
+    challenge_date = models.DateTimeField(default=datetime.now(),verbose_name='Challenge Date')
+    forfeit_date = models.DateTimeField(default=datetime.now()+timedelta(days=5), verbose_name='Forfeit Date')
+    void_date = models.DateTimeField(default=datetime.now()+timedelta(days=14), verbose_name='Void Date')
+    play_date = models.DateTimeField(blank=True,null=True, verbose_name='Date Played')
+    g1_results = models.OneToOneField(
+        'usc_app.Result',
+        related_name='g1_results',
+        verbose_name='Game 1 Results',
+        null=True,blank=True,
+    )
+    g2_results = models.OneToOneField(
+        'usc_app.Result',
+        related_name='g2_results',
+        verbose_name='Game 2 Results',
+        null=True,blank=True,
+    )
+
+    def format(self):
+        match = [self.challenger.abv,self.challenged.abv]
+        return match
+
+class Result(models.Model):
+    match_id = models.CharField(
+        max_length=50,
+        verbose_name='Match ID',
+        blank=True,null=True
+    )
+    server = models.CharField(
+        max_length=50,
+        verbose_name='Server',
+        blank=True,null=True
+    )
+    duration = models.CharField(
+        max_length=50,
+        verbose_name='Duration',
+        blank=True,null=True
+    )
+    finished = models.BooleanField(
+        default=True,
+        verbose_name="Finished",
+    )
+    team1 = models.CharField(
+        max_length=50,
+        verbose_name='Team 1',
+        blank=True,null=True
+    )
+    team2 = models.CharField(
+        max_length=50,
+        verbose_name='Team 2',
+        blank=True,null=True
+    )
+    score1 = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Score 1',
+        blank=True,null=True
+    )
+    score2 = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Score 2',
+        blank=True,null=True
+    )
+
+    class Meta:
+        db_table = 'result'
+
+    def __str__(self):
+        return self.match_id
+
+    def save(self, *args, **kwargs):
+        team1 = Stats.objects.filter(abv=self.team1)
+        team2 = Stats.objects.filter(abv=self.team2)
+
+        team1.update(CF=F('CF')+self.score1)
+        team1.update(CA=F('CA')+self.score2)
+
+        team2.update(CF=F('CF')+self.score2)
+        team2.update(CA=F('CA')+self.score1)
+
+        super(Result, self).save(*args, **kwargs)
+
+    def show_server(self):
+        return self.server.lower()
 
 class Captain(Player):
     user = models.OneToOneField(User)

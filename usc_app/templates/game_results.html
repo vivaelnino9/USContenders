@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Summary</h2>
+
+<div class="summary">
+    <table>
+        <tbody>
+            <tr>
+                <th>Score</th>
+                <td><strong>3</strong>
+                    <br>Red</td>
+                <td><strong>1</strong>
+                    <br>Blue</td>
+            </tr>
+            <tr>
+                <th>Map</th>
+                <td colspan="2"><em><a href="?map=3996">Market</a></em>
+                    <br>
+                    <svg version="1.1" width="50" height="20">
+                        <rect width="40" height="40" transform="scale(.5) translate(60)" fill="url(#t60)" />
+                        <rect width="40" height="40" transform="scale(.5) translate(40)" fill="url(#t60)" />
+                        <rect width="40" height="40" transform="scale(.5) translate(20)" fill="url(#t40)" />
+                        <rect width="40" height="40" transform="scale(.5)" fill="url(#t30)" />
+                    </svg><small><br>2P1S</small></td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td colspan="2"><strong>6:27</strong><small><br>12:00 time limit</small></td>
+            </tr>
+            <tr>
+                <th>Players</th>
+                <td><a href="?player=Rattpack">Rattpack</a><small> ✓</small>
+                    <br><a href="?player=Magnum+Dong">Magnum Dong</a><small> ✓</small>
+                    <br><a href="?player=Omega">Omega</a><small> ✓</small>
+                    <br><a href="?player=I+Am+Zeus">I Am Zeus</a><small> ✓</small>
+                    <br>
+                </td>
+                <td><small>✓ </small><a href="?player=twelvefive">twelvefive</a>
+                    <br><small>✓ </small><a href="?player=weezy">weezy</a>
+                    <br>Some Ball 6
+                    <br><small>✓ </small><a href="?player=ping_tut">ping_tut</a>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <th>Captures</th>
+                <td>
+                    <div><a href="?player=Rattpack">Rattpack</a><small> ✓</small>
+                        <svg version="1.1" width="26.4" height="28.8">
+                            <rect y="32" width="40" height="40" transform="scale(.4) translate(13)" fill="url(#b1)" />
+                            <rect width="40" height="40" transform="scale(.4) translate(26)" fill="url(#t40)" />
+                        </svg><small>3:07</small></div>
+                    <div><a href="?player=I+Am+Zeus">I Am Zeus</a><small> ✓</small>
+                        <svg version="1.1" width="26.4" height="28.8">
+                            <rect y="32" width="40" height="40" transform="scale(.4) translate(13)" fill="url(#b1)" />
+                            <rect y="32" width="40" height="40" transform="scale(.4) translate(13)" fill="url(#p2)" />
+                            <rect width="40" height="40" transform="scale(.4) translate(26)" fill="url(#t40)" />
+                        </svg><small>3:18</small></div>
+                    <div><a href="?player=Rattpack">Rattpack</a><small> ✓</small>
+                        <svg version="1.1" width="26.4" height="28.8">
+                            <rect y="32" width="40" height="40" transform="scale(.4) translate(13)" fill="url(#b1)" />
+                            <rect width="40" height="40" transform="scale(.4) translate(26)" fill="url(#t40)" />
+                        </svg><small>6:27</small></div>
+                </td>
+                <td>
+                    <div><small>0:06</small>
+                        <svg version="1.1" width="26.4" height="28.8">
+                            <rect y="32" width="40" height="40" transform="scale(.4) translate(13)" fill="url(#b2)" />
+                            <rect width="40" height="40" transform="scale(.4) translate(26)" fill="url(#t30)" />
+                        </svg><small>✓ </small><a href="?player=twelvefive">twelvefive</a></div>
+                </td>
+            </tr>
+            <tr>
+                <th>Server</th>
+                <td colspan="2"><a target="_blank" href="http://tagpro-{{ result.show_server }}.koalabeast.com">tagpro-{{ result.show_server }}.koalabeast.com</a></td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td colspan="2">7 December 2016, 00:38<small>:46 UTC</small></td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td colspan="2"><small>{{ result.match_id }}</small></td>
+            </tr>
+            <tr>
+                <th>Raw data URL</th>
+                <td colspan="2"><small><a href="https://tagpro.eu/?download=1095163">https://tagpro.eu/?download=1095163</a></small></td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+{% endblock %}

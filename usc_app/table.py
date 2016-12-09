@@ -104,3 +104,15 @@ class StatsTable(tables.Table):
                 'id' : 'statTableHeader'
             }
         }
+class ResultsTable(tables.Table):
+    challenger = tables.LinkColumn('team',args=[A('challenger')])
+    challenged = tables.LinkColumn('team',args=[A('challenged')])
+    g1_results = tables.LinkColumn('game_results',args=[A('g1_results')],orderable=False)
+    g2_results = tables.LinkColumn('game_results',args=[A('g2_results')],orderable=False)
+    class Meta:
+        model = Challenge
+        exclude = ('id',)
+        attrs = {'class': 'table'}
+        row_attrs = {
+            'id': lambda record: 'P' + str(record.played)
+        }

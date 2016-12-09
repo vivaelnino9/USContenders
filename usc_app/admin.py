@@ -33,7 +33,7 @@ class TeamStatsAdminForm(forms.ModelForm):
     model = Stats
 
 class TeamStatsAdmin(admin.ModelAdmin):
-    fields = ['change','team','streak','highestRank','uscmRank','lastActive','challengeOut','challengeIn']
+    fields = ['change','team','abv','streak','highestRank','uscmRank','lastActive','challengeOut','challengeIn','GP','W','L','D','F','CF','CA','CD','CDperG']
     list_display = ['team']
     list_filter = ['team',]
     search_fields = ['team',]
@@ -45,12 +45,24 @@ class ChallengeAdminForm(forms.ModelForm):
     model = Challenge
 
 class ChallengeAdmin(admin.ModelAdmin):
-    list_display = ('challenger', 'challenged','map','challenge_date','forfeit_date','void_date','play_date')
-    list_filter = ['challenger','challenged']
-    search_fields = ['challenger','challenged']
+    list_display = ('played','challenger', 'challenged','map','challenge_date','forfeit_date','void_date','play_date','g1_results','g2_results')
+    list_filter = ['played','challenger','challenged']
+    search_fields = ['played','challenger','challenged']
     list_per_page = 10
     form = ChallengeAdminForm
 
 admin.site.register(Challenge,ChallengeAdmin)
+
+class ResultAdminForm(forms.ModelForm):
+    model = Result
+
+class ResultAdmin(admin.ModelAdmin):
+    list_display = ('match_id','server','duration','finished','team1','team2','score1','score2')
+    list_filter = ['match_id','team1','team2']
+    search_fields = ['match_id','team1','team2']
+    list_per_page = 10
+    form = ResultAdminForm
+
+admin.site.register(Result,ResultAdmin)
 
 admin.site.register(Captain)
