@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="resultsPage">
+  <h1>Results</h1>
+  <div class="resultsTable">
+  {% if players %}
+    <div class="playerResults">
+    <h2><i>Players ({{ players|length }})</i></h2>
+    {% for player in players %}
+    <div class="result">
+      <a href="{% url 'player' player.first_name player.username %}">{{ player }}</a>
+    </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+  {% if teams %}
+    <div class="teamResults">
+    <h2><i>Teams ({{ teams|length }})</i></h2>
+    {% for team in teams %}
+    <div class="result">
+      <a href="{% url 'team' team %}">{{ team }}</a>
+    </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+  {% if not players and not teams %}
+    <h2 class="noResults">None</h2>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,11 +1,13 @@
 import json
 from django.core.urlresolvers import reverse
+from django.core.validators import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.db.models import F
 from django.shortcuts import render
 from django_tables2 import RequestConfig
+from django.utils.translation import gettext as _
 from urllib.request import urlopen
 
 from .models import *
@@ -13,8 +15,6 @@ from .table import *
 from .forms import *
 
 from bs4 import BeautifulSoup
-from django.core.validators import ValidationError
-from django.utils.translation import gettext as _
 
 def index(request):
     return render(request, 'index.html')
@@ -227,11 +227,19 @@ def results(request):
                             team1=team1,team2=team2,score1=score1,score2=score2
                         )
                         result.save()
+                        t1 = Stats.objects.filter(abv=str(team1))
+                        t2 = Stats.objects.filter(abv=str(team2))
                         if not challenge.g2_results:
                             Challenge.objects.filter(challenger=challenge.challenger).update(g2_results=result)
+                            t1.first().update()
+                            t2.first().update()
                         elif not challenge.g1_results:
                             Challenge.objects.filter(challenger=challenge.challenger).update(g1_results=result)
                             Challenge.objects.filter(challenger=challenge.challenger).update(played=True)
+                            t1.first().update()
+                            t2.first().update()
+                            t1.update(GP=F('GP')+1)
+                            t2.update(GP=F('GP')+1)
                         else:
                             pass
     return render(request, 'results.html', {
@@ -278,4 +286,17 @@ def game_results(request,match_id):
     #     games[game].append(data['teams'][1]['score'])
     return render(request, 'game_results.html',{
         'result':result,
+    })
+def search(request):
+    players = None
+    teams = None
+    if request.method == 'GET':
+        query = request.GET.get('s',None)
+        if query is not None:
+            players = User.objects.filter(username__icontains=query)
+            teams = Roster.objects.filter(team_name__icontains=query)
+    return render(request,'search.html',{
+        'players':players,
+        'teams':teams,
+        'query':query,
     })

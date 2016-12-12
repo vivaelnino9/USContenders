@@ -38,6 +38,12 @@ thead a {
     margin-top: -20px;
     width: 100%;
 }
+.homeButton h1, .homeButton:hover {
+    font-weight: 900;
+    font-family: 'Lato', sans-serif;
+    color: black;
+    text-decoration: none;
+}
 #diamond {
     background-color: #9fc5e8;
 }
@@ -496,3 +502,42 @@ thead tr {
 }
 
 /* endChallenge */
+
+
+/* SearchResults */
+
+.resultsPage {
+    background-color: #d3d3d3;
+    margin-top: 20px;
+    text-align: center;
+}
+.searchBar {
+    padding: 20px 0px 0px 40px;
+}
+.searchInput {
+    text-indent: 10px;
+    height: 46px;
+    width: 300px;
+}
+.resultsTable {
+    margin: 0px 500px 40px 500px;
+    padding-bottom: 20px;
+    font-size: 30px;
+}
+.playerResults {
+    margin-top: 40px;
+}
+.result {
+    padding: 10px 20px 10px 0px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
+}
+.teamResults {
+    padding: 0px;
+    padding: 20px 0px 40px 0px;
+}
+.noResults {
+    padding: 40px 0px 40px 0px;
+}
+
+/* endSearchResults */

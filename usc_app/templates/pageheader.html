@@ -2,10 +2,12 @@
 		<div class="container" id="header">
 			<div class="row">
 				<div class="col-lg-6">
-					<h1 style="font-weight:900;font-family: 'Lato', sans-serif;">USContenders</h1>
-					<form class="form-inline" role="form" action="/search.php" method="get">
+					<a class="homeButton" href="{% url 'index' %}">
+						<h1>USContenders</h1>
+					</a>
+					<form class="form-inline" role="form" action="{% url 'search' %}" method="get">
 					  <div class="form-group">
-          <input style="height: 46px;width: 300px;" type="search" name="s" placeholder="e.g. Tantrew or Balladega Nights" results="5" value="">
+          		<input class="searchInput" type="search" name="s" placeholder={% if query %}{{ query }}{% else %}"e.g. Rattpack or Good Kid, C.A.P. City"{% endif %} onfocus="this.placeholder = ' '" value="">
 					  </div>
 					  <button type="submit" class="btn btn-warning btn-lg">Search</button>
 					</form>

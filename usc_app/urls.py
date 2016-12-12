@@ -8,6 +8,7 @@ from usc_app import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^rosters', views.roster_table, name='rosters'),
+    url(r'^search', views.search, name='search'),
     url(r'^team/(?P<team_name>[\w|\W]+)/$',views.team_page, name='team'),
     url(r'^player/(?P<team_name>[\w|\W]+)/(?P<player_name>[\w|\W]+)/$',views.player_page, name='player'),
     url(r'^challenge/$', views.challenge, name='challenge'),
