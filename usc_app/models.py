@@ -1,5 +1,6 @@
 from django.db import models
-from datetime import datetime, timedelta
+import datetime
+from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -14,7 +15,7 @@ class Player(models.Model):
     returns = models.PositiveIntegerField(blank=True,null=True)
 
     class Meta:
-        db_table = 'player'
+        db_table = 'players'
 
     def __str__(self):
         return self.name
@@ -90,7 +91,7 @@ class Roster(models.Model):
         blank=True
     )
     class Meta:
-        db_table = 'roster'
+        db_table = 'rosters'
     def __str__(self):
         return self.team_name
 
@@ -191,11 +192,6 @@ class Stats(models.Model):
     class Meta:
         db_table = 'stats'
 
-    def update(self):
-        self.CD = self.CF - self.CA
-        if self.GP > 0:
-            self.CDperG = self.CD / self.GP
-
 class Challenge(models.Model):
     played = models.BooleanField(default=False,verbose_name='Played?')
     challenger = models.ForeignKey(
@@ -209,10 +205,10 @@ class Challenge(models.Model):
         verbose_name='Challenged',
     )
     map = models.CharField(max_length=50,verbose_name='Map')
-    challenge_date = models.DateTimeField(default=datetime.now(),verbose_name='Challenge Date')
-    forfeit_date = models.DateTimeField(default=datetime.now()+timedelta(days=5), verbose_name='Forfeit Date')
-    void_date = models.DateTimeField(default=datetime.now()+timedelta(days=14), verbose_name='Void Date')
-    play_date = models.DateTimeField(blank=True,null=True, verbose_name='Date Played')
+    challenge_date = models.DateField(default=datetime.date.today,verbose_name='Challenge Date')
+    forfeit_date = models.DateField(default=datetime.date.today()+timedelta(days=5), verbose_name='Forfeit Date')
+    void_date = models.DateField(default=datetime.date.today()+timedelta(days=14), verbose_name='Void Date')
+    play_date = models.DateField(blank=True,null=True, verbose_name='Date Played')
     g1_results = models.OneToOneField(
         'usc_app.Result',
         related_name='g1_results',
@@ -225,6 +221,8 @@ class Challenge(models.Model):
         verbose_name='Game 2 Results',
         null=True,blank=True,
     )
+    class Meta:
+        db_table = 'challenges'
 
     def format(self):
         match = [self.challenger.abv,self.challenged.abv]
@@ -272,7 +270,7 @@ class Result(models.Model):
     )
 
     class Meta:
-        db_table = 'result'
+        db_table = 'results'
 
     def __str__(self):
         return self.match_id
@@ -301,7 +299,7 @@ class Captain(Player):
         blank=True,null=True
     )
     class Meta:
-        db_table = 'captain'
+        db_table = 'captains'
 
     def __str__(self):
         return self.user.username
