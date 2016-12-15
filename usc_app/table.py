@@ -14,37 +14,37 @@ class RosterTable(tables.Table):
         # default="",
     )
     member1 = tables.LinkColumn(
-        'player',args=[A('member1')],
+        'player',args=[A('team_name'),A('member1')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
     member2 = tables.LinkColumn(
-        'player',args=[A('member2')],
+        'player',args=[A('team_name'),A('member2')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
     member3 = tables.LinkColumn(
-        'player',args=[A('member3')],
+        'player',args=[A('team_name'),A('member3')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
     member4 = tables.LinkColumn(
-        'player',args=[A('member4')],
+        'player',args=[A('team_name'),A('member4')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
     member5 = tables.LinkColumn(
-        'player',args=[A('member5')],
+        'player',args=[A('team_name'),A('member5')],
         orderable=False,
         verbose_name="Member",
         # default="",
     )
     member6 = tables.LinkColumn(
-        'player',args=[A('member6')],
+        'player',args=[A('team_name'),A('member6')],
         orderable=False,
         verbose_name="Member",
         # default="",
@@ -96,7 +96,7 @@ class StatsTable(tables.Table):
     CDperG = tables.Column(orderable=False,verbose_name="CD/G")
     class Meta:
         model = Stats
-        exclude = ('id','lastActive','team')
+        exclude = ('id','lastActive','team','abv')
         attrs = {
             'class': 'subTeamName',
             'align': 'center',

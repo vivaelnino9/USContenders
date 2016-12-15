@@ -32,35 +32,63 @@ def roster_table(request):
         'players':players,
     })
 def team_page(request,team_name):
-    rosters = Roster.objects.all().order_by('rank')
+    currentUser = request.user
     team = Roster.objects.filter(team_name=team_name).first()
-    userTeam = Roster.objects.filter(team_name=request.user.first_name).first()
-    own_page = False
-    if userTeam.team_name == team_name:
-        own_page = True
-    challenged = False
-    if Challenge.objects.filter(challenger=userTeam.id).filter(challenged=team.id).filter(played=False):
-        challenged = True
-    stats = Stats.objects.filter(team=team_name).first()
-    userStats = Stats.objects.filter(team=userTeam.team_name).first()
-    queryset = Stats.objects.filter(team=team_name)
-    table = StatsTable(queryset)
-    canChallenge = team.getChallengers
-    challenges = Challenge.objects.filter(challenger=team.id)
+    rosters = Roster.objects.all().order_by('rank')
+    currentChallengesOut = Challenge.objects.filter(challenger=team.id).filter(played=False)
+    currentChallengesIn = Challenge.objects.filter(challenged=team.id).filter(played=False)
+    stats = Stats.objects.filter(team=team_name)
+    table = StatsTable(stats)
     rank = int(team.rank)
-    return render(request,'team_page.html',{
-        'rosters':rosters, # for side bar
-        'team':team, # for team page
-        'userTeam':userTeam, # team of user visiting page
-        'own_page':own_page, # true if user visiting own page
-        'challenged':challenged, # true if user has challenge against team_page
-        'stats':stats, # for team stats highlighting
-        'userStats':userStats, # for userTeam stats
-        'table':table, # for team stats under team name
-        'canChallenge':canChallenge, # for teams to challenge
-        'challenges':challenges,  # list of challenges team has out
-        'rank':rank, # for page header
-    });
+    recentGames = []
+    for challenge in Challenge.objects.all()[:2]:
+        if (challenge.challenger.id == team.id or challenge.challenged.id == team.id) and challenge.played == True:
+            recentGames.append(challenge)
+    if Captain.objects.filter(name=currentUser.username) and not currentUser.first_name == team_name:
+        # If current user is captain, but is viewing another team page
+        userTeam = Roster.objects.filter(team_name=currentUser.first_name).first()
+        userStats = Stats.objects.filter(team=userTeam.team_name).first()
+        canChallenge = False
+        for rank,roster in userTeam.getChallengers().items():
+            if roster.challengeIn < 2 or userStats.challengeOut < 2 or not Challenge.objects.filter(challenger=userTeam.id).filter(challenged=team.id).filter(played=False):
+                canChallenge = True
+        return render(request,'team_page.html',{
+            'team':team,
+            'rosters':rosters,
+            'currentChallengesOut':currentChallengesOut,
+            'currentChallengesIn':currentChallengesIn,
+            'stats':stats.first(),
+            'table':table,
+            'rank':rank,
+            'recentGames':recentGames,
+            'userTeam':userTeam,
+            'canChallenge':canChallenge,
+        })
+    elif Captain.objects.filter(name=currentUser.username) and currentUser.first_name == team_name:
+        # If current user is captain and viewing own team page
+        challengersList = team.getChallengers
+        return render(request,'team_page.html',{
+            'team':team,
+            'rosters':rosters,
+            'currentChallengesOut':currentChallengesOut,
+            'currentChallengesIn':currentChallengesIn,
+            'stats':stats.first(),
+            'table':table,
+            'rank':rank,
+            'recentGames':recentGames,
+            'challengersList':challengersList,
+        })
+    else:
+        return render(request,'team_page.html',{
+            'team':team,
+            'rosters':rosters,
+            'currentChallengesOut':currentChallengesOut,
+            'currentChallengesIn':currentChallengesIn,
+            'stats':stats.first(),
+            'table':table,
+            'rank':rank,
+            'recentGames':recentGames,
+        })
 def player_page(request,player_name,team_name):
     rosters = Roster.objects.all().order_by('rank')
     player = Player.objects.filter(name=player_name).first()
@@ -231,13 +259,9 @@ def results(request):
                         t2 = Stats.objects.filter(abv=str(team2))
                         if not challenge.g2_results:
                             Challenge.objects.filter(challenger=challenge.challenger).update(g2_results=result)
-                            t1.first().update()
-                            t2.first().update()
                         elif not challenge.g1_results:
                             Challenge.objects.filter(challenger=challenge.challenger).update(g1_results=result)
                             Challenge.objects.filter(challenger=challenge.challenger).update(played=True)
-                            t1.first().update()
-                            t2.first().update()
                             t1.update(GP=F('GP')+1)
                             t2.update(GP=F('GP')+1)
                         else:
