@@ -2,6 +2,7 @@ import django_tables2 as tables
 from usc_app.models import *
 from django.core.urlresolvers import reverse
 from django_tables2.utils import A
+from django.utils.html import format_html
 
 class RosterTable(tables.Table):
     team_name = tables.LinkColumn('team',args=[A('team_name')], verbose_name="Team",)
@@ -96,7 +97,7 @@ class StatsTable(tables.Table):
     CDperG = tables.Column(orderable=False,verbose_name="CD/G")
     class Meta:
         model = Stats
-        exclude = ('id','lastActive','team','abv')
+        exclude = ('id','lastActive','team','abv','rank')
         attrs = {
             'class': 'subTeamName',
             'align': 'center',
@@ -107,8 +108,8 @@ class StatsTable(tables.Table):
 class ResultsTable(tables.Table):
     challenger = tables.LinkColumn('team',args=[A('challenger')])
     challenged = tables.LinkColumn('team',args=[A('challenged')])
-    g1_results = tables.LinkColumn('game_results',args=[A('g1_results')],orderable=False)
-    g2_results = tables.LinkColumn('game_results',args=[A('g2_results')],orderable=False)
+    g1_results = tables.URLColumn()
+    g2_results = tables.URLColumn()
     class Meta:
         model = Challenge
         exclude = ('id',)
@@ -116,3 +117,8 @@ class ResultsTable(tables.Table):
         row_attrs = {
             'id': lambda record: 'P' + str(record.played)
         }
+
+    def render_g1_results(self,value):
+        return format_html('<a target="_blank" href="https://tagpro.eu/?match={}" />#{}', value,value)
+    def render_g2_results(self,value):
+        return format_html('<a target="_blank" href="https://tagpro.eu/?match={}" />#{}', value,value)

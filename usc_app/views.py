@@ -1,4 +1,5 @@
 import json
+from datetime import date
 from django.core.urlresolvers import reverse
 from django.core.validators import ValidationError
 from django.contrib.auth import authenticate, login, logout
@@ -229,7 +230,7 @@ def results(request):
     soup = BeautifulSoup(page,'lxml')
     rows = soup.find_all('tr')
     result = None
-    for row in rows:
+    for row in reversed(rows):
         try:
             team1 = row.find_all('td')[4]
             team2 = row.find_all('td')[5]
@@ -237,37 +238,86 @@ def results(request):
         except IndexError:
             continue
 
-        if team1.find('a'):
+        # if team1.find('a'):
+        if not team1.get_text() == 'public':
             for challenge in Challenge.objects.all():
                 challenge_formatted = challenge.format()
-                if challenge_formatted[0] == team1.get_text() and challenge_formatted[1] == team2.get_text() or challenge_formatted[0] == team2.get_text() and challenge_formatted[1] == team1.get_text():
-                    match_id = row.find_all('td')[0].get_text()
+                if ((challenge_formatted[0] == team1.get_text() and challenge_formatted[1]) == team2.get_text() or (challenge_formatted[0] == team2.get_text() and challenge_formatted[1] == team1.get_text())) and not challenge.played:
+                    match_id = int(row.find_all('td')[0].get_text()[1:])
                     if not Result.objects.filter(match_id=match_id) and not challenge.played:
-                        server = row.find_all('td')[1].get_text()
-                        team1 = team1.find('a').get_text()
-                        team2 = team2.find('a').get_text()
-                        match_map = row.find_all('td')[3].get_text()
-                        duration = row.find_all('td')[8].get_text()
+                        team1 = team1.get_text()
+                        team2 = team2.get_text()
                         score1 = row.find_all('td')[9].get_text()
                         score2 = row.find_all('td')[10].get_text()
+                        challenger = Stats.objects.filter(abv=challenge.challenger.abv)
+                        challenged = Stats.objects.filter(abv=challenge.challenged.abv)
                         result = Result(
-                            match_id=match_id,server=server,duration=duration,
-                            team1=team1,team2=team2,score1=score1,score2=score2
+                            match_id=match_id,team1=team1,team2=team2,
+                            score1=score1,score2=score2
                         )
                         result.save()
                         t1 = Stats.objects.filter(abv=str(team1))
                         t2 = Stats.objects.filter(abv=str(team2))
-                        if not challenge.g2_results:
-                            Challenge.objects.filter(challenger=challenge.challenger).update(g2_results=result)
-                        elif not challenge.g1_results:
-                            Challenge.objects.filter(challenger=challenge.challenger).update(g1_results=result)
-                            Challenge.objects.filter(challenger=challenge.challenger).update(played=True)
+                        c = Challenge.objects.filter(challenger=challenge.challenger).exclude(played=True)
+                        if not challenge.g1_results:
+                            c.update(g1_results=result)
+                        elif not challenge.g2_results:
+                            c.update(g2_results=result)
+                            c.update(play_date=date.today())
+                            c.update(played=True)
+                            challenger.update(challengeOut=F('challengeOut')-1)
+                            challenged.update(challengeIn=F('challengeIn')-1)
                             t1.update(GP=F('GP')+1)
                             t2.update(GP=F('GP')+1)
-                        else:
-                            pass
+                            score1 = int(score1)
+                            score2 = int(score2)
+                            if challenge.g1_results.team1 == team2:
+                                t1final = challenge.g1_results.score1 + score2
+                                t2final = challenge.g1_results.score2 + score1
+                            else:
+                                t1final = challenge.g1_results.score1 + score1
+                                t2final = challenge.g1_results.score2 + score2
+                            t1 = Stats.objects.filter(abv=challenge.g1_results.team1)
+                            t2 = Stats.objects.filter(abv=challenge.g1_results.team2)
+                            if t1final > t2final:
+                                winner = t1
+                                loser = t2
+                            elif t2final > t1final:
+                                winner = t2
+                                loser = t1
+                            else:
+                                t1.update(D=F('D')+1)
+                                t2.update(D=F('D')+1)
+                                t1.update(streak=0)
+                                t2.update(streak=0)
+
+                            winner.update(W=F('W')+1)
+                            loser.update(L=F('L')+1)
+
+                            if winner[0].streak < 0:
+                                winner.update(streak=1)
+                            else:
+                                winner.update(streak=F('streak')+1)
+                            if loser[0].streak > 0:
+                                loser.update(streak=-1)
+                            else:
+                                loser.update(streak=F('streak')-1)
+
+                            win = Roster.objects.filter(team_name=winner[0].team)
+                            los = Roster.objects.filter(team_name=loser[0].team)
+
+                            wrank = win[0].rank
+                            lrank = los[0].rank
+
+                            changes = []
+                            if wrank > lrank:
+                                for i in range((lrank+1),wrank):
+                                    changes.append(Roster.objects.filter(rank=i).first())
+                                win.update(rank=lrank)
+                                los.update(rank=lrank+1)
+                                Roster.objects.filter(team_name__in=changes).update(rank=F('rank')+1)
+
     return render(request, 'results.html', {
-        'table': table,
     })
 def captain_login(request):
     if request.method == 'POST':
@@ -300,17 +350,6 @@ def captain_login(request):
 def captain_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
-def game_results(request,match_id):
-    result = Result.objects.filter(match_id=match_id).first()
-#Roster.objects.filter(abv=team1).update(rank = F('rank')+1)
-    # for game,teams in contents.items():
-    #     tp = "https://tagpro.eu/?download=" + game[1:]
-    #     data = json.loads(urlopen(tp).read().decode('utf-8'))
-    #     games[game].append(data['teams'][0]['score'])
-    #     games[game].append(data['teams'][1]['score'])
-    return render(request, 'game_results.html',{
-        'result':result,
-    })
 def search(request):
     players = None
     teams = None

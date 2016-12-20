@@ -96,7 +96,7 @@ class Roster(models.Model):
         return self.team_name
 
     def save(self, *args, **kwargs):
-        stats = Stats(team=self.team_name,abv=self.abv)
+        stats = Stats(team=self.team_name,abv=self.abv,rank=self.rank)
         stats.save()
         super(Roster, self).save(*args, **kwargs)
 
@@ -192,6 +192,9 @@ class Stats(models.Model):
     class Meta:
         db_table = 'stats'
 
+    def diff(self):
+        return self.CF - self.CA
+
 class Challenge(models.Model):
     played = models.BooleanField(default=False,verbose_name='Played?')
     challenger = models.ForeignKey(
@@ -229,24 +232,9 @@ class Challenge(models.Model):
         return match
 
 class Result(models.Model):
-    match_id = models.CharField(
-        max_length=50,
+    match_id = models.PositiveIntegerField(
         verbose_name='Match ID',
         blank=True,null=True
-    )
-    server = models.CharField(
-        max_length=50,
-        verbose_name='Server',
-        blank=True,null=True
-    )
-    duration = models.CharField(
-        max_length=50,
-        verbose_name='Duration',
-        blank=True,null=True
-    )
-    finished = models.BooleanField(
-        default=True,
-        verbose_name="Finished",
     )
     team1 = models.CharField(
         max_length=50,
@@ -273,7 +261,7 @@ class Result(models.Model):
         db_table = 'results'
 
     def __str__(self):
-        return self.match_id
+        return str(self.match_id)
 
     def save(self, *args, **kwargs):
         team1 = Stats.objects.filter(abv=self.team1)
@@ -284,6 +272,9 @@ class Result(models.Model):
 
         team2.update(CF=F('CF')+self.score2)
         team2.update(CA=F('CA')+self.score1)
+
+        team1.update(CD=F('CD')+(int(self.score1)-int(self.score2)))
+        team2.update(CD=F('CD')+(int(self.score2)-int(self.score1)))
 
         super(Result, self).save(*args, **kwargs)
 

@@ -57,7 +57,7 @@ class ResultAdminForm(forms.ModelForm):
     model = Result
 
 class ResultAdmin(admin.ModelAdmin):
-    list_display = ('match_id','server','duration','finished','team1','team2','score1','score2')
+    list_display = ('match_id','team1','team2','score1','score2')
     list_filter = ['match_id','team1','team2']
     search_fields = ['match_id','team1','team2']
     list_per_page = 10
