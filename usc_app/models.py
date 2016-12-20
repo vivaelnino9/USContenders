@@ -96,7 +96,7 @@ class Roster(models.Model):
         return self.team_name
 
     def save(self, *args, **kwargs):
-        stats = Stats(team=self.team_name,abv=self.abv,rank=self.rank)
+        stats = Stats(team=self.team_name,abv=self.abv)
         stats.save()
         super(Roster, self).save(*args, **kwargs)
 
