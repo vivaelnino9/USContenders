@@ -85,7 +85,7 @@
         <div class="teamsToChallenge">
           <div class="smallCardHeader">Teams to Challenge</div>
           <table class="challengeTable">
-            {% if not challengersList == None %}
+            {% if not challengersList == None and not challengersList|length_is:"0" %}
             <tr>
   						<th class="challengeHeader" id="challengeRank">Rank</th>
               <th class="challengeHeader" id="challengeTeam">Team</th>
