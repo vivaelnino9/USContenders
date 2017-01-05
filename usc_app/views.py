@@ -16,6 +16,8 @@ from .table import *
 from .forms import *
 
 from bs4 import BeautifulSoup
+from notify.signals import notify
+from notify.models import Notification
 
 def index(request):
     return render(request, 'index.html')
@@ -29,6 +31,7 @@ def roster_table(request):
         'per_page': 38
     }).configure(table)
     return render(request, 'roster_table.html', {
+        'count':queryset,
         'table': table,
         'players':players,
     })
@@ -152,6 +155,10 @@ def challenge_with_arg(request,team_challenged):
             #Roster.objects.filter(abv=team1).update(rank = F('rank')+1)
             challenger.update(challengeOut=F('challengeOut')+1)
             challenged.update(challengeIn=F('challengeIn')+1)
+            notify.send(challengedTeam.captain.user, recipient=challengedTeam.captain.user, actor=challengingTeam,
+                        verb='challenged you', nf_type='challenged_user')
+            notify.send(challengingTeam.captain.user, recipient=challengingTeam.captain.user, actor=challengingTeam,
+                        verb='challenged', nf_type='challenged_user')
             return render(request, 'challenge_success.html',{
                 'challenge':challenge,
             })
@@ -364,4 +371,13 @@ def search(request):
         'players':players,
         'teams':teams,
         'query':query,
+    })
+
+def notifications(request):
+    notifications = Notification.objects.filter(recipient=request.user)
+    # user = User.objects.get(username='Rattpack')
+    # notify.send(request.user, recipient=request.user, actor=user,
+    #             verb='followed you', nf_type='followed_user')
+    return render(request,'notifications.html',{
+        'notifications':notifications,
     })

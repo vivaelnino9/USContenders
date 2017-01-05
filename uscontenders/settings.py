@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'usc_app',
     'django_tables2',
     'mathfilters',
+    'notify',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,6 +52,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'usc_app.middleware.filter_ip_middleware.FilterIPMiddleware',
 )
 
 ROOT_URLCONF = 'uscontenders.urls'
