@@ -45,6 +45,7 @@ def team_page(request,team_name):
     table = StatsTable(stats)
     rank = int(team.rank)
     recentGames = []
+    challengersList = team.getChallengers
     if Challenge.objects.count() > 0:
         for challenge in Challenge.objects.all()[:2]:
             if (challenge.challenger.id == team.id or challenge.challenged.id == team.id) and challenge.played == True:
@@ -66,22 +67,9 @@ def team_page(request,team_name):
             'table':table,
             'rank':rank,
             'recentGames':recentGames,
+            'challengersList':challengersList,
             'userTeam':userTeam,
             'canChallenge':canChallenge,
-        })
-    elif Captain.objects.filter(name=currentUser.username) and currentUser.first_name == team_name:
-        # If current user is captain and viewing own team page
-        challengersList = team.getChallengers
-        return render(request,'team_page.html',{
-            'team':team,
-            'rosters':rosters,
-            'currentChallengesOut':currentChallengesOut,
-            'currentChallengesIn':currentChallengesIn,
-            'stats':stats.first(),
-            'table':table,
-            'rank':rank,
-            'recentGames':recentGames,
-            'challengersList':challengersList,
         })
     else:
         return render(request,'team_page.html',{
@@ -93,6 +81,7 @@ def team_page(request,team_name):
             'table':table,
             'rank':rank,
             'recentGames':recentGames,
+            'challengersList':challengersList,
         })
 def player_page(request,player_name,team_name):
     rosters = Roster.objects.all().order_by('rank')
