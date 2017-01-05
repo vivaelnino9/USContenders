@@ -128,14 +128,14 @@
       </div>
     </div>
     <!--  -->
-    <div class='col-lg-3'>
-      <div class='statcard'>
-        <div id='scheduleWrapper' style='height:100%; padding-bottom:20px;width:100%;margin-right:5px;'>
-          <div class='smallCardHeader'>Recent Games</div>
+    <div class="col-lg-3">
+      <div class="statcard">
+        <div class="recentGames">
+          <div class="smallCardHeader">Recent Games</div>
           {% for game in recentGames %}
-          <div class='gameLogoContainer' style="text-align:center;margin-top:20px;">
-            <img class='gameLogo' style="max-width: 60%;max-height: 65px;vertical-align: middle;" src="{% static 'img/boostin_dynamo.png' %}"/>
-            <table class='scheduleScores' style="width: 95%;margin: 10px auto 0px auto;">
+          <div class="gameLogoContainer">
+            <img class="gameLogo" src="{% static 'img/boostin_dynamo.png' %}"/>
+            <table class="scheduleScores">
               <tr>
                 <td>{{ game.challenger }}</td>
                 <td>{% if game.g1_results.team1 == game.challenger.abv %}

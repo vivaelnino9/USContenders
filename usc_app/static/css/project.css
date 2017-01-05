@@ -341,7 +341,7 @@ thead tr {
     margin: 0 auto;
 }
 .challengeHeader {
-    padding-left: 20px;
+    padding: 0px 10px 0px 10px;
     text-decoration: underline;
 }
 #challengeRank {
@@ -353,7 +353,7 @@ thead tr {
 }
 .challengeRow {
     text-align: center;
-    padding-left: 20px;
+    padding: 0px 10px 0px 10px;
 }
 #challengeCellRank {
     max-width: 20px;
@@ -378,6 +378,25 @@ thead tr {
 }
 .currentChallengesRow {
     background-color: #d3d3d3;
+}
+.recentGames {
+    height: 100%;
+    padding-bottom: 20px;
+    width: 100%;
+    margin-right: 5px;
+}
+.gameLogoContainer {
+    text-align: center;
+    margin-top: 20px;
+}
+.gameLogo {
+    max-width: 60%;
+    max-height: 65px;
+    vertical-align: middle;
+}
+.scheduleScores {
+    width: 95%;
+    margin: 10px auto 0px auto;
 }
 
 /* endTeamPage */
