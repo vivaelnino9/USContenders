@@ -75,6 +75,16 @@
               <td>{{ challenge.void_date }}</td>
             </tr>
             {% endfor %}
+            {% for challenge in currentChallengesOut %}
+            <tr class="currentChallengesRow">
+              <td><a href="{% url 'team' challenge.challenger.team_name %}">{{ challenge.challenger.team_name }}</a><br></td>
+              <td><a href="{% url 'team' challenge.challenged.team_name %}">{{ challenge.challenged.team_name }}</a><br></td>
+              <td>{{ challenge.map }}</td>
+              <td>{{ challenge.challenge_date }}</td>
+              <td>{{ challenge.forfeit_date }}</td>
+              <td>{{ challenge.void_date }}</td>
+            </tr>
+            {% endfor %}
             {% else %}
             <tr><td class="challengeRow">No current challenges!</td></tr>
             {% endif %}
@@ -95,7 +105,7 @@
               <th class="challengeHeader">Last Active</th>
             </tr>
             {% for rank,roster in challengersList.items %}
-            <tr>
+            <tr class="currentChallengesRow">
               <td class="challengeRow" id="challengeCellRank">{{ rank }}</td>
               <td class="challengeRow" id="challengeCellTeam"><a class="challengeTeamLink" href="{% url 'team' roster.team %}">{{ roster.team }}</a><br></td>
               <td class="challengeRow" id="challengeCellIn" {% if roster.challengeIn == 2 %}style="color:red;"{% endif %}>
