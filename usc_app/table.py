@@ -57,7 +57,7 @@ class RosterTable(tables.Table):
         exclude = ('id','firstActive','daysActive','logo','abv')
         attrs = {'class': 'table'}
         row_attrs = {
-            'id': lambda record: 'R' + str(record.rank)
+            'id': lambda record: 'diamond' if record.rank < 6 else 'gold' if record.rank < 21 and record.rank > 5 else 'silver' if record.rank > 20 else 'none'
         }
 class StatsTable(tables.Table):
     change = tables.Column(
