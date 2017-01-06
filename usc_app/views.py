@@ -351,15 +351,18 @@ def captain_logout(request):
 def search(request):
     players = None
     teams = None
+    total = 0
     if request.method == 'GET':
         query = request.GET.get('s',None)
-        if query is not None:
+        if query is not None and query is not '':
             players = User.objects.filter(username__icontains=query)
             teams = Roster.objects.filter(team_name__icontains=query)
+            total = players.count()+teams.count()
     return render(request,'search.html',{
         'players':players,
         'teams':teams,
         'query':query,
+        'total':total
     })
 
 def notifications(request):

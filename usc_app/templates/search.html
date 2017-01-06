@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="resultsPage">
+  {% if total < 20 %}
   <h1>Results</h1>
   <div class="resultsTable">
   {% if players %}
@@ -27,6 +28,9 @@
   {% if not players and not teams %}
     <h2 class="noResults">None</h2>
   </div>
+  {% endif %}
+  {% else %}
+  Your search rendered too many results! Please be more specific!
   {% endif %}
 </div>
 {% endblock %}
