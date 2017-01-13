@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+{% if not submitted %}
+<div class="scoreForm">
+  <form method="post" action="{% url 'submit' challenge.id %}">
+    {% csrf_token %}
+    {{ form.errors }}
+    <h2 class="scoreHeader">{{ challenge }}</h2>
+    <small class="scoreSmall"> please fill in the scores</small>
+    <table class="scoreTable">
+      <tr>
+        <th></th>
+        <th>G1</th>
+        <th>G2</th>
+      </tr>
+      <tr>
+        <td class="scoreCell">{{ challenger }}</td>
+        <td>
+          <li style="list-style-type:none;">
+            <input class="scoreInput" id="g1_t1_score" min="0" name="g1_t1_score" type="number" />
+          </li>
+        </td>
+        <td>
+          <li style="list-style-type:none;">
+            <input class="scoreInput" id="g2_t1_score" min="0" name="g2_t1_score" type="number" />
+          </li>
+        </td>
+      </tr>
+      <tr>
+        <td class="scoreCell">{{ challenged }}</td>
+        <td>
+          <li style="list-style-type:none;">
+            <input class="scoreInput" id="g1_t2_score" min="0" name="g1_t2_score" type="number" />
+          </li>
+        </td>
+        <td>
+          <li style="list-style-type:none;">
+            <input class="scoreInput" id="g2_t2_score" min="0" name="g2_t2_score" type="number" />
+          </li>
+        </td>
+      </tr>
+    </table>
+    <button id="submit" class="form-submit btn btn-lg btn-primary btn-block" type="submit" name="submit">Submit</button>
+  </form>
+</div>
+{% else %}
+<h2 class="scoreSuccessHeader">Submitted!</h2>
+{% endif %}
+<script src="{% static 'js/score_submit.js' %}"></script>
+{% endblock %}
