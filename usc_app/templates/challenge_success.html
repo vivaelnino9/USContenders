@@ -18,8 +18,8 @@
     <tbody>
       <tr>
         <th scope="row">1</th>
-        <td>{{ challenge.challenger }}</td>
-        <td>{{ challenge.challenged }}</td>
+        <td><a href="{% url 'team' challenge.challenger %}">{{ challenge.challenger }}</a></td>
+        <td><a href="{% url 'team' challenge.challenged %}">{{ challenge.challenged }}</a></td>
         <td>{{ challenge.map }}</td>
         <td>{{ challenge.challenge_date }}</td>
         <td>{{ challenge.forfeit_date }}</td>
@@ -27,5 +27,6 @@
       </tr>
     </tbody>
   </table>
+  <p style="margin:80px 0px 0px 440px;font-size:17px;"><i>Make sure you use your team abbreviations as team names when you play!</i></p>
 </div>
 {% endblock %}
