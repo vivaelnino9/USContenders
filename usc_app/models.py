@@ -192,6 +192,9 @@ class Stats(models.Model):
     class Meta:
         db_table = 'stats'
 
+    def __str__(self):
+        return self.team
+
     def diff(self):
         return self.CF - self.CA
 
@@ -226,6 +229,9 @@ class Challenge(models.Model):
     )
     class Meta:
         db_table = 'challenges'
+
+    def __str__(self):
+        return self.challenger.team_name + ' vs. ' + self.challenged.team_name
 
     def format(self):
         match = [self.challenger.abv,self.challenged.abv]
