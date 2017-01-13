@@ -18,5 +18,7 @@ urlpatterns = [
     url(r'^login/$', views.captain_login, name='login'),
     url(r'^logout/$', views.captain_logout, name='logout'),
     url(r'^notifications/$', views.notifications, name='notifications'),
+    url(r'^submit/(?P<challenge_id>[\w|\W]+)/$', views.score_submit, name='submit'),
+    url(r'^forfeit/(?P<challenge_id>[\w|\W]+)/$',views.forfeit, name='forfeit'),
     url(r'^success/$', views.challenge_success, name='success'),
 ]

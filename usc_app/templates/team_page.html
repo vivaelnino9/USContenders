@@ -10,7 +10,7 @@
       <h1 class="teamNameHeader">{{ team.team_name }}</h1>
       {% if rank in userTeam.getChallengers and canChallenge %}
       <a href="{% url 'challenge_arg' team.team_name %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
-      {% elif rank in userTeam.getChallengers and not canChallenge %}
+      {% elif team.team_name != request.user.first_name and request.user.username != 'admin'  %}
       <button type="button" class="btn btn-lg btn-primary" disabled>Challenge</button><br><br>
       {% else %}
       {% endif %}
@@ -73,6 +73,10 @@
               <td>{{ challenge.challenge_date }}</td>
               <td>{{ challenge.forfeit_date }}</td>
               <td>{{ challenge.void_date }}</td>
+              {% if team.team_name == request.user.first_name %}
+              <td class="currentChallengesCell"><a id="forfeit" href="{% url 'forfeit' challenge.id %}" onclick="return confirm('Are you sure want to forfeit?');">forfeit?</a></td>
+              <td style="border:none;background-color:white;display: block;"><a id="submit" href="{% url 'submit' challenge.id %}">submit</a></td>
+              {% endif %}
             </tr>
             {% endfor %}
             {% for challenge in currentChallengesOut %}
@@ -83,6 +87,10 @@
               <td>{{ challenge.challenge_date }}</td>
               <td>{{ challenge.forfeit_date }}</td>
               <td>{{ challenge.void_date }}</td>
+              {% if team.team_name == request.user.first_name %}
+              <td style="border:none;background-color:white;display: block;"><a style="color:indianred;font-size:12px;" href="{% url 'forfeit' challenge.id %}" onclick="return confirm('Are you sure want to forfeit?');">forfeit?</a></td>
+              <td style="border:none;background-color:white;display: block;"><a style="color:cornflowerblue;font-size:12px;" href="{% url 'submit' challenge.id %}">submit</a></td>
+              {% endif %}
             </tr>
             {% endfor %}
             {% else %}

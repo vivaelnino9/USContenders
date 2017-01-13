@@ -3,6 +3,7 @@ from .models import *
 from django.core.validators import ValidationError
 from django.utils.translation import gettext as _
 from datetime import date
+from django.db.models import Q
 
 class ChallengeForm(forms.ModelForm):
     challenged = forms.ModelChoiceField(queryset=Roster.objects.all(), required=True, help_text="Choose who to challenge!")
@@ -19,7 +20,7 @@ class ChallengeForm(forms.ModelForm):
         canChallenge = challenger.getChallengers()
         ranks = []
         for rank,challenged in canChallenge.items():
-            existingChallenge = Challenge.objects.filter(challenger=challenger.id).filter(challenged=challenged.id).filter(played=False)
+            existingChallenge = Challenge.objects.filter(Q(challenger=challenger.id)|Q(challenged=challenged.id)).filter(played=False)
             if challenged.challengeIn < 2 and not existingChallenge:
                 ranks.append(rank)
         self.fields['challenged'] = forms.ModelChoiceField(queryset=Roster.objects.exclude(team_name=challenger.team_name).filter(rank__in=ranks), required=True, help_text="Choose who to challenge!")
@@ -131,7 +132,7 @@ class CaptainForm(forms.ModelForm):
                 if not self.cleaned_data['member3']:
                     new_team.member3=Player.objects.create(name=member5)
                 elif not self.cleaned_data['member4']:
-                    new_team.member4=Player.objects.create(name=member5)
+                    new_team.member4=Pslayer.objects.create(name=member5)
                 else:
                     new_team.member5=Player.objects.create(name=member5)
             if self.cleaned_data['member6']:
@@ -147,4 +148,19 @@ class CaptainForm(forms.ModelForm):
                 User.objects.create(username=player,first_name=team)
             new_team.save()
             self.cleaned_data['team'] = new_team
+        return cleaned_data
+
+class ScoresForm(forms.Form):
+    g1_t1_score = forms.IntegerField()
+    g1_t2_score = forms.IntegerField()
+    g2_t1_score = forms.IntegerField()
+    g2_t2_score = forms.IntegerField()
+
+    def clean(self):
+        cleaned_data = super(ScoresForm, self).clean()
+        g1_t1_score = cleaned_data.get('g1_t1_score')
+        g1_t2_score = cleaned_data.get('g1_t2_score')
+        g2_t1_score = cleaned_data.get('g2_t1_score')
+        g2_t2_score = cleaned_data.get('g2_t2_score')
+
         return cleaned_data
