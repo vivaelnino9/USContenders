@@ -564,3 +564,36 @@ thead tr {
 }
 
 /* endSearchResults */
+
+
+/* Score Submit */
+
+.scoreForm {
+    text-align: center;
+    padding-top: 20px;
+}
+.scoreHeader {
+    padding-bottom: 10px;
+}
+.scoreSmall {
+    padding-bottom: 20px;
+}
+.scoreTable {
+    width: 300px;
+}
+.scoreCell {
+    width: 200px;
+}
+.scoreInput {
+    width: 50px;
+    text-align: center;
+}
+#submit {
+    margin-top: 50px;
+    display: none;
+}
+.scoreSuccessHeader {
+    padding: 50px 0px 20px 625px;
+}
+
+/* endScoreSubmit */
