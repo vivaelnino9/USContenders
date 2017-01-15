@@ -86,15 +86,43 @@ class StatsTable(tables.Table):
         verbose_name="Challenges In",
         attrs={'td': {'id': 'challengeIn'}}
     )
-    GP = tables.Column(orderable=False,)
-    W = tables.Column(orderable=False,)
-    L = tables.Column(orderable=False,)
-    D = tables.Column(orderable=False,)
-    F = tables.Column(orderable=False,)
-    CF = tables.Column(orderable=False,)
-    CA = tables.Column(orderable=False,)
-    CD = tables.Column(orderable=False,)
-    CDperG = tables.Column(orderable=False,verbose_name="CD/G")
+    GP = tables.Column(
+        orderable=False,
+        attrs={'th':{'title':'Games Played'}}
+    )
+    W = tables.Column(
+        orderable=False,
+        attrs={'th':{'title':'Wins'}}
+    )
+    L = tables.Column(
+        orderable=False,
+        attrs={'th':{'title':'Losses'}}
+    )
+    D = tables.Column(
+        orderable=False,
+        attrs={'th':{'title':'Draws'}}
+    )
+    F = tables.Column(
+        orderable=False,
+        attrs={'th':{'title':'Forfeits'}}
+    )
+    CF = tables.Column(
+        orderable=False,
+        attrs={'th':{'title':'Caps For'}}
+    )
+    CA = tables.Column(
+        orderable=False,
+        attrs={'th':{'title':'Caps Against'}}
+    )
+    CD = tables.Column(
+        orderable=False,
+        attrs={'th':{'title':'Caps Differential'}}
+    )
+    CDperG = tables.Column(
+        orderable=False,
+        attrs={'th':{'title':'Caps Differential Per Game'}},
+        verbose_name="CD/G",
+    )
     class Meta:
         model = Stats
         exclude = ('id','lastActive','team','abv','rank')
