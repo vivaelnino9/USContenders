@@ -55,7 +55,7 @@
       <div class="statcard">
         <div class="teamsToChallenge">
           <div class="smallCardHeader">Current Challenges</div>
-          <table class="challengeTable">
+          <table class="challengeTable" style="margin:10px;">
             {% if not currentChallengesIn|length_is:"0" or not currentChallengesOut|length_is:"0" %}
             <tr>
               <th class="challengeHeader">Challenger</th>
@@ -65,31 +65,17 @@
               <th class="challengeHeader">Forfeit Date </th>
               <th class="challengeHeader">Void Date </th>
             </tr>
-            {% for challenge in currentChallengesIn %}
+            {% for challenge in currentChallenges %}
             <tr class="currentChallengesRow">
-              <td><a href="{% url 'team' challenge.challenger.team_name %}">{{ challenge.challenger.team_name }}</a><br></td>
+              <td class="challengeRow"><a href="{% url 'team' challenge.challenger.team_name %}">{{ challenge.challenger.team_name }}</a><br></td>
               <td><a href="{% url 'team' challenge.challenged.team_name %}">{{ challenge.challenged.team_name }}</a><br></td>
               <td>{{ challenge.map }}</td>
-              <td>{{ challenge.challenge_date }}</td>
-              <td>{{ challenge.forfeit_date }}</td>
-              <td>{{ challenge.void_date }}</td>
+              <td>{{ challenge.challenge_date.month }}/{{ challenge.challenge_date.day }}/{{ challenge.challenge_date.year|sub:2000 }}</td>
+              <td>{{ challenge.forfeit_date.month }}/{{ challenge.forfeit_date.day }}/{{ challenge.forfeit_date.year|sub:2000 }}</td>
+              <td>{{ challenge.void_date.month }}/{{ challenge.void_date.day }}/{{ challenge.void_date.year|sub:2000 }}</td>
               {% if team.team_name == request.user.first_name %}
-              <td class="currentChallengesCell"><a id="forfeit" href="{% url 'forfeit' challenge.id %}" onclick="return confirm('Are you sure want to forfeit?');">forfeit?</a></td>
-              <td style="border:none;background-color:white;display: block;"><a id="submit" href="{% url 'submit' challenge.id %}">submit</a></td>
-              {% endif %}
-            </tr>
-            {% endfor %}
-            {% for challenge in currentChallengesOut %}
-            <tr class="currentChallengesRow">
-              <td><a href="{% url 'team' challenge.challenger.team_name %}">{{ challenge.challenger.team_name }}</a><br></td>
-              <td><a href="{% url 'team' challenge.challenged.team_name %}">{{ challenge.challenged.team_name }}</a><br></td>
-              <td>{{ challenge.map }}</td>
-              <td>{{ challenge.challenge_date }}</td>
-              <td>{{ challenge.forfeit_date }}</td>
-              <td>{{ challenge.void_date }}</td>
-              {% if team.team_name == request.user.first_name %}
-              <td style="border:none;background-color:white;display: block;"><a style="color:indianred;font-size:12px;" href="{% url 'forfeit' challenge.id %}" onclick="return confirm('Are you sure want to forfeit?');">forfeit?</a></td>
-              <td style="border:none;background-color:white;display: block;"><a style="color:cornflowerblue;font-size:12px;" href="{% url 'submit' challenge.id %}">submit</a></td>
+              <td style="border:none;background-color:white;display: block;"><a style="color:indianred;font-size:12px;padding-left:5px;" href="{% url 'forfeit' challenge.id %}" onclick="return confirm('Are you sure want to forfeit?');">forfeit?</a></td>
+              <td style="border:none;background-color:white;display: block;"><a style="color:cornflowerblue;font-size:12px;padding-left:5px;" href="{% url 'submit' challenge.id %}">submit</a></td>
               {% endif %}
             </tr>
             {% endfor %}
@@ -125,7 +111,7 @@
                 {% elif roster.streak > 0 %}{{ roster.streak }}W
                 {% else %}--{% endif %}
               </td>
-              <td class="challengeRow">{% if roster.lastActive %}{{ roster.lastActive }}{% else %}--{% endif %}</td>
+              <td class="challengeRow">{% if roster.lastActive %}{{ roster.lastActive.month }}/{{ roster.lastActive.day }}/{{ roster.lastActive.year|sub:2000 }}{% else %}--{% endif %}</td>
             </tr>
             {% endfor %}
             {% else %}
