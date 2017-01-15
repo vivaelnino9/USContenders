@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'usc_app.middleware.filter_ip_middleware.FilterIPMiddleware',
+    'usc_app.middleware.usc_middleware.ResultsMiddleware',
 )
 
 ROOT_URLCONF = 'uscontenders.urls'
