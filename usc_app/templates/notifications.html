@@ -7,10 +7,12 @@
 {% for notification in notifications %}
 <li data-nf-id="{{ notification.id }}"
 class="notification list-group-item {{ notification.read|yesno:'read,unread' }}">
-    {% if notification.actor.team_name == request.user.first_name %}
-    You {{ notification.verb }} <a href="{% url 'team' notification.recipient.first_name %}">{{ notification.recipient.first_name }}</a>
-    {% else %}
+    {% if notification.nf_type == 'received_challenge' %}
     <a href="{% url 'team' notification.actor %}">{{ notification.actor }}</a> {{ notification.verb }}
+    {% elif notification.nf_type == 'challenged_user' %}
+    You {{ notification.verb }} <a href="{% url 'team' notification.actor %}">{{ notification.actor }}</a>
+    challenged
+    {% else %}
     {% endif %}
     <span class="timesince">{{ notification.created|timesince }} ago</span>
 
