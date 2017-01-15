@@ -96,7 +96,7 @@ class Roster(models.Model):
         return self.team_name
 
     def save(self, *args, **kwargs):
-        stats = Stats(team=self.team_name,abv=self.abv)
+        stats = Stats(team=self.team_name,abv=self.abv,highestRank=self.rank)
         stats.save()
         super(Roster, self).save(*args, **kwargs)
 
@@ -132,7 +132,7 @@ class Stats(models.Model):
         blank=True,
         default=0
     )
-    lastActive = models.CharField(max_length=50,blank=True)
+    lastActive = models.DateField(blank=True,null=True)
     challengeOut = models.PositiveIntegerField(
         null=True,
         blank=True,
