@@ -122,7 +122,7 @@ class ResultsMiddleware(object):
                                             else:
                                                 loser_stats.update(streak=F('streak')-1)
 
-                                            if winner_roster[0].rank > winner_stats[0].highestRank:
+                                            if winner_roster[0].rank < winner_stats[0].highestRank:
                                                 # if Winner's rank now is greater than previous highest rank,
                                                 # make new rank his highest rank
                                                 winner_stats.update(highestRank=winner_roster[0].rank)
