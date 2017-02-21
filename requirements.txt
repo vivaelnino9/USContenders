@@ -1,13 +1,19 @@
+appnope==0.1.0
 beautifulsoup4==4.5.1
+coverage==4.0.2
+decorator==4.0.10
 dj-database-url==0.4.0
 Django==1.9.2
+django-el-pagination==3.0.1
 django-jsonfield==1.0.1
 django-mathfilters==0.4.0
 django-model-utils==2.6
 django-notify-x==0.1.6
+-e git+https://github.com/vivaelnino9/USContenders.git@b634f301f2ca58c3a5ce8cb0ca142a681cb8eca8#egg=django_postman&subdirectory=django-postman
 django-tables2==1.2.6
 elasticsearch==5.0.1
 gunicorn==19.4.5
+ipaddress==1.0.14
 ipython==5.1.0
 ipython-genutils==0.1.0
 jsonfield==1.0.3
@@ -16,10 +22,11 @@ pexpect==4.2.1
 pickleshare==0.7.4
 Pillow==3.4.2
 prompt-toolkit==1.0.9
-psycopg2==2.6.1
+psycopg2==2.6.2
 ptyprocess==0.5.1
+pygeoip==0.3.2
 Pygments==2.1.3
-pytz==2016.10
+pytz==2015.7
 simplegeneric==0.8.1
 six==1.10.0
 sorl-thumbnail==12.3
