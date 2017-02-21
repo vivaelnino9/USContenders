@@ -4,6 +4,7 @@ from django.conf import settings
 
 
 from usc_app import views
+from postman.views import WriteView, MessageView, ConversationView, InboxView
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -21,4 +22,8 @@ urlpatterns = [
     url(r'^submit/(?P<challenge_id>[\w|\W]+)/$', views.score_submit, name='submit'),
     url(r'^forfeit/(?P<challenge_id>[\w|\W]+)/$',views.forfeit, name='forfeit'),
     url(r'^success/$', views.challenge_success, name='success'),
+    url(r'^messages/write/(?:(?P<recipients>[^/#]+)/)?$', WriteView.as_view(template_name='write.html'), name='write'),
+    url(r'^messages/inbox/(?:(?P<option>m)/)?$', InboxView.as_view(template_name='inbox.html'), name='inbox'),
+    url(r'^messages/view/(?P<message_id>[\d]+)/$', MessageView.as_view(template_name='view.html'), name='message_view'),
+    url(r'^messages/view/t/(?P<thread_id>[\d]+)/$', ConversationView.as_view(template_name='view.html'), name='conversation_view'),
 ]

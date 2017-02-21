@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load staticfiles i18n postman_tags el_pagination_tags %}
+{% block content %}
+<div id="postman" style="margin:20px 0px 0px 500px;">
+<h1>{% trans "Inbox" %}</h1>
+
+{% if invalid_page %}
+<p>{% trans "Sorry, this page number is invalid." %}</p>
+{% else %}
+{% lazy_paginate 5 pm_messages %}
+{% if pm_messages %}
+<form action="{% block pm_form_action %}{% endblock %}" method="post" style="margin-top:20px;">{% csrf_token %}
+<span id="pm_buttons">
+  <button type="submit" class="pm_btn pm_btn-delete" onclick="this.form.action='{% url 'postman:delete' %}'">{% trans "Delete" %}</button>
+  <button type="submit" class="pm_btn pm_btn-archive" onclick="this.form.action='{% url 'postman:archive' %}'">{% trans "Archive" %}</button>
+  <button type="submit" class="pm_btn pm_btn-read" onclick="this.form.action='{% url 'postman:mark-read' %}'">{% trans "Mark as read" %}</button>
+  <button type="submit" class="pm_btn pm_btn-unread" onclick="this.form.action='{% url 'postman:mark-unread' %}'">{% trans "Mark as unread" %}</button>
+</span>
+<div style="margin-top: 10px;text-align: center;padding:10px 0px 5px 0px;">
+  <div style="margin: 10px 0px 20px 0px;padding-bottom: 20px;font-size: 20px;">
+    <table>
+      <tbody>
+    {% for message in pm_messages %}
+    <tr style="background-color: rgba(198, 203, 204, 0.55);box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">
+      <td style="border:0;">
+        <span style="margin-left:15px;"><input type="checkbox" {% if by_conversation and message.thread_id %}name="tpks" value="{{ message.thread_id }}"{% else %}name="pks" value="{{ message.pk }}"{% endif %}/></span>
+      </td>
+      <td style="border:0;padding-left:120px;">
+        {% if message.is_new %}<img src="{% static 'img/notification_icon.png' %}" style="width:25px;height:25px;allign:left;"/>{% endif %}
+      </td>
+      <td style="border:0;padding:10px 0px 10px 0px;text-align:-webkit-auto;">
+        <a id="sender" style="padding:10px 140px 10px 10px;"
+        href="{% if by_conversation and message.thread_id %}{% url 'postman:view_conversation' message.thread_id %}{% else %}{% url 'postman:view' message.pk %}{% endif %}?next={{ current_url|urlencode }}">
+        <span style="padding-left:10px;font-size:20px;">{{message.sender}}</span>
+        <span style="padding:0px 10px 0px 5px;font-size:10px;color:#040403;font-weight:100;">{{ message.subject|cut:"Re:"|truncatechars:17 }}</span>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+    {% show_pages %}
+  </tbody>
+  </table>
+  </div>
+</div>
+</form>
+{% else %}
+<p>{% trans "No messages." %}</p>
+{% endif %}
+{% endif %}
+</div>
+{% endblock content %}

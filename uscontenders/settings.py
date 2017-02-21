@@ -37,10 +37,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'usc_app',
     'django_tables2',
     'mathfilters',
     'notify',
+    'postman',
+    'el_pagination',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -69,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'postman.context_processors.inbox',
             ],
         },
     },
@@ -86,6 +90,8 @@ DATABASES = {
         'NAME': 'uscontenders',
     }
 }
+
+SITE_ID = 1
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -114,6 +120,16 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+POSTMAN_AUTO_MODERATE_AS = True
+POSTMAN_I18N_URLS = True
+POSTMAN_DISALLOW_ANONYMOUS = True
+
+# Email settings
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'mcbride9'
+EMAIL_HOST_PASSWORD = 'RooneyNumber10'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # Update database configuration with $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
