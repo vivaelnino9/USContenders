@@ -580,6 +580,7 @@ thead tr {
 }
 .scoreTable {
     width: 300px;
+    margin: 20px 0px 0px 550px;
 }
 .scoreCell {
     width: 200px;
