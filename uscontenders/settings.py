@@ -125,11 +125,7 @@ POSTMAN_I18N_URLS = True
 POSTMAN_DISALLOW_ANONYMOUS = True
 
 # Email settings
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'mcbride9'
-EMAIL_HOST_PASSWORD = 'RooneyNumber10'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+
 
 # Update database configuration with $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
