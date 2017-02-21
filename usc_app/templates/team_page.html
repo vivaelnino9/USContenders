@@ -8,11 +8,13 @@
   <div class="col-lg-10" id="teamInfo">
     <div class="col-lg-12 statcard" id="teamName">
       <h1 class="teamNameHeader">{{ team.team_name }}</h1>
-      {% if rank in userTeam.getChallengers and canChallenge %}
-      <a href="{% url 'challenge_arg' team.team_name %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
-      {% elif team.team_name != request.user.first_name and request.user.username != 'admin'  %}
-      <button type="button" class="btn btn-lg btn-primary" disabled>Challenge</button><br><br>
-      {% else %}
+      {% if not request.user.is_anonymous %}
+        {% if rank in userTeam.getChallengers and canChallenge %}
+        <a href="{% url 'challenge_arg' team.team_name %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
+        {% elif team.team_name != request.user.first_name and request.user.username != 'admin'  %}
+        <button type="button" class="btn btn-lg btn-primary" disabled>Challenge</button><br><br>
+        {% else %}
+        {% endif %}
       {% endif %}
       <table class="subTeamName" align='center'>
         <tr>
@@ -21,7 +23,13 @@
           <th class="subTeamNameRow">
             <img class="crown" src="{% static 'img/crown.png' %}" width="16px" height="16px"/>{{ team.captain }}</th>
           <th class="subTeamNameRow">{{ team.abv }}</th>
+          {% if not request.user.is_anonymous and request.user.pk != team.captain.user.pk %}
+          <th class="subTeamNameRow" >{{ team.server }}</th>
+          <th class="subTeamNameRow" id="subTeamServer">
+            <a href="{% url 'postman:write' team.captain %}?subject=USC Challenge"><img class="crown" src="{% static 'img/message_icon.png' %}" width="16px" height="16px"/></th>
+          {% else %}
           <th class="subTeamNameRow" id="subTeamServer">{{ team.server }}</th>
+          {% endif %}
         </tr>
       </table>
       {% render_table table %}
@@ -55,8 +63,8 @@
       <div class="statcard">
         <div class="teamsToChallenge">
           <div class="smallCardHeader">Current Challenges</div>
-          <table class="challengeTable" style="margin:10px;">
-            {% if not currentChallengesIn|length_is:"0" or not currentChallengesOut|length_is:"0" %}
+          <table class="challengeTable">
+            {% if not currentChallenges|length_is:"0" or not currentChallenges|length_is:"0" %}
             <tr>
               <th class="challengeHeader">Challenger</th>
               <th class="challengeHeader">Challenged</th>
