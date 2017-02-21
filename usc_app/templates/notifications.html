@@ -11,7 +11,6 @@ class="notification list-group-item {{ notification.read|yesno:'read,unread' }}"
     <a href="{% url 'team' notification.actor %}">{{ notification.actor }}</a> {{ notification.verb }}
     {% elif notification.nf_type == 'challenged_user' %}
     You {{ notification.verb }} <a href="{% url 'team' notification.actor %}">{{ notification.actor }}</a>
-    challenged
     {% else %}
     {% endif %}
     <span class="timesince">{{ notification.created|timesince }} ago</span>
