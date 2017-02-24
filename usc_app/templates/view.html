@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}{% load postman_tags %}
+{% block content %}
+<div id="postman" style="margin:20px 0px 0px 20px;">
+  <div style="margin-bottom:20px;"><a style="color:black;font-size:13px;" href="{% url 'postman:inbox' %}">&larr; back to inbox</a></div>
+<h1>{% trans "Conversation" %}</h1>
+<div style="width:1400px;height:400px;padding:20px 0px 20px 0px;">
+<div id="inbox" style="width:1400px;height:400px;overflow:auto;padding:20px 0px 20px 0px;border:1px #bfbfbf solid;">
+{% for message in pm_messages %}
+  <div {% if request.user == message.sender %}style="background-color: #efefef;"{% endif %}>
+    <div style="padding-left:20px;">
+      <div style="font-size:15px;color:#c1b8b8;">{{ message.sender }}</div>
+      <div style="font-size:10px;text-align:center;color:#c2c2c2;">
+        {% now "d" as day %}
+        {% if message.sent_at|date:"d" == day %}{{ message.sent_at|date:"P" }}
+        {% else %}{{ message.sent_at|date:"D, P" }}
+        {% endif %}
+      </div>
+      {% if message.is_rejected %}<div class="pm_status">{% trans "Rejected" %}{% if message.moderation_reason %}{% trans ":" %} {{ message.moderation_reason }}{% endif %}</div>{% endif %}
+      <div style="padding: 0px 0px 10px 10px;width:500px;word-wrap: break-word;font-size:15px;color:#3b3b3b;">{{ message.body }}</div>
+    </div>
+  </div>
+{% endfor %}
+
+</div>
+{% if reply_to_pk %}
+
+<form class="form-inline" style="padding:10px 0px 0px 10px;"role="form" action="{% url 'postman:reply' reply_to_pk %}?next={% if '/t/' in request.path %}{{ request.path }}{% else %}{% url 'conversation_view' pm_messages.first.pk %}{% endif %}" method="post">
+  {% csrf_token %}
+  <div id="pm_reply" style="margin:20px 0px 0px 50px;">
+    <textarea rows="1" cols="1" name="body" style="resize:both;width:700px;height:100px;"></textarea>
+    <button style="margin-left:24px;"type="submit" class="btn btn-warning btn-lg">Send</button>
+  </div>
+</form>
+{% endif %}
+</div>
+</div>
+<script>
+var objDiv = document.getElementById("inbox");
+objDiv.scrollTop = objDiv.scrollHeight;
+</script>
+{% endblock %}

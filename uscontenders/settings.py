@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django_tables2',
     'mathfilters',
     'notify',
+    'postman',
     'el_pagination',
 )
 
@@ -71,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'postman.context_processors.inbox',
             ],
         },
     },
@@ -118,7 +120,9 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
+POSTMAN_AUTO_MODERATE_AS = True
+POSTMAN_I18N_URLS = True
+POSTMAN_DISALLOW_ANONYMOUS = True
 
 # Email settings
 

@@ -23,7 +23,13 @@
           <th class="subTeamNameRow">
             <img class="crown" src="{% static 'img/crown.png' %}" width="16px" height="16px"/>{{ team.captain }}</th>
           <th class="subTeamNameRow">{{ team.abv }}</th>
-
+          {% if not request.user.is_anonymous and request.user.pk != team.captain.user.pk %}
+          <th class="subTeamNameRow" >{{ team.server }}</th>
+          <th class="subTeamNameRow" id="subTeamServer">
+            <a href="{% url 'postman:write' team.captain %}?subject=USC Challenge"><img class="crown" src="{% static 'img/message_icon.png' %}" width="16px" height="16px"/></th>
+          {% else %}
+          <th class="subTeamNameRow" id="subTeamServer">{{ team.server }}</th>
+          {% endif %}
         </tr>
       </table>
       {% render_table table %}
