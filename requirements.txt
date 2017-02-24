@@ -9,7 +9,7 @@ django-jsonfield==1.0.1
 django-mathfilters==0.4.0
 django-model-utils==2.6
 django-notify-x==0.1.6
--e hg+http://bitbucket.org/psam/django-postman/@3dc849cd2e1f6be0c2b3370934a6625243d3f646#egg=django_postman
+# -e hg+http://bitbucket.org/psam/django-postman/@3dc849cd2e1f6be0c2b3370934a6625243d3f646#egg=django_postman
 django-tables2==1.2.6
 elasticsearch==5.0.1
 gunicorn==19.4.5
