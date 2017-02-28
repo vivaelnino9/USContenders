@@ -1,9 +1,9 @@
-<div class="headerwrap" {% if rank < 6 %} id="diamond"{% elif rank >= 6 and rank <= 20 %}id="gold"{% elif rank >= 20 and rank <= 35 %}id="silver"{% elif rank > 35 %}id="bronze"{% endif %}>
+<div class="headerwrap" {% if team.rank < 6 %} id="diamond"{% elif team.rank >= 6 and team.rank <= 20 %}id="gold"{% elif team.rank >= 20 and team.rank <= 35 %}id="silver"{% elif team.rank > 35 %}id="bronze"{% endif %}>
 		<div class="container" id="header">
 			<div class="row">
 				<div class="col-lg-6">
 					<a class="homeButton" href="{% url 'index' %}">
-						<h1>USContenders{{team}}</h1>
+						<h1>USContenders</h1>
 					</a>
 					<form class="form-inline" role="form" action="{% url 'search' %}" method="get">
 					  <div class="form-group">
