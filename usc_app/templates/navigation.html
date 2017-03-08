@@ -15,6 +15,9 @@
           <li class="nav-item">
             <a {% if 'results' in request.path %}class="nav-link active" {% else %}class="nav-link"{% endif %} href="{% url 'results' %}">Results</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.reddit.com/r/USContenders/wiki/index" target="_blank">Rules</a>
+          </li>
           <li class="nav-item dropdown">
             {% if user.is_authenticated %}
             <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,7 +46,8 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
               {% else %}
-              <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+              <a class="dropdown-item" href="{% url 'player_register' %}">Player Registration</a>
+              <a class="dropdown-item" href="{% url 'register' %}">Team Registration</a>
               <a class="dropdown-item" href="{% url 'login' %}">Login</a>
               {% endif %}
             </div>

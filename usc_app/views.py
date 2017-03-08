@@ -32,10 +32,14 @@ def roster_table(request):
     RequestConfig(request, paginate={
         'per_page': 38
     }).configure(table)
+    freeAgents = FreeAgent.objects.all()
+    FA_table = FATable(freeAgents)
+    FA_table.order_by = 'pk'
     return render(request, 'roster_table.html', {
         'count':queryset,
         'table': table,
         'players':players,
+        'FA_table':FA_table,
     })
 def team_page(request,team_name):
     currentUser = request.user
@@ -212,6 +216,30 @@ def captain_register(request):
                   'captain_form': captain_form,
                   'registered': registered,
                   'errors':user_form.errors,
+    })
+def player_register(request):
+    registered = False
+    if request.method == 'POST':
+        FA_form = FAForm(request.POST,request.FILES);
+        if FA_form.is_valid():
+
+            FA = FA_form.save(commit=False)
+            user = User.objects.create(username=FA.name)
+            FA.user = user
+
+            FA.save()
+
+            registered = True
+        else:
+            print(FA_form.errors)
+
+    else:
+        FA_form = FAForm()
+
+    return render(request,'player_register.html',{
+        'form': FA_form,
+        'errors':FA_form.errors,
+        'registered': registered,
     })
 def results(request):
     queryset = Challenge.objects.all()

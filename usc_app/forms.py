@@ -4,6 +4,7 @@ from django.core.validators import ValidationError
 from django.utils.translation import gettext as _
 from datetime import date
 from django.db.models import Q
+from .choices import *
 
 class ChallengeForm(forms.ModelForm):
     challenged = forms.ModelChoiceField(queryset=Roster.objects.all(), required=True, help_text="Choose who to challenge!")
@@ -163,4 +164,47 @@ class ScoresForm(forms.Form):
         g2_t1_score = cleaned_data.get('g2_t1_score')
         g2_t2_score = cleaned_data.get('g2_t2_score')
 
+        return cleaned_data
+
+class FAForm(forms.ModelForm):
+    name = forms.CharField(label='Name',max_length=50)
+    server = forms.ChoiceField(choices=SERVER_CHOICES, label="Server", initial='', widget=forms.Select(), required=True)
+    position = forms.ChoiceField(choices=POSITION_CHOICES, label="Position",widget=forms.Select(), required=True)
+    mic = forms.BooleanField(label='Mic?',required=False)
+    tagpro_profile = forms.URLField(label='Tagpro Profile',max_length=200)
+    reddit_info = forms.URLField(
+        max_length=200,
+        label="Reddit Info",
+        required=False
+    )
+    tagpro_stats = forms.URLField(
+        max_length=200,
+        label="TagPro Stats Profile",
+        required=False
+    )
+    additional_notes = forms.CharField(max_length=500,required=False)
+
+    class Meta:
+        model = FreeAgent
+        fields = (
+            'name','server','position','mic','tagpro_profile',
+            'reddit_info','tagpro_stats','additional_notes',
+        )
+
+    def clean(self):
+        cleaned_data = super(FAForm, self).clean()
+        name = cleaned_data.get('name')
+        tagpro_profile = cleaned_data.get('tagpro_profile')
+        found = False
+        for choice in SERVER_CHOICES:
+            server = choice[1].lower()
+            url= 'http://tagpro-'+server+'.koalabeast.com/profile/'
+            if url in tagpro_profile:
+                found = True
+        if not found:
+            msg = 'Please link your tagpro profile! (i.e. http://tagpro-radius.koalabeast.com/profile/52ca4d0cd00099041a0002e9)'
+            self.add_error('tagpro_profile',msg)
+        if User.objects.filter(username=name).exists():
+            msg = name+' is already on a team!'
+            self.add_error('name', msg)
         return cleaned_data

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-wrapper">
+  {% if registered %}
+  <h1>Thank you for registering</h1>
+  <h4>You have been added to the <a href="{% url 'rosters' %}">Free Agents</a> list!</h4>
+  {% else %}
+  <h1>Player Registration</h1>
+  {% for field in form %}
+  {{ field.errors}}
+  {% endfor %}
+  <form enctype="multipart/form-data" method="post" action="{% url 'player_register' %}">
+      {% csrf_token %}
+      <input class="form-control" type="text" name="name" placeholder="Name" required/>
+      <select class="form-control" name="server" required>
+        <option value="" disabled selected>Server</option>
+        <option value="1">Radius</option>
+        <option value="2">Pi</option>
+        <option value="3">Origin</option>
+        <option value="4">Sphere</option>
+        <option value="5">Centra</option>
+        <option value="6">Orbit</option>
+        <option value="7">Chord</option>
+        <option value="8">Diameter</option>
+      </select>
+      <select class="form-control" name="position" required>
+        <option value="" disabled selected>Position</option>
+        <option value="1">O</option>
+        <option value="2">D</option>
+        <option value="3">O/D</option>
+        <option value="4">D/O</option>
+      </select>
+      <label style="float: left;margin-left:5px;" for="mic">Mic?</label>
+      <span style="display: block;overflow: hidden;padding: 6px 4px 0 6px"><input style="width: 100%;" class="form-control" type="checkbox" name="mic" placeholder="Mic?"/></span>
+      <input class="form-control" type="url" name="tagpro_profile" placeholder="Link to Tagpro Profile" required/>
+      <input class="form-control" type="url" name="reddit_info" placeholder="Link to Reddit Profile (optional)" />
+      <input class="form-control" type="url" name="tagpro_stats" placeholder="Link to Tagpro Stats Profile (optional)"/>
+      <textarea style="margin-top:10px;"class="form-control" name="additional_notes" placeholder="Additional Notes? (optional)"cols="40" rows="5"></textarea>
+      <button class="form-submit btn btn-lg btn-primary btn-block" type="submit" name="submit">Register</button>
+  </form>
+</div>
+{% endif %}
+{% endblock %}

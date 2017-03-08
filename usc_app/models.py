@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.db.models import F
+from .choices import *
 
 class Player(models.Model):
     name = models.CharField(max_length=50)
@@ -13,13 +14,42 @@ class Player(models.Model):
     captures = models.PositiveIntegerField(blank=True,null=True)
     hold = models.CharField(max_length=10,blank=True,null=True)
     returns = models.PositiveIntegerField(blank=True,null=True)
-
     class Meta:
         db_table = 'players'
 
     def __str__(self):
         return self.name
 
+class FreeAgent(models.Model):
+    user = models.OneToOneField(User)
+    name = models.CharField(max_length=50,verbose_name='Name')
+    eligible = models.BooleanField(verbose_name='Eligible?',default=True)
+    server = models.IntegerField(
+        choices=SERVER_CHOICES,
+        verbose_name='Server',
+    )
+    position = models.IntegerField(
+        choices=POSITION_CHOICES,
+        verbose_name='Position'
+    )
+    mic = models.BooleanField(default=True,verbose_name='Mic?')
+    tagpro_profile = models.URLField(max_length=200,verbose_name="TagPro Profile")
+    reddit_info = models.URLField(
+        max_length=200,
+        verbose_name="Reddit Info",
+        blank=True,null=True
+    )
+    tagpro_stats = models.URLField(
+        max_length=200,
+        verbose_name="TagPro Stats Profile",
+        blank=True,null=True
+    )
+    additional_notes = models.TextField(max_length=500,blank=True,null=True)
+    class Meta:
+        db_table = 'free_agents'
+
+    def __str__(self):
+        return self.name
 
 class Roster(models.Model):
     team_name = models.CharField(max_length=50)

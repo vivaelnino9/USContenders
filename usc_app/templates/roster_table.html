@@ -2,6 +2,19 @@
 {% load staticfiles django_tables2 %}
 
 {% block content %}
-{% render_table table %}
-<script>document.getElementsByClassName("pagination")[0].innerHTML = "";</script>
+<div class="tab">
+  <a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'rosters')" id="defaultOpen">Rosters</a>
+  <a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'freeAgents')">Free Agents</a>
+</div>
+
+<div id="rosters" class="tabcontent">
+  {% render_table table %}
+</div>
+
+<div id="freeAgents" class="tabcontent">
+  <h3>Free Agents</h3>
+  {% render_table FA_table %}
+</div>
+
+<script src="{% static 'js/roster.js' %}"></script>
 {% endblock %}

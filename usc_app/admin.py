@@ -66,3 +66,4 @@ class ResultAdmin(admin.ModelAdmin):
 admin.site.register(Result,ResultAdmin)
 
 admin.site.register(Captain)
+admin.site.register(FreeAgent)

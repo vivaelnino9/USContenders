@@ -150,3 +150,20 @@ class ResultsTable(tables.Table):
         return format_html('<a target="_blank" href="https://tagpro.eu/?match={}" />#{}', value,value)
     def render_g2_results(self,value):
         return format_html('<a target="_blank" href="https://tagpro.eu/?match={}" />#{}', value,value)
+
+class FATable(tables.Table):
+    tagpro_profile = tables.URLColumn(attrs={'a':{'target':'_blank'}},orderable=False,)
+    reddit_info = tables.URLColumn(attrs={'a':{'target':'_blank'}},orderable=False,)
+    tagpro_stats = tables.URLColumn(attrs={'a':{'target':'_blank'}},orderable=False,)
+    additional_notes = tables.Column(verbose_name="Additional Notes",orderable=False,)
+    class Meta:
+        model = FreeAgent
+        exclude = ('id','user')
+        attrs = {'class': 'table'}
+
+    def render_tagpro_profile(self,value):
+        return format_html('<a target="_blank" href="{}" />Link to profile', value,value)
+    def render_reddit_info(self,value):
+        return format_html('<a target="_blank" href="{}" />Link to reddit', value,value)
+    def render_tagpro_stats(self,value):
+        return format_html('<a target="_blank" href="{}" />Link to profile', value,value)

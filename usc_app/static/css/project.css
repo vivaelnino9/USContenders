@@ -41,7 +41,7 @@ thead a {
 .homeButton h1, .homeButton:hover {
     font-weight: 900;
     font-family: 'Lato', sans-serif;
-    color: black;
+    color: #373a3c;
     text-decoration: none;
 }
 #diamond {
@@ -128,7 +128,7 @@ div#bs-navbar-collapse-1 {
     color: rgba(255, 255, 255, .7);
 }
 div.container {
-    margin: 0px 0px 0px 0px;
+    /*margin: 0px 0px 0px 0px;*/
     padding-left: 0;
     padding-right: 0;
     max-width: 1426px;
@@ -150,13 +150,22 @@ a.navbar-brand {
 /* Roster Table */
 
 .table-container {
-    margin: 40px 0px 40px 0px;
+    margin: 10px 0px 40px 0px;
 }
 .table {
-    width: 1360px;
+    /*width: 1360px;*/
     height: auto;
-    margin-left: 40px;
-    margin-right: 40px;
+    /*margin-left: 40px;*/
+    /*margin-right: 40px;*/
+}
+.tabcontent>.table-container {
+    float: left;
+    width: 100%;
+}
+.tabcontent {
+    overflow: auto;
+    margin-top: 10px;
+    /*or whatever float wrapping technique you want to use*/
 }
 .table {
     font-family: 'Open Sans', sans-serif;
@@ -170,6 +179,9 @@ td a, thead tr {
 }
 tr, tr th {
     text-align: center;
+}
+th {
+    min-width: 20px;
 }
 th.orderable>a {
     padding-right: 20px;
@@ -187,6 +199,49 @@ table.table, td {
 }
 thead tr {
     background-color: #d3d3d3;
+}
+.tab {
+    overflow: hidden;
+    border: 1px solid rgba(169, 158, 158, 0.98);
+    background-color: #d3d3d3;
+    margin-top: 15px;
+}
+
+/* Style the links inside the tab */
+
+.tab a {
+    float: left;
+    display: block;
+    color: #373a3c;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of links on hover */
+
+.tab a:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+
+.tab a:focus, .activeTab {
+    background-color: rgb(185, 185, 185);
+}
+
+/* Style the tab content */
+
+.tabcontent {
+    display: none;
+    /*padding: 6px 12px;*/
+    /*padding: 0px 10px;*/
+    border: 1px solid #ccc;
+    border-top: none;
+    border-right: none;
+    border-left: none;
 }
 
 /* endRosterTable*/
