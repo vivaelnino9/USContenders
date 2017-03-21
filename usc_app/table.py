@@ -133,6 +133,11 @@ class StatsTable(tables.Table):
                 'id' : 'statTableHeader'
             }
         }
+
+    def render_uscmRank(self,value):
+        if value == 0:
+            value = '-'
+        return value
 class ResultsTable(tables.Table):
     challenger = tables.LinkColumn('team',args=[A('challenger')])
     challenged = tables.LinkColumn('team',args=[A('challenged')])
