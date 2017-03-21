@@ -54,9 +54,9 @@ def team_page(request,team_name):
     else:
         recentGames = []
     challengersList = team.getChallengers
-    if Captain.objects.filter(name=currentUser.username) and not currentUser.first_name == team_name:
+    if Captain.objects.filter(name=currentUser.username) and not currentUser.team == team_name:
         # If current user is captain, but is viewing another team page
-        userTeam = Roster.objects.filter(team_name=currentUser.first_name).first()
+        userTeam = Roster.objects.filter(team_name=currentUser.team).first()
         userStats = Stats.objects.filter(team=userTeam.team_name).first()
         canChallenge = False
         for rank,roster in userTeam.getChallengers().items():
@@ -102,7 +102,7 @@ def player_page(request,player_name,team_name):
     })
 @login_required
 def challenge(request):
-    challenger = Stats.objects.filter(team=request.user.first_name).first()
+    challenger = Stats.objects.filter(team=request.user.team).first()
     challengeOut = challenger.challengeOut
     error = (challengeOut + 1) > 2
     if request.method == 'POST': # If the form has been submitted...
@@ -131,7 +131,7 @@ def challenge(request):
     })
 @login_required
 def challenge_with_arg(request,team_challenged):
-    challenger = Stats.objects.filter(team=request.user.first_name)
+    challenger = Stats.objects.filter(team=request.user.team)
     challenged = Stats.objects.filter(team=team_challenged)
     challengingTeam = Roster.objects.filter(team_name=challenger[0].team).first()
     challengedTeam = Roster.objects.filter(team_name=team_challenged).first()
@@ -182,11 +182,11 @@ def challenge_with_arg(request,team_challenged):
 @login_required
 def challenge_success(request):
     return render(request, 'challenge_success.html', {})
-def captain_register(request):
+def roster_register(request):
     registered = False
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
-        captain_form = CaptainForm(request.POST,request.FILES);
+        roster_form = RosterForm(request.POST,request.FILES);
 
         if user_form.is_valid() and captain_form.is_valid():
             user = user_form.save()
@@ -196,7 +196,7 @@ def captain_register(request):
             captain.user = user
             captain.name = user.username
 
-            user.first_name = captain.team.team_name
+            # user.team = captain.team.team_name
 
             user.save()
             captain.save()
@@ -204,7 +204,7 @@ def captain_register(request):
             Roster.objects.filter(team_name=captain.team).update(captain=captain)
             registered = True
         else:
-            print(user_form.errors, captain_form.errors)
+            print(user_form.errors, roster_form.errors)
 
     else:
         user_form = UserForm()
@@ -261,7 +261,7 @@ def captain_login(request):
             if user.is_active:
                 login(request, user)
                 if (user.username != 'admin'):
-                    return HttpResponseRedirect(reverse('team',kwargs={'team_name':user.first_name}))
+                    return HttpResponseRedirect(reverse('team',kwargs={'team_name':user.team}))
                 else:
                     return HttpResponseRedirect(reverse('rosters'))
             else:
@@ -428,8 +428,8 @@ def forfeit(request, challenge_id):
     challenged = Stats.objects.filter(team=challenge.first().challenged)
     challenger.update(challengeOut=F('challengeOut')-1)
     challenged.update(challengeIn=F('challengeIn')-1)
-    Stats.objects.filter(team=request.user.first_name).update(F=F('F')+1)
-    if request.user.first_name == challenger.first().team:
+    Stats.objects.filter(team=request.user.team).update(F=F('F')+1)
+    if request.user.team == challenger.first().team:
         winner = Roster.objects.filter(team_name=challenged.first().team)
         loser = Roster.objects.filter(team_name=challenger.first().team)
     else:
@@ -452,8 +452,8 @@ def forfeit(request, challenge_id):
             Roster.objects.filter(rank=lrank+3).exclude(team_name=loser[0].team_name).update(rank=F('rank')+1)
 
     users = [winner.first().captain.user,loser.first().captain.user]
-    notify.send(request.user, recipient_list=users, actor=Roster.objects.filter(team_name=request.user.first_name).first(),
+    notify.send(request.user, recipient_list=users, actor=Roster.objects.filter(team_name=request.user.team).first(),
                 verb='forfeited.', target=challenge.first(), nf_type='forfeit')
     challenge.delete()
 
-    return HttpResponseRedirect(reverse('team',kwargs={'team_name':request.user.first_name}))
+    return HttpResponseRedirect(reverse('team',kwargs={'team_name':request.user.team}))

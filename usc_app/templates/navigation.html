@@ -34,7 +34,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               {% if user.is_authenticated %}
               {% if user.username != 'admin' %}
-              <a class="dropdown-item" href="{% url 'team' user.first_name %}">Team Page</a>
+              <a class="dropdown-item" href="{% url 'team' user.team %}">Team Page</a>
               <a class="dropdown-item" href="{% url 'challenge' %}">Make Challenge</a>
               {% endif %}
               <a class="dropdown-item" href="{% url 'notifications' %}"

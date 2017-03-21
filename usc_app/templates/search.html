@@ -10,8 +10,8 @@
     <h2><i>Players ({{ players|length }})</i></h2>
     {% for player in players %}
     <div class="result">
-      {% if player.first_name %}
-      <a href="{% url 'player' player.first_name player.username %}">{{ player }}</a>
+      {% if player.team %}
+      <a href="{% url 'player' player.team player.username %}">{{ player }}</a>
       {% else %}
       {{ player }}
       {% endif %}

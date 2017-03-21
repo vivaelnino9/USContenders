@@ -11,7 +11,7 @@
       {% if not request.user.is_anonymous %}
         {% if rank in userTeam.getChallengers and canChallenge %}
         <a href="{% url 'challenge_arg' team.team_name %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
-        {% elif team.team_name != request.user.first_name and request.user.username != 'admin'  %}
+        {% elif team.team_name != request.user.team and request.user.username != 'admin'  %}
         <button type="button" class="btn btn-lg btn-primary" disabled>Challenge</button><br><br>
         {% else %}
         {% endif %}
@@ -81,7 +81,7 @@
               <td>{{ challenge.challenge_date.month }}/{{ challenge.challenge_date.day }}/{{ challenge.challenge_date.year|sub:2000 }}</td>
               <td>{{ challenge.forfeit_date.month }}/{{ challenge.forfeit_date.day }}/{{ challenge.forfeit_date.year|sub:2000 }}</td>
               <td>{{ challenge.void_date.month }}/{{ challenge.void_date.day }}/{{ challenge.void_date.year|sub:2000 }}</td>
-              {% if team.team_name == request.user.first_name %}
+              {% if team.team_name == request.user.team %}
               <td style="border:none;background-color:white;display: block;"><a style="color:indianred;font-size:12px;padding-left:5px;" href="{% url 'forfeit' challenge.id %}" onclick="return confirm('Are you sure want to forfeit?');">forfeit?</a></td>
               <td style="border:none;background-color:white;display: block;"><a style="color:cornflowerblue;font-size:12px;padding-left:5px;" href="{% url 'submit' challenge.id %}">submit</a></td>
               {% endif %}

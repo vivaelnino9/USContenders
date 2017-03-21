@@ -3,9 +3,13 @@ import datetime
 from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.shortcuts import get_object_or_404
 from django.db.models import F
 from .choices import *
+
+class User(AbstractUser):
+    team = models.CharField(max_length=50,default='team_name')
 
 class Player(models.Model):
     name = models.CharField(max_length=50)

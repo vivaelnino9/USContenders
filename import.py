@@ -36,6 +36,13 @@ def make_players():
                     players.append(str(player))
 
     for player in players:
+        u = OrderedDict()
+        u['pk'] = (players.index(player)+1)
+        u['model'] = 'usc_app.User'
+        u['fields'] = OrderedDict()
+        u['fields']['username'] = player
+        players_data.append(u)
+    for player in players:
         p = OrderedDict()
         p['pk'] = (players.index(player)+1)
         p['model'] = 'usc_app.Player'
@@ -47,13 +54,6 @@ def make_players():
         p['fields']['hold'] = 0
         p['fields']['returns'] = 0
         players_data.append(p)
-    for player in players:
-        u = OrderedDict()
-        u['pk'] = (players.index(player)+1)
-        u['model'] = 'auth.user'
-        u['fields'] = OrderedDict()
-        u['fields']['username'] = player
-        players_data.append(u)
 
     return make_rosters(players,players_data)
 
@@ -97,10 +97,12 @@ def make_rosters(players,players_data):
         for value in values:
             if value in players:
                 position = assign_player(r)
-                index = (players.index(value)+1)
+                index = players.index(value)
+                user_pk = index+1
+                players_data[index]['fields']['team'] = roster
                 if position == 'captain':
-                    captains[value] = {'user_pk':index,'team_pk':roster_pk}
-                r['fields'][position]= index
+                    captains[value] = {'user_pk':user_pk,'team_pk':roster_pk}
+                r['fields'][position]= user_pk
             else:
                 try:
                     int(value)

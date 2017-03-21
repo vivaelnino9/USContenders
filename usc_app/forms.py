@@ -48,7 +48,7 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username','password')
 
-class CaptainForm(forms.ModelForm):
+class RosterForm(forms.ModelForm):
     team = forms.CharField(label='Team Name',max_length=50)
     abv = forms.CharField(label='Team Abbreviation',max_length=4)
     server = forms.CharField(label='Server',max_length=50,)
@@ -67,7 +67,7 @@ class CaptainForm(forms.ModelForm):
         )
 
     def clean(self):
-        cleaned_data = super(CaptainForm, self).clean()
+        cleaned_data = super(RosterForm, self).clean()
         team = self.cleaned_data['team']
         abv = self.cleaned_data['abv']
         server = self.cleaned_data['server']
