@@ -208,12 +208,12 @@ def roster_register(request):
 
     else:
         user_form = UserForm()
-        captain_form = CaptainForm()
+        roster_form = RosterForm()
 
     return render(request,
                   'register.html',
                   {'user_form': user_form,
-                  'captain_form': captain_form,
+                  'roster_form': roster_form,
                   'registered': registered,
                   'errors':user_form.errors,
     })
