@@ -111,7 +111,7 @@ class Roster(models.Model):
         verbose_name='Member6',
         blank=True,null=True
     )
-    firstActive = models.CharField(max_length=50)
+    firstActive = models.DateField(blank=True,null=True)
     daysActive = models.PositiveIntegerField()
     server = models.CharField(max_length=50)
     logo = models.ImageField(
@@ -213,7 +213,7 @@ class Stats(models.Model):
         blank=True,
         default=0
     )
-    CDperG = models.IntegerField(
+    CDperG = models.FloatField(
         verbose_name='CD/G',
         null=True,
         blank=True,
