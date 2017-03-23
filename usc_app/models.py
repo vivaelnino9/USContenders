@@ -9,9 +9,16 @@ from django.db.models import F
 from .choices import *
 
 class User(AbstractUser):
-    team = models.CharField(max_length=50,default='team_name')
+    team = models.CharField(
+        max_length=50,
+        default='',
+        blank=True,null=True
+    )
+    class Meta:
+        db_table = 'users'
 
 class Player(models.Model):
+    user = models.OneToOneField(User)
     name = models.CharField(max_length=50)
     minutes = models.PositiveIntegerField(blank=True,null=True)
     tags = models.PositiveIntegerField(blank=True,null=True)
@@ -56,6 +63,7 @@ class FreeAgent(models.Model):
         return self.name
 
 class Roster(models.Model):
+    eligible = models.BooleanField(default=False)
     team_name = models.CharField(max_length=50)
     abv = models.CharField(max_length=4)
     rank = models.PositiveIntegerField()
@@ -117,7 +125,10 @@ class Roster(models.Model):
     )
     firstActive = models.DateField(blank=True,null=True)
     daysActive = models.PositiveIntegerField()
-    server = models.CharField(max_length=50)
+    server = models.IntegerField(
+        choices=SERVER_CHOICES,
+        verbose_name='Server',
+    )
     logo = models.ImageField(
         'logo',
         max_length=100,
@@ -128,11 +139,6 @@ class Roster(models.Model):
         db_table = 'rosters'
     def __str__(self):
         return self.team_name
-
-    def save(self, *args, **kwargs):
-        stats = Stats(team=self.team_name,abv=self.abv,highestRank=self.rank)
-        stats.save()
-        super(Roster, self).save(*args, **kwargs)
 
     def getChallengers(self):
         challengers = {}
@@ -322,7 +328,6 @@ class Result(models.Model):
         return self.server.lower()
 
 class Captain(Player):
-    user = models.OneToOneField(User)
     team = models.ForeignKey(
         Roster,
         related_name='team',
