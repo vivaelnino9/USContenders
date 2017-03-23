@@ -43,10 +43,12 @@ def make_players():
         u['fields']['username'] = player
         players_data.append(u)
     for player in players:
+        pk = (players.index(player)+1)
         p = OrderedDict()
-        p['pk'] = (players.index(player)+1)
+        p['pk'] = pk
         p['model'] = 'usc_app.Player'
         p['fields'] = OrderedDict()
+        p['fields']['user'] = pk
         p['fields']['name'] = player
         p['fields']['minutes'] = 0
         p['fields']['tags'] = 0
@@ -65,7 +67,7 @@ def make_captains(captains,rosters_data):
         c['pk'] = values['user_pk']
         c['model'] = 'usc_app.Captain'
         c['fields'] = OrderedDict()
-        c['fields']['user'] = values['user_pk']
+        # c['fields']['user'] = values['user_pk']
         c['fields']['team'] = values['team_pk']
         captains_data.append(c)
 
@@ -90,6 +92,7 @@ def make_rosters(players,players_data):
         r['pk'] = roster_pk
         r['model'] = 'usc_app.Roster'
         r['fields'] = OrderedDict()
+        r['fields']['eligible'] = True
         r['fields']['team_name'] = roster
         r['fields']['rank'] = 0
         r['fields']['abv'] = 'temp'
@@ -109,7 +112,7 @@ def make_rosters(players,players_data):
                     r['fields']['daysActive'] = int(value)
                 except ValueError:
                     if value in SERVER_CHOICES:
-                        r['fields']['server'] = value
+                        r['fields']['server'] = (SERVER_CHOICES.index(value))+1
                     else:
                         if value == '#N/A':
                             pass

@@ -19,11 +19,11 @@ class TeamRosterAdminForm(forms.ModelForm):
     model = Roster
 
 class TeamRosterAdmin(admin.ModelAdmin):
-    fields = ['team_name','abv','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','firstActive','daysActive','server','logo']
+    fields = ['team_name','eligible','abv','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','firstActive','daysActive','server','logo']
     list_display = (
-        'team_name', 'rank',
+        'team_name','eligible', 'rank',
     )
-    list_filter = ['team_name',]
+    list_filter = ['eligible',]
     search_fields = ['team_name',]
     list_per_page = 10
     form = TeamRosterAdminForm
@@ -65,6 +65,24 @@ class ResultAdmin(admin.ModelAdmin):
 
 admin.site.register(Result,ResultAdmin)
 
-admin.site.register(User)
-admin.site.register(Captain)
+class UserAdminForm(forms.ModelForm):
+    model = User
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username','team')
+    search_fields = ['username','team']
+    list_per_page = 20
+    form = UserAdminForm
+
+admin.site.register(User,UserAdmin)
+class CaptainAdminForm(forms.ModelForm):
+    model = Captain
+
+class CaptainAdmin(admin.ModelAdmin):
+    list_display = ('name','team')
+    search_fields = ['name','team']
+    list_per_page = 20
+    form = CaptainAdminForm
+
+admin.site.register(Captain,CaptainAdmin)
 admin.site.register(FreeAgent)
