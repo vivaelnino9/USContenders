@@ -12,19 +12,20 @@ SERVER_CHOICES = [
 lst = ['B','C', 'D', 'E', 'F', 'G', 'H', 'I',]
 # to help specify what columns in spreadsheet to scrape through
 
-sheet = 'https://docs.google.com/spreadsheets/d/13-nO0zc-EzStByOFnXJhwzHNhl4NHSnHvz54DJpdcNw'
-page = urlopen(sheet)
-soup = BeautifulSoup(page,'lxml')
-rows = soup.find_all('tr')
-cols = [header.string for header in soup.find('thead').findAll('th')]
+
 players = []
 
 def make_data():
     data = make_players()
+    print(data)
     with open('data.json', 'w') as outfile:
             json.dump(data, outfile)
     print('completed')
 def make_players():
+    sheet = 'https://docs.google.com/spreadsheets/d/13-nO0zc-EzStByOFnXJhwzHNhl4NHSnHvz54DJpdcNw'
+    page = urlopen(sheet)
+    soup = BeautifulSoup(page,'lxml')
+    cols = [header.string for header in soup.find('thead').findAll('th')]
     players_data = []
     for c in cols:
         if c in lst:
@@ -57,7 +58,7 @@ def make_players():
         p['fields']['returns'] = 0
         players_data.append(p)
 
-    return make_rosters(players,players_data)
+    return make_rosters(players,players_data,soup)
 
 
 def make_captains(captains,rosters_data):
@@ -73,7 +74,8 @@ def make_captains(captains,rosters_data):
 
     captains_data += rosters_data
     return captains_data
-def make_rosters(players,players_data):
+def make_rosters(players,players_data,soup):
+    rows = soup.find_all('tr')
     avoid = [None,'Logo','Intro','Skin']
 
     rosters = OrderedDict()
@@ -133,22 +135,22 @@ def make_stats(rosters,rosters_data):
     avoid = [None,]
 
     stats_data = []
-
     for row in rows[4:-2]:
         cells = row.find_all('td')
-        s = OrderedDict()
-        pk = list(rosters.keys()).index(cells[4].string) if len(cells) == 21 else list(rosters.keys()).index(cells[3].string)
-        s['pk'] = pk+1
-        s['model'] = 'usc_app.Stats'
-        s['fields'] = OrderedDict()
-        for cell in cells:
-            if len(cells) == 21:
-                rosters_data[pk]['fields']['rank'] = int(cells[2].string)
-                s = stats_fields(s,3,cells)
-            else:
-                rosters_data[pk]['fields']['rank'] = int(cells[1].string)
-                s = stats_fields(s,2,cells)
-        stats_data.append(s)
+        if len(cells) == 21 and cells[2].string is not None or len(cells) == 20 and cells[1].string is not None:
+            s = OrderedDict()
+            pk = list(rosters.keys()).index(cells[4].string) if len(cells) == 21 else list(rosters.keys()).index(cells[3].string)
+            s['pk'] = pk+1
+            s['model'] = 'usc_app.Stats'
+            s['fields'] = OrderedDict()
+            for cell in cells:
+                if len(cells) == 21:
+                    rosters_data[pk]['fields']['rank'] = int(cells[2].string)
+                    s = stats_fields(s,3,cells)
+                else:
+                    rosters_data[pk]['fields']['rank'] = int(cells[1].string)
+                    s = stats_fields(s,2,cells)
+            stats_data.append(s)
     return stats_data
 def stats_fields(dic,pointer,cells):
     s = dic
