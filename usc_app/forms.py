@@ -118,14 +118,26 @@ class RosterForm(forms.ModelForm):
         for label,player in player_list.items():
             try:
                 user = User.objects.get(username=player)
-                user.team = team
+                User.objects.filter(username=user.username).update(team=team)
+                if label == 'captain':
+                    try:
+                        captain = Captain.objects.get(name=player,user=user)
+                    except ObjectDoesNotExist:
+                        captain = Captain.objects.create(name=player,user=user)
+                    self.cleaned_data['captain'] = captain
+                else:
+                    try:
+                        p = Player.objects.get(name=player,user=user)
+                    except ObjectDoesNotExist:
+                        p = Player.objects.create(name=player,user=user)
+                    self.cleaned_data[label] = p
             except ObjectDoesNotExist:
                 password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
                 user = User.objects.create(username=player,password=password,team=team)
-            if label == 'captain':
-                self.cleaned_data['captain'] = Captain.objects.create(name=captain,user=user)
-            else:
-                self.cleaned_data[label] = Player.objects.create(name=player,user=user)
+                if label == 'captain':
+                    self.cleaned_data['captain'] = Captain.objects.create(name=captain,user=user)
+                else:
+                    self.cleaned_data[label] = Player.objects.create(name=player,user=user)
 
 class ScoresForm(forms.Form):
     g1_t1_score = forms.IntegerField()
