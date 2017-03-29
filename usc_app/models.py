@@ -44,7 +44,11 @@ class FreeAgent(models.Model):
         verbose_name='Position'
     )
     mic = models.BooleanField(default=True,verbose_name='Mic?')
-    tagpro_profile = models.URLField(max_length=200,verbose_name="TagPro Profile")
+    tagpro_profile = models.URLField(
+        max_length=200,
+        verbose_name="TagPro Profile",
+        blank=True,null=True
+    )
     reddit_info = models.URLField(
         max_length=200,
         verbose_name="Reddit Info",
@@ -52,7 +56,7 @@ class FreeAgent(models.Model):
     )
     tagpro_stats = models.URLField(
         max_length=200,
-        verbose_name="TagPro Stats Profile",
+        verbose_name="TagPro Stats",
         blank=True,null=True
     )
     additional_notes = models.TextField(max_length=500,blank=True,null=True)

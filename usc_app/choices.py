@@ -9,6 +9,7 @@ SERVER_CHOICES = (
     (6, _("Orbit")),
     (7, _("Chord")),
     (8, _("Diameter")),
+    (9, _("Any")),
 )
 
 POSITION_CHOICES = (
@@ -16,4 +17,6 @@ POSITION_CHOICES = (
     (2, _("D")),
     (3, _("O/D")),
     (4, _("D/O")),
+    (5, _("Any")),
+
 )

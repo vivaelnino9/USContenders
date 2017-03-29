@@ -159,7 +159,7 @@ class ResultsTable(tables.Table):
 class FATable(tables.Table):
     tagpro_profile = tables.URLColumn(attrs={'a':{'target':'_blank'}},orderable=False,)
     reddit_info = tables.URLColumn(attrs={'a':{'target':'_blank'}},orderable=False,)
-    tagpro_stats = tables.URLColumn(attrs={'a':{'target':'_blank'}},orderable=False,)
+    tagpro_stats = tables.URLColumn(verbose_name="TagPro Stats",attrs={'a':{'target':'_blank'}},orderable=False,)
     additional_notes = tables.Column(verbose_name="Additional Notes",orderable=False,)
     class Meta:
         model = FreeAgent
@@ -167,8 +167,8 @@ class FATable(tables.Table):
         attrs = {'class': 'table'}
 
     def render_tagpro_profile(self,value):
-        return format_html('<a target="_blank" href="{}" />Link to profile', value,value)
+        return format_html('<a target="_blank" href="{}" style="color:#2b2b2b;" />Tagpro', value,value)
     def render_reddit_info(self,value):
-        return format_html('<a target="_blank" href="{}" />Link to reddit', value,value)
+        return format_html('<a target="_blank" href="{}" style="color:#ff4500;" />Reddit', value,value)
     def render_tagpro_stats(self,value):
-        return format_html('<a target="_blank" href="{}" />Link to profile', value,value)
+        return format_html('<a target="_blank" href="{}" style="color:#428bca;" />Stats', value,value)

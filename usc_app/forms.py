@@ -159,7 +159,10 @@ class FAForm(forms.ModelForm):
     server = forms.ChoiceField(choices=SERVER_CHOICES, label="Server", initial='', widget=forms.Select(), required=True)
     position = forms.ChoiceField(choices=POSITION_CHOICES, label="Position",widget=forms.Select(), required=True)
     mic = forms.BooleanField(label='Mic?',required=False)
-    tagpro_profile = forms.URLField(label='Tagpro Profile',max_length=200)
+    tagpro_profile = forms.URLField(
+        label='Tagpro Profile',
+        max_length=200,
+    )
     reddit_info = forms.URLField(
         max_length=200,
         label="Reddit Info",

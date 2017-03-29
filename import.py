@@ -6,8 +6,10 @@ from collections import OrderedDict
 
 
 SERVER_CHOICES = [
-"Radius","Pi","Origin","Sphere","Centra","Orbit","Chord","Diameter"
+"Radius","Pi","Origin","Sphere","Centra","Orbit","Chord","Diameter","Any"
 ]
+
+POSITION_CHOICES = ["O","D","O/D","D/O"]
 
 lst = ['B','C', 'D', 'E', 'F', 'G', 'H', 'I',]
 # to help specify what columns in spreadsheet to scrape through
@@ -17,7 +19,6 @@ players = []
 
 def make_data():
     data = make_players()
-    print(data)
     with open('data.json', 'w') as outfile:
             json.dump(data, outfile)
     print('completed')
@@ -37,12 +38,7 @@ def make_players():
                     players.append(str(player))
 
     for player in players:
-        u = OrderedDict()
-        u['pk'] = (players.index(player)+1)
-        u['model'] = 'usc_app.User'
-        u['fields'] = OrderedDict()
-        u['fields']['username'] = player
-        players_data.append(u)
+        players_data.append(make_user(player,players.index(player)+1))
     for player in players:
         pk = (players.index(player)+1)
         p = OrderedDict()
@@ -151,7 +147,71 @@ def make_stats(rosters,rosters_data):
                     rosters_data[pk]['fields']['rank'] = int(cells[1].string)
                     s = stats_fields(s,2,cells)
             stats_data.append(s)
-    return stats_data
+    return make_free_agents(stats_data)
+
+def make_free_agents(stats_data):
+    sheet = 'https://docs.google.com/spreadsheets/d/1rJEY7dQSCD2523roGN_bFxeAowejpoKlTK-mOrCNeLs/edit#gid=1467451328'
+    page = urlopen(sheet)
+    soup = BeautifulSoup(page,'lxml')
+    rows = soup.find_all('tr')
+
+    free_agents_data = []
+    for row in rows[3:]:
+        cells = row.find_all('td')
+        f = OrderedDict()
+        pk = rows.index(row)+1
+        f['pk'] = pk
+        f['model'] = 'usc_app.FreeAgent'
+        f['fields'] = OrderedDict()
+        if len(cells) >= 9:
+            name = cells[0].string
+            if name == None:
+                name = cells[0].get_text()
+            free_agents_data.append(make_user(name,pk))
+            f['fields']['user'] = pk
+            f['fields']['name'] = name
+            f['fields']['eligible'] = True
+            s = cells[2].string.split('/')
+            server = s[0]
+            if server in SERVER_CHOICES:
+                f['fields']['server'] = (SERVER_CHOICES.index(server))+1
+            else:
+                f['fields']['server'] = 9
+
+            position = cells[3].string
+            f['fields']['position'] = (POSITION_CHOICES.index(position))+1 if position in POSITION_CHOICES else 5
+
+            mic = cells[4].string
+            f['fields']['mic'] = True if mic == 'Yes' else False
+
+            tagpro_profile = cells[5].string
+            f['fields']['tagpro_profile'] = tagpro_profile
+
+            reddit_info = cells[6].string
+            f['fields']['reddit_info'] = reddit_info
+
+            tagpro_stats = cells[7].string
+            f['fields']['tagpro_stats'] = tagpro_stats
+
+            if len(cells) == 9:
+                previous_row = rows[(rows.index(row)-1)]
+                previous_cells = previous_row.find_all('td')
+                f['fields']['additional_notes'] = previous_cells[9].string
+            else:
+                f['fields']['additional_notes'] = cells[9].string
+            free_agents_data.append(f)
+        # print('~~~~~~~~~~~~')
+        free_agents_data += stats_data
+    return free_agents_data
+
+def make_user(player,pk):
+    u = OrderedDict()
+    u['pk'] = pk
+    u['model'] = 'usc_app.User'
+    u['fields'] = OrderedDict()
+    u['fields']['username'] = player
+    return u
+
 def stats_fields(dic,pointer,cells):
     s = dic
     i = pointer
