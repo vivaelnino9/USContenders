@@ -159,7 +159,7 @@ def make_free_agents(stats_data):
     for row in rows[3:]:
         cells = row.find_all('td')
         f = OrderedDict()
-        pk = rows.index(row)+1
+        pk = (rows.index(row)+1)*10
         f['pk'] = pk
         f['model'] = 'usc_app.FreeAgent'
         f['fields'] = OrderedDict()
