@@ -44,6 +44,8 @@ INSTALLED_APPS = (
     'notify',
     'postman',
     'el_pagination',
+    'moderation',
+    'django_mobile',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,6 +58,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'usc_app.middleware.usc_middleware.ResultsMiddleware',
+    'django_mobile.middleware.MobileDetectionMiddleware',
+    'django_mobile.middleware.SetFlavourMiddleware',
 )
 
 ROOT_URLCONF = 'uscontenders.urls'
@@ -73,6 +77,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'postman.context_processors.inbox',
+                'django_mobile.context_processors.flavour',
             ],
         },
     },
