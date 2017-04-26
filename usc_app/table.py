@@ -54,7 +54,7 @@ class RosterTable(tables.Table):
     class Meta:
         model = Roster
         sequence = ('team_name','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','server')
-        exclude = ('id','firstActive','daysActive','logo','abv','eligible')
+        exclude = ('id','firstActive','daysActive','logo','abv')
         attrs = {'class': 'table'}
         row_attrs = {
             'id': lambda record: 'diamond' if record.rank < 6 else 'gold' if record.rank < 21 and record.rank > 5 else 'silver' if record.rank > 20 else 'none'

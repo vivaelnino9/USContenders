@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from .models import *
-
+from moderation.admin import ModerationAdmin
 
 class PlayerAdminForm(forms.ModelForm):
     model = Player
@@ -18,12 +18,12 @@ admin.site.register(Player,PlayerAdmin)
 class TeamRosterAdminForm(forms.ModelForm):
     model = Roster
 
-class TeamRosterAdmin(admin.ModelAdmin):
-    fields = ['team_name','eligible','abv','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','firstActive','daysActive','server','logo']
+class TeamRosterAdmin(ModerationAdmin):
+    fields = ['team_name','abv','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','firstActive','daysActive','server','logo']
     list_display = (
-        'team_name','eligible', 'rank',
+        'team_name','server', 'rank',
     )
-    list_filter = ['eligible',]
+    list_filter = ['server',]
     search_fields = ['team_name',]
     list_per_page = 10
     form = TeamRosterAdminForm
@@ -85,4 +85,12 @@ class CaptainAdmin(admin.ModelAdmin):
     form = CaptainAdminForm
 
 admin.site.register(Captain,CaptainAdmin)
-admin.site.register(FreeAgent)
+class FreeAgentAdminForm(forms.ModelForm):
+    model = FreeAgent
+
+class FreeAgentAdmin(ModerationAdmin):
+    list_display = ('name','eligible','server','position')
+    search_fields = ['name']
+    list_per_page = 20
+    form = FreeAgentAdminForm
+admin.site.register(FreeAgent,FreeAgentAdmin)
