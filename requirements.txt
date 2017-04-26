@@ -1,3 +1,4 @@
+appdirs==1.4.0
 appnope==0.1.0
 beautifulsoup4==4.5.1
 coverage==4.0.2
@@ -7,17 +8,21 @@ Django==1.9.2
 django-el-pagination==3.0.1
 django-jsonfield==1.0.1
 django-mathfilters==0.4.0
+django-mobile==0.7.0
 django-model-utils==2.6
+django-moderation==0.4.0
 django-notify-x==0.1.6
--e git+git://github.com/vivaelnino9/pm.git#egg=pm
+-e git://github.com/vivaelnino9/pm.git@e9cf56c8aa66c5b00973975b28dc65531a64aa60#egg=django_postman
 django-tables2==1.2.6
 elasticsearch==5.0.1
+gspread==0.6.2
 gunicorn==19.4.5
 ipaddress==1.0.14
 ipython==5.1.0
 ipython-genutils==0.1.0
 jsonfield==1.0.3
 lxml==3.6.4
+packaging==16.8
 pexpect==4.2.1
 pickleshare==0.7.4
 Pillow==3.4.2
@@ -26,7 +31,9 @@ psycopg2==2.6.2
 ptyprocess==0.5.1
 pygeoip==0.3.2
 Pygments==2.1.3
+pyparsing==2.1.10
 pytz==2015.7
+requests==2.13.0
 simplegeneric==0.8.1
 six==1.10.0
 sorl-thumbnail==12.3
