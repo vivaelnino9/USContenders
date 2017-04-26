@@ -1,4 +1,5 @@
 import json
+import inspect
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from bs4 import NavigableString
@@ -34,13 +35,14 @@ def make_players():
                       for td in [tr.findAll('td')
                                  for tr in soup.find('tbody').findAll('tr')]]
             for player in col_values[1:]:
-                if player is not None:
+                if player is not None and player not in players:
                     players.append(str(player))
-
+    pk = 1
     for player in players:
-        players_data.append(make_user(player,players.index(player)+1))
+        players_data.append(make_user(player,pk))
+        pk += 1
+    pk = 1
     for player in players:
-        pk = (players.index(player)+1)
         p = OrderedDict()
         p['pk'] = pk
         p['model'] = 'usc_app.Player'
@@ -53,7 +55,7 @@ def make_players():
         p['fields']['hold'] = 0
         p['fields']['returns'] = 0
         players_data.append(p)
-
+        pk += 1
     return make_rosters(players,players_data,soup)
 
 
@@ -90,7 +92,6 @@ def make_rosters(players,players_data,soup):
         r['pk'] = roster_pk
         r['model'] = 'usc_app.Roster'
         r['fields'] = OrderedDict()
-        r['fields']['eligible'] = True
         r['fields']['team_name'] = roster
         r['fields']['rank'] = 0
         r['fields']['abv'] = 'temp'
@@ -154,17 +155,19 @@ def make_free_agents(stats_data):
     page = urlopen(sheet)
     soup = BeautifulSoup(page,'lxml')
     rows = soup.find_all('tr')
-
     free_agents_data = []
+    pk = (len(players)+1)
     for row in rows[3:]:
         cells = row.find_all('td')
+        name = cells[0].string
+        if name in players:
+            break
         f = OrderedDict()
-        pk = (rows.index(row)+1)*10
         f['pk'] = pk
         f['model'] = 'usc_app.FreeAgent'
         f['fields'] = OrderedDict()
         if len(cells) >= 9:
-            name = cells[0].string
+            # name = cells[0].string
             if name == None:
                 name = cells[0].get_text()
             free_agents_data.append(make_user(name,pk))
@@ -200,8 +203,8 @@ def make_free_agents(stats_data):
             else:
                 f['fields']['additional_notes'] = cells[9].string
             free_agents_data.append(f)
-        # print('~~~~~~~~~~~~')
-        free_agents_data += stats_data
+            pk += 1
+    free_agents_data += stats_data
     return free_agents_data
 
 def make_user(player,pk):
@@ -210,6 +213,7 @@ def make_user(player,pk):
     u['model'] = 'usc_app.User'
     u['fields'] = OrderedDict()
     u['fields']['username'] = player
+    u['fields']['password'] = 'pbkdf2_sha256$24000$NzMo0xEOPckW$djY6Gmm1IP0gBhsUqlvkOpH3aCqc4vsFmzd3YW1RFC4='
     return u
 
 def stats_fields(dic,pointer,cells):
@@ -221,12 +225,17 @@ def stats_fields(dic,pointer,cells):
         if cells[i].string[0] == '▼':
             s['fields']['change'] = -(int(cells[i].string[1:]))
         else:
-            s['fields']['change'] = int(cells[i].string[1:])
+            if cells[i].string[1] == '▼':
+                s['fields']['change'] = int(cells[i].string[2:])
+            else:
+                s['fields']['change'] = int(cells[i].string[1:])
     i+=1
     s['fields']['team'] = cells[i].string #4/3
     s['fields']['abv'] = 'temp'
     i+=2
-    if cells[i].string[-1] == 'L': #6/5
+    if cells[i].string is None: #6/5
+        s['fields']['streak'] = 0
+    elif cells[i].string[-1] == 'L':
         s['fields']['streak'] = -(int(cells[i].string[:-1]))
     elif cells[i].string[-1] == 'W':
         s['fields']['streak'] = int(cells[i].string[:-1])
@@ -265,7 +274,10 @@ def stats_fields(dic,pointer,cells):
     i+=1
     s['fields']['CD'] = int(cells[i].string)
     i+=1
-    s['fields']['CDperG'] = float(cells[i].string)
+    if cells[i].string == '-':
+        s['fields']['CDperG'] = 0
+    else:
+        s['fields']['CDperG'] = float(cells[i].string)
     return s
 
 
