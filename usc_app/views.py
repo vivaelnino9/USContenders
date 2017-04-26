@@ -25,7 +25,7 @@ def index(request):
     return render(request, 'index.html')
 
 def roster_table(request):
-    queryset = Roster.objects.filter(eligible=True)
+    queryset = Roster.objects.all()
     table = RosterTable(queryset)
     players = Player.objects.all()
     table.order_by = 'rank'
@@ -44,7 +44,7 @@ def roster_table(request):
 def team_page(request,team_name):
     currentUser = request.user
     team = Roster.objects.filter(team_name=team_name).first()
-    rosters = Roster.objects.filter(eligible=True).order_by('rank')
+    rosters = Roster.objects.all().order_by('rank')
     currentChallenges = Challenge.objects.filter(Q(challenger=team.id)|Q(challenged=team.id)).filter(played=False)
     stats = Stats.objects.filter(team=team_name)
     table = StatsTable(stats)
@@ -88,10 +88,10 @@ def team_page(request,team_name):
             'challengersList':challengersList,
         })
 def player_page(request,player_name,team_name):
-    rosters = Roster.objects.filter(eligible=True).order_by('rank')
+    rosters = Roster.objects.all().order_by('rank')
     player = Player.objects.filter(name=player_name).first()
     captain = Captain.objects.filter(name=player_name).first()
-    team = Roster.objects.filter(team_name=team_name,eligible=True).first()
+    team = Roster.objects.filter(team_name=team_name).first()
     rank = team.rank
     return render(request,'player_page.html',{
         'rosters':rosters,
@@ -145,7 +145,6 @@ def challenge_with_arg(request,team_challenged):
             challenge.challenger = challengingTeam
             challenge.challenged = challengedTeam
             challenge.save()
-            #Roster.objects.filter(abv=team1).update(rank = F('rank')+1)
             challenger.update(challengeOut=F('challengeOut')+1)
             challenged.update(challengeIn=F('challengeIn')+1)
             notify.send(challengingTeam.captain.user, recipient=challengedTeam.captain.user, actor=challengingTeam,
@@ -188,7 +187,6 @@ def roster_register(request):
         roster_form = RosterForm(request.POST,request.FILES)
         if roster_form.is_valid():
             roster = roster_form.save(commit=False)
-            roster.eligible = False
             roster.abv = 'temp'
             rank = (Roster.objects.all().order_by('-rank')[0].rank)+1 if Roster.objects.count() > 0 else 1
             roster.rank = rank
@@ -212,9 +210,7 @@ def player_register(request):
         if FA_form.is_valid():
 
             FA = FA_form.save(commit=False)
-            user = User.objects.create(username=FA.name)
-            FA.user = user
-
+            user = User.objects.get(username=FA.name) if User.objects.filter(username=FA.name).exists() else User.objects.create(username=FA.name)
             FA.save()
 
             registered = True
@@ -283,7 +279,8 @@ def search(request):
         query = request.GET.get('s',None)
         if query is not None and query is not '':
             players = User.objects.filter(username__icontains=query)
-            teams = Roster.objects.filter(team_name__icontains=query,eligible=True)
+            # teams = Roster.objects.filter(team_name__icontains=query,eligible=True)
+            teams = Roster.objects.filter(team_name__icontains=query)
             total = players.count()+teams.count()
     return render(request,'search.html',{
         'players':players,
@@ -300,8 +297,10 @@ def notifications(request):
 
 def score_submit(request,challenge_id):
     challenge = Challenge.objects.filter(pk=challenge_id)
-    challenger_roster = Roster.objects.filter(team_name=challenge[0].challenger.team_name,eligible=True)
-    challenged_roster = Roster.objects.filter(team_name=challenge[0].challenged.team_name,eligible=True)
+    # challenger_roster = Roster.objects.filter(team_name=challenge[0].challenger.team_name,eligible=True)
+    # challenged_roster = Roster.objects.filter(team_name=challenge[0].challenged.team_name,eligible=True)
+    challenger_roster = Roster.objects.filter(team_name=challenge[0].challenger.team_name)
+    challenged_roster = Roster.objects.filter(team_name=challenge[0].challenged.team_name)
     challenger_stats = Stats.objects.filter(team=challenge[0].challenger.team_name)
     challenged_stats = Stats.objects.filter(team=challenge[0].challenged.team_name)
     submitted=False
@@ -445,3 +444,13 @@ def forfeit(request, challenge_id):
     challenge.delete()
 
     return HttpResponseRedirect(reverse('team',kwargs={'team_name':request.user.team}))
+def drop_player(request,team_name,player_name):
+    player = Player.objects.filter(name=player_name)
+    User.objects.filter(username=player.first().name).update(team='')
+    player.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def add_player(request):
+    # player = Player.objects.filter(name=player_name) if Player.objects.filter(name=player_name).exists() else Player.objects.create(name=player_name)
+    print('kek')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

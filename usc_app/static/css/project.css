@@ -181,7 +181,7 @@ tr, tr th {
     text-align: center;
 }
 th {
-    min-width: 20px;
+    min-width: 30px;
 }
 th.orderable>a {
     padding-right: 20px;
@@ -380,10 +380,62 @@ thead tr {
 .rosterInfo {
     border: transparent;
 }
+.player:hover {
+    text-decoration: none;
+}
 .player {
     font-size: 1.35rem;
     font-weight: bold;
-    text-align: : center;
+}
+.dropPlayer {
+    display: none;
+}
+.dropPlayer, .addPlayer {
+    border: none;
+}
+.dropButton {
+    color: red;
+    font-size: 12px;
+    background-color: white;
+    border: 1px grey solid;
+    margin-left: 5px;
+    padding: 5px;
+    box-shadow: 1.5px 1.5px 1px #888888;
+}
+.dropButton:hover {
+    text-decoration: none;
+}
+#dropButton {
+    padding: 1px 5px 3px 5px;
+    margin-left: 20px;
+}
+.addButton {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    text-decoration: none;
+    padding: 4px;
+}
+.addButton:hover {
+    text-decoration: none;
+    color: #4f5356;
+}
+.rosterDivider {
+    margin: 5px;
+    border-color: #d2cccc;
+}
+.addDropButtons {
+    padding: 10px 5px 25px 0px;
+}
+.input-group-btn {
+    float: right;
+    margin-right: 45px;
+}
+.test {
+    border: none;
+    float: right;
+    font-size: 21px;
+    background-color: white;
+    color: inherit;
 }
 .teamsToChallenge {
     height: 100%;
@@ -514,6 +566,146 @@ thead tr {
 .playerInfo {
     padding: 0px 20px 20px 20px;
 }
+.playerInfoHeader {
+    text-align: center;
+}
+.playerBio {
+    font-size: 20px;
+    text-align: center;
+    color: #aaaaaa;
+}
+.trophyCase {
+    padding: 20px;
+    text-align: center;
+}
+.trophies, .trophies p {
+    text-align: center;
+    color: #aaaaaa;
+}
+.awards {
+    text-align: center;
+    padding-bottom: 20px;
+}
+.awards h2 {
+    text-align: center;
+    padding-top: 10px;
+}
+.awards p {
+    color: #aaaaaa;
+}
+#careerStats {
+    padding: 0px 15px 0px 15px;
+    margin: 0px;
+    float: left;
+}
+#careerStatCard {
+    margin-bottom: 20px;
+    margin-top: 40px;
+    padding: 20px;
+}
+.careerStatHeader {
+    text-align: center;
+    font-weight: bold;
+    font-size: 36px;
+}
+.careerStatTable {
+    margin-top: 15px;
+}
+.careernumber {
+    text-align: center;
+    width: 160px;
+    font-size: 40px;
+    color: rgba(150, 150, 150, 1.0);
+    padding: 8px 8px 8px 8px;
+}
+
+/* endPlayerPage */
+
+
+/* Challenge */
+
+.thead-inverse th {
+    background-color: #0275d8;
+}
+#PTrue {
+    background-color: lightgrey;
+}
+
+/* endChallenge */
+
+
+/* SearchResults */
+
+.resultsPage {
+    background-color: #d3d3d3;
+    margin-top: 20px;
+    text-align: center;
+}
+.searchBar {
+    padding: 20px 0px 0px 40px;
+}
+.searchInput {
+    text-indent: 10px;
+    height: 46px;
+    width: 300px;
+}
+.resultsTable {
+    margin: 0px 500px 40px 500px;
+    padding-bottom: 20px;
+    font-size: 30px;
+}
+.playerResults {
+    margin-top: 40px;
+}
+.result {
+    padding: 10px 20px 10px 0px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
+}
+.teamResults {
+    padding: 0px;
+    padding: 20px 0px 40px 0px;
+}
+.noResults {
+    padding: 40px 0px 40px 0px;
+}
+
+/* endSearchResults */
+
+
+/* Score Submit */
+
+.scoreForm {
+    text-align: center;
+    padding-top: 20px;
+}
+.scoreHeader {
+    padding-bottom: 10px;
+}
+.scoreSmall {
+    padding-bottom: 20px;
+}
+.scoreTable {
+    width: 300px;
+    margin: 20px 0px 0px 550px;
+}
+.scoreCell {
+    width: 200px;
+}
+.scoreInput {
+    width: 50px;
+    text-align: center;
+}
+#submit {
+    margin-top: 50px;
+    display: none;
+}
+.scoreSuccessHeader {
+    padding: 50px 0px 20px 625px;
+}
+
+/* endScoreSubmit */
+
 .playerInfoHeader {
     text-align: center;
 }

@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 {% load staticfiles mathfilters django_tables2 %}
 
+
 {% block content %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert.css' %}">
+{% endblock %}
+
+
+
 <div class="teamPage">
   {% include "sidebar.html" %}
   <div class="col-lg-10" id="teamInfo">
@@ -28,7 +35,7 @@
           <th class="subTeamNameRow" id="subTeamServer">
             <a href="{% url 'postman:write' team.captain %}?subject=USC Challenge"><img class="crown" src="{% static 'img/message_icon.png' %}" width="16px" height="16px"/></th>
           {% else %}
-          <th class="subTeamNameRow" id="subTeamServer">{{ team.server }}</th>
+          <th class="subTeamNameRow" id="subTeamServer">{{ team.get_server_display }}</th>
           {% endif %}
         </tr>
       </table>
@@ -37,25 +44,117 @@
     <div class="col-lg-3">
       <div class="statcard">
         <div class="roster">
-          <div class="smallCardHeader">Roster</div>
+          <div class="smallCardHeader">
+            Roster
+          </div>
+
           <table class="rosterTable">
-            <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.captain %}">{{ team.captain }}</a></td></tr>
-            {% if team.co_captain %}
-            <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.co_captain %}">{{ team.co_captain }}</a></td></tr>
-            {% if team.member1 and team.member1 != team.captain %}
-            <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member1 %}">{{ team.member1 }}</a></td></tr>
-            {% if team.member2 and team.member2 != team.captain %}
-            <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member2 %}">{{ team.member2 }}</a></td></tr>
-            {% if team.member3 and team.member3 != team.captain %}
-            <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member3 %}">{{ team.member3 }}</a></td></tr>
-            {% if team.member4 and team.member4 != team.captain %}
-            <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member4 %}">{{ team.member4 }}</a></td></tr>
-            {% if team.member5 and team.member5 != team.captain %}
-            <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member5 %}">{{ team.member5 }}</a></td></tr>
-            {% if team.member6 and team.member6 != team.captain %}
-            <tr><td class="rosterInfo"><a class="player" href="{% url 'player' team team.member6 %}">{{ team.member6 }}</a></td></tr>
-            {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}
+            <!-- <button style="float:right;border:1px grey solid;font-size:12px;background-color:white;margin-right:5px;">edit</button> -->
+              <!-- <tr style="float:right;"><td style="border:none;font-size:12px;margin-right:5px;background-color:white;"></td></tr> -->
+            <form action="#" method="get">
+              <!-- Captain -->
+              <tr>
+                <td class="rosterInfo"><a class="player" href="{% url 'player' team team.captain %}">{{ team.captain }}</a></td>
+                <td class="dropPlayer" title="Drop Player"><button id="dropButton" class="btn btn-danger btn-sm">x</button></td>
+              </tr>
+              <!-- Co-Captain -->
+              {% if team.co_captain %}
+                <tr>
+                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.co_captain %}">{{ team.co_captain }}</a></td>
+                  <td class="dropPlayer" title="Drop {{ team.co_captain }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.co_captain }}" >x</button>
+                </tr>
+              {% else %}
+                <!-- <tr><td>add player</td><tr> -->
+                <tr><td style="border:none;">—</td></tr>
+              {% endif %}
+              <!-- Member1 -->
+              {% if team.member1 %}
+                <tr>
+                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member1 %}">{{ team.member1 }}</a></td>
+                  <td class="dropPlayer" title="Drop {{ team.member1 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member1 }}" >x</button>
+                </tr>
+              {% else %}
+                <!-- <tr><td>add player</td><tr> -->
+                <tr><td style="border:none;">—</td></tr>
+              {% endif %}
+              <!-- Member2 -->
+              {% if team.member2 %}
+                {% if team.member2.user.username != team.captain.name %}
+                <tr>
+                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member2 %}">{{ team.member2 }}</a></td>
+                  <td class="dropPlayer" title="Drop {{ team.member2 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member2 }}" >x</button>
+                </tr>
+                {% endif %}
+              {% else %}
+                <!-- <tr><td>add player</td><tr> -->
+                <tr><td style="border:none;">—</td></tr>
+              {% endif %}
+              <!-- Member3 -->
+              {% if team.member3 %}
+                {% if team.member3.user.username != team.captain.name %}
+                <tr>
+                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member3 %}">{{ team.member3 }}</a></td>
+                  <td class="dropPlayer" title="Drop {{ team.member3 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member3 }}" >x</button>
+                </tr>
+                {% endif %}
+              {% else %}
+                <!-- <tr><td>add player</td><tr> -->
+                <tr><td style="border:none;">—</td></tr>
+              {% endif %}
+              <!-- Member4 -->
+              {% if team.member4 %}
+                {% if team.member4.user.username != team.captain.name %}
+                <tr>
+                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member4 %}">{{ team.member4 }}</a></td>
+                  <td class="dropPlayer" title="Drop {{ team.member4 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member4 }}" >x</button>
+                </tr>
+                {% endif %}
+              {% else %}
+              <!-- <tr><td>add player</td><tr> -->
+              <tr><td style="border:none;">—</td></tr>
+              {% endif %}
+              <!-- Member5 -->
+              {% if team.member5 %}
+                {% if team.member5.user.username != team.captain.name %}
+                <tr>
+                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member5 %}">{{ team.member5 }}</a></td>
+                  <td class="dropPlayer" title="Drop {{ team.member5 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member5 }}" >x</button>
+                </tr>
+                {% endif %}
+              {% else %}
+              <!-- <tr><td class="addPlayer" title="Add Player"><button class="addButton" onclick="location.href='{% url 'add_player' team %}';">add player</button></td><tr> -->
+              <tr><td style="border:none;">—</td></tr>
+              {% endif %}
+              <!-- Member6 -->
+              {% if team.member6 %}
+                {% if team.member6.user.username != team.captain.name %}
+                <tr>
+                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member6 %}">{{ team.member6 }}</a></td>
+                  <td class="dropPlayer" title="Drop {{ team.member6 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member6 }}">x</button>
+                </tr>
+                {% endif %}
+              {% else %}
+              <tr><td style="border:none;">—</td></tr>
+              <!-- <tr><td class="addPlayer" title="Add Player"><a href="{% url 'add_player' team %}" class="addButton">add player</a></td><tr> -->
+              {% endif %}
+            </form>
           </table>
+          <hr class="rosterDivider">
+          <div class="addDropButtons">
+            <span class="input-group-btn">
+              <button type="button" id="drop_button"class="btn btn-danger btn-number" data-type="plus" data-field="quant[2]">
+                  <span class="glyphicon glyphicon-plus">-</span>
+              </button>
+            </span>
+            <span class="input-group-btn">
+              <button type="button" id="add_button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                  <span class="glyphicon glyphicon-plus">+</span>
+              </button>
+            </span>
+            <!-- <button class="test">+</button>
+            <button class="test">-</button> -->
+          </div>
+
         </div>
       </div>
     </div>
@@ -174,7 +273,37 @@
         </div>
       </div>
     </div>
+
+<script src="{% static 'js/drop_player.js' %}"></script>
 <script>
+
+$("#add_button").click(function(){
+  event.preventDefault()
+  swal({
+    title: "Add a player!",
+    text: "Write the player's name:",
+    type: "input",
+    showCancelButton: true,
+    closeOnConfirm: false,
+    animation: "slide-from-top",
+    inputPlaceholder: "i.e. Rattpack"
+  },
+  function(inputValue){
+    if (inputValue === false) return false;
+
+    if (inputValue === "") {
+      swal.showInputError("You need to write something!");
+      return false
+    }
+    $.post({
+        url: {% url 'add_player' %},
+        success: function() {
+           swal("Nice!", "You wrote: " + inputValue, "success");
+        }
+    });
+  });
+});
+
 {% if stats.streak < 0 %}$('#streak').attr('id', 'negative');{% elif stats.streak > 0 %}$('#streak').attr('id', 'positive');{% else %}{% endif %}
 {% if stats.challengeOut == 2 %}$('#challengeOut').attr('id', 'negative');{% endif %}
 {% if stats.challengeIn == 2 %}$('#challengeIn').attr('id', 'negative');{% endif %}
@@ -187,4 +316,5 @@
 {% if stats.change %}
   $('#change').attr('id','positive').replaceWith('<td class="change" id="positive">' + '▲' + String({{ stats.change }}) + '</td>');{% endif %}
 </script>
+
 {% endblock %}

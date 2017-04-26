@@ -196,6 +196,29 @@ class FAForm(forms.ModelForm):
             msg = 'Please link your tagpro profile! (i.e. http://tagpro-radius.koalabeast.com/profile/52ca4d0cd00099041a0002e9)'
             self.add_error('tagpro_profile',msg)
         if User.objects.filter(username=name).exists():
-            msg = name+' is already on a team!'
-            self.add_error('name', msg)
+            user = User.objects.get(username=name)
+            if user.team != '':
+                msg = name+' is already on a team!'
+                self.add_error('name', msg)
         return cleaned_data
+class AddPlayerForm(forms.ModelForm):
+    name = forms.CharField(label='Name',max_length=50)
+    class Meta:
+        model = Player
+        fields = (
+            'name',
+        )
+
+    def clean(self):
+        cleaned_data = super(AddPlayerForm, self).clean()
+        name = cleaned_data.get('name')
+        if User.objects.filter(username=name).exists():
+            user = User.objects.get(username=name)
+            if user.team != '':
+                msg = name+' is already on a team!'
+                self.add_error('name', msg)
+            else:
+                self.user = user
+        else:
+            user = User.objects.create(username=name)
+            self.user = user
