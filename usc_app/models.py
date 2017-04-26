@@ -32,7 +32,7 @@ class Player(models.Model):
         return self.name
 
 class FreeAgent(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User,verbose_name='User')
     name = models.CharField(max_length=50,verbose_name='Name')
     eligible = models.BooleanField(verbose_name='Eligible?',default=True)
     server = models.IntegerField(
@@ -67,7 +67,7 @@ class FreeAgent(models.Model):
         return self.name
 
 class Roster(models.Model):
-    eligible = models.BooleanField(default=False)
+    # eligible = models.BooleanField(default=False)
     team_name = models.CharField(max_length=50)
     abv = models.CharField(max_length=4)
     rank = models.PositiveIntegerField()
@@ -80,49 +80,49 @@ class Roster(models.Model):
     )
     co_captain = models.ForeignKey(
         Player,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='co_captain',
         verbose_name='Co-Captain',
         blank=True,null=True
     )
     member1 = models.ForeignKey(
         Player,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='member1',
         verbose_name='Member1',
         blank=True,null=True
     )
     member2 = models.ForeignKey(
         Player,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='member2',
         verbose_name='Member2',
         blank=True,null=True
     )
     member3 = models.ForeignKey(
         Player,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='member3',
         verbose_name='Member3',
         blank=True,null=True
     )
     member4 = models.ForeignKey(
         Player,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='member4',
         verbose_name='Member4',
         blank=True,null=True
     )
     member5 = models.ForeignKey(
         Player,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='member5',
         verbose_name='Member5',
         blank=True,null=True
     )
     member6 = models.ForeignKey(
         Player,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='member6',
         verbose_name='Member6',
         blank=True,null=True
@@ -139,6 +139,7 @@ class Roster(models.Model):
         upload_to='photos',
         blank=True
     )
+
     class Meta:
         db_table = 'rosters'
     def __str__(self):
