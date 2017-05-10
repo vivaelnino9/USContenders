@@ -20,7 +20,7 @@ class ChallengeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         request = kwargs.pop('request', None)
         super(ChallengeForm, self).__init__(*args, **kwargs)
-        challenger = Roster.objects.filter(team_name=request.user.first_name).first()
+        challenger = Roster.objects.filter(team_name=request.user.team).first()
         canChallenge = challenger.getChallengers()
         ranks = []
         for rank,challenged in canChallenge.items():
