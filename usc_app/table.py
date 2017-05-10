@@ -5,7 +5,11 @@ from django_tables2.utils import A
 from django.utils.html import format_html
 
 class RosterTable(tables.Table):
-    team_name = tables.LinkColumn('team',args=[A('team_name')], verbose_name="Team",)
+    team_name = tables.LinkColumn(
+        'team',
+        args=[A('team_name')],
+        verbose_name="Team",
+        )
     rank = tables.Column(verbose_name="Rank")
     captain = tables.LinkColumn('player',args=[A('team_name'),A('captain')],orderable=False, verbose_name="Captain")
     co_captain = tables.LinkColumn(
@@ -57,7 +61,7 @@ class RosterTable(tables.Table):
         exclude = ('id','firstActive','daysActive','logo','abv')
         attrs = {'class': 'table'}
         row_attrs = {
-            'id': lambda record: 'diamond' if record.rank < 6 else 'gold' if record.rank < 21 and record.rank > 5 else 'silver' if record.rank > 20 else 'none'
+            'class': lambda record: 'diamond' if record.rank < 6 else 'gold' if record.rank < 21 and record.rank > 5 else 'silver' if record.rank > 20 else 'none'
         }
 class StatsTable(tables.Table):
     change = tables.Column(
@@ -127,26 +131,27 @@ class StatsTable(tables.Table):
         model = Stats
         exclude = ('id','lastActive','team','abv','rank')
         attrs = {
-            'class': 'subTeamName',
+            'class': 'subTeamStats table',
             'align': 'center',
-            'th': {
-                'id' : 'statTableHeader'
-            }
         }
 
     def render_uscmRank(self,value):
         if value == 0:
             value = '-'
         return value
+    def render_highestRank(self,value):
+        if value == 0:
+            value = '-'
+        return value
 class ResultsTable(tables.Table):
     challenger = tables.LinkColumn('team',args=[A('challenger')])
     challenged = tables.LinkColumn('team',args=[A('challenged')])
-    g1_results = tables.URLColumn()
-    g2_results = tables.URLColumn()
+    g1_results = tables.URLColumn(orderable=False,)
+    g2_results = tables.URLColumn(orderable=False,)
     class Meta:
         model = Challenge
         exclude = ('id',)
-        attrs = {'class': 'table'}
+        attrs = {'class': 'table current'}
         row_attrs = {
             'id': lambda record: 'P' + str(record.played)
         }
@@ -164,7 +169,7 @@ class FATable(tables.Table):
     class Meta:
         model = FreeAgent
         exclude = ('id','user')
-        attrs = {'class': 'table'}
+        attrs = {'class': 'table current'}
 
     def render_tagpro_profile(self,value):
         return format_html('<a target="_blank" href="{}" style="color:#2b2b2b;" />Tagpro', value,value)
@@ -172,3 +177,62 @@ class FATable(tables.Table):
         return format_html('<a target="_blank" href="{}" style="color:#ff4500;" />Reddit', value,value)
     def render_tagpro_stats(self,value):
         return format_html('<a target="_blank" href="{}" style="color:#428bca;" />Stats', value,value)
+
+class CurrentChallenges(tables.Table):
+    challenger = tables.LinkColumn(
+        'team',
+        args=[A('challenger')],
+        verbose_name="Challenger",
+        orderable=False,
+    )
+    challenged = tables.LinkColumn(
+        'team',
+        args=[A('challenged')],
+        verbose_name="Challenged",
+        orderable=False,
+    )
+    map = tables.Column(orderable=False,)
+    challenge_date = tables.DateColumn(
+        verbose_name="Challenge Date",
+        orderable=False,
+    )
+    forfeit_date = tables.DateColumn(
+        verbose_name="Forfeit Date",
+        orderable=False,
+    )
+    void_date = tables.DateColumn(
+        verbose_name="Void Date",
+        orderable=False,
+    )
+    class Meta:
+        model = Challenge
+        exclude = ('id','played','play_date','g1_results','g2_results')
+        attrs = {'class': 'table current','id':'current'}
+
+class ChallengersTable(tables.Table):
+    rank = tables.Column(orderable=False,)
+    team = tables.LinkColumn(
+        'team',
+        args=[A('team')],
+        verbose_name="Team",
+        orderable=False,
+    )
+    challengerIn = tables.Column(
+        verbose_name="Challenges In",
+        orderable=False,
+    )
+    challengerOut = tables.Column(
+        verbose_name="Challenges Out",
+        orderable=False,
+    )
+    challengerStreak = tables.Column(
+        verbose_name="Streak",
+        orderable=False,
+    )
+    lastActive = tables.DateColumn(
+        verbose_name="Last Active",
+        orderable=False,
+    )
+
+    class Meta:
+        attrs = {'class': 'table current'}

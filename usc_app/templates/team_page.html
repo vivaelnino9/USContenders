@@ -11,7 +11,9 @@
 
 
 <div class="teamPage">
+  {% if flavour == 'full' %}
   {% include "sidebar.html" %}
+  {% endif %}
   <div class="col-lg-10" id="teamInfo">
     <div class="col-lg-12 statcard" id="teamName">
       <h1 class="teamNameHeader">{{ team.team_name }}</h1>
@@ -49,8 +51,6 @@
           </div>
 
           <table class="rosterTable">
-            <!-- <button style="float:right;border:1px grey solid;font-size:12px;background-color:white;margin-right:5px;">edit</button> -->
-              <!-- <tr style="float:right;"><td style="border:none;font-size:12px;margin-right:5px;background-color:white;"></td></tr> -->
             <form action="#" method="get">
               <!-- Captain -->
               <tr>
@@ -64,8 +64,7 @@
                   <td class="dropPlayer" title="Drop {{ team.co_captain }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.co_captain }}" >x</button>
                 </tr>
               {% else %}
-                <!-- <tr><td>add player</td><tr> -->
-                <tr><td style="border:none;">—</td></tr>
+              <tr><td class="emptySpot">—</td></tr>
               {% endif %}
               <!-- Member1 -->
               {% if team.member1 %}
@@ -74,8 +73,7 @@
                   <td class="dropPlayer" title="Drop {{ team.member1 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member1 }}" >x</button>
                 </tr>
               {% else %}
-                <!-- <tr><td>add player</td><tr> -->
-                <tr><td style="border:none;">—</td></tr>
+              <tr><td class="emptySpot">—</td></tr>
               {% endif %}
               <!-- Member2 -->
               {% if team.member2 %}
@@ -86,8 +84,7 @@
                 </tr>
                 {% endif %}
               {% else %}
-                <!-- <tr><td>add player</td><tr> -->
-                <tr><td style="border:none;">—</td></tr>
+              <tr><td class="emptySpot">—</td></tr>
               {% endif %}
               <!-- Member3 -->
               {% if team.member3 %}
@@ -98,8 +95,7 @@
                 </tr>
                 {% endif %}
               {% else %}
-                <!-- <tr><td>add player</td><tr> -->
-                <tr><td style="border:none;">—</td></tr>
+              <tr><td class="emptySpot">—</td></tr>
               {% endif %}
               <!-- Member4 -->
               {% if team.member4 %}
@@ -110,8 +106,7 @@
                 </tr>
                 {% endif %}
               {% else %}
-              <!-- <tr><td>add player</td><tr> -->
-              <tr><td style="border:none;">—</td></tr>
+              <tr><td class="emptySpot">—</td></tr>
               {% endif %}
               <!-- Member5 -->
               {% if team.member5 %}
@@ -122,8 +117,7 @@
                 </tr>
                 {% endif %}
               {% else %}
-              <!-- <tr><td class="addPlayer" title="Add Player"><button class="addButton" onclick="location.href='{% url 'add_player' team %}';">add player</button></td><tr> -->
-              <tr><td style="border:none;">—</td></tr>
+              <tr><td class="emptySpot">—</td></tr>
               {% endif %}
               <!-- Member6 -->
               {% if team.member6 %}
@@ -134,8 +128,7 @@
                 </tr>
                 {% endif %}
               {% else %}
-              <tr><td style="border:none;">—</td></tr>
-              <!-- <tr><td class="addPlayer" title="Add Player"><a href="{% url 'add_player' team %}" class="addButton">add player</a></td><tr> -->
+              <tr><td class="emptySpot">—</td></tr>
               {% endif %}
             </form>
           </table>
@@ -151,8 +144,6 @@
                   <span class="glyphicon glyphicon-plus">+</span>
               </button>
             </span>
-            <!-- <button class="test">+</button>
-            <button class="test">-</button> -->
           </div>
 
         </div>
@@ -162,69 +153,13 @@
       <div class="statcard">
         <div class="teamsToChallenge">
           <div class="smallCardHeader">Current Challenges</div>
-          <table class="challengeTable">
-            {% if not currentChallenges|length_is:"0" or not currentChallenges|length_is:"0" %}
-            <tr>
-              <th class="challengeHeader">Challenger</th>
-              <th class="challengeHeader">Challenged</th>
-              <th class="challengeHeader">Map</th>
-              <th class="challengeHeader">Challenge Date</th>
-              <th class="challengeHeader">Forfeit Date </th>
-              <th class="challengeHeader">Void Date </th>
-            </tr>
-            {% for challenge in currentChallenges %}
-            <tr class="currentChallengesRow">
-              <td class="challengeRow"><a href="{% url 'team' challenge.challenger.team_name %}">{{ challenge.challenger.team_name }}</a><br></td>
-              <td><a href="{% url 'team' challenge.challenged.team_name %}">{{ challenge.challenged.team_name }}</a><br></td>
-              <td>{{ challenge.map }}</td>
-              <td>{{ challenge.challenge_date.month }}/{{ challenge.challenge_date.day }}/{{ challenge.challenge_date.year|sub:2000 }}</td>
-              <td>{{ challenge.forfeit_date.month }}/{{ challenge.forfeit_date.day }}/{{ challenge.forfeit_date.year|sub:2000 }}</td>
-              <td>{{ challenge.void_date.month }}/{{ challenge.void_date.day }}/{{ challenge.void_date.year|sub:2000 }}</td>
-              {% if team.team_name == request.user.team %}
-              <td style="border:none;background-color:white;display: block;"><a style="color:indianred;font-size:12px;padding-left:5px;" href="{% url 'forfeit' challenge.id %}" onclick="return confirm('Are you sure want to forfeit?');">forfeit?</a></td>
-              <td style="border:none;background-color:white;display: block;"><a style="color:cornflowerblue;font-size:12px;padding-left:5px;" href="{% url 'submit' challenge.id %}">submit</a></td>
-              {% endif %}
-            </tr>
-            {% endfor %}
-            {% else %}
-            <tr><td class="challengeRow">No current challenges!</td></tr>
-            {% endif %}
-          </table>
+          {% render_table current %}
         </div>
       </div>
       <div class="statcard">
         <div class="teamsToChallenge">
           <div class="smallCardHeader">Teams to Challenge</div>
-          <table class="challengeTable">
-            {% if not challengersList == None and not challengersList|length_is:"0" %}
-            <tr>
-  						<th class="challengeHeader" id="challengeRank">Rank</th>
-              <th class="challengeHeader" id="challengeTeam">Team</th>
-              <th class="challengeHeader">Challenges In</th>
-              <th class="challengeHeader">Challenges Out</th>
-              <th class="challengeHeader">Streak</th>
-              <th class="challengeHeader">Last Active</th>
-            </tr>
-            {% for rank,roster in challengersList.items %}
-            <tr class="currentChallengesRow">
-              <td class="challengeRow" id="challengeCellRank">{{ rank }}</td>
-              <td class="challengeRow" id="challengeCellTeam"><a class="challengeTeamLink" href="{% url 'team' roster.team %}">{{ roster.team }}</a><br></td>
-              <td class="challengeRow" id="challengeCellIn" {% if roster.challengeIn == 2 %}style="color:red;"{% endif %}>
-                {{ roster.challengeIn }}</td>
-              <td class="challengeRow" >
-                {{ roster.challengeOut }}</td>
-              <td class="challengeRow">
-                {% if roster.streak < 0 %}{{ roster.streak|abs }}L
-                {% elif roster.streak > 0 %}{{ roster.streak }}W
-                {% else %}--{% endif %}
-              </td>
-              <td class="challengeRow">{% if roster.lastActive %}{{ roster.lastActive.month }}/{{ roster.lastActive.day }}/{{ roster.lastActive.year|sub:2000 }}{% else %}--{% endif %}</td>
-            </tr>
-            {% endfor %}
-            {% else %}
-            <tr><td class="challengeRow">You can't challenge anyone!</td></tr>
-            {% endif %}
-          </table>
+            {% render_table challengers %}
         </div>
       </div>
     </div>
@@ -235,7 +170,7 @@
           <div class="smallCardHeader">Recent Games</div>
           {% for game in recentGames %}
           <div class="gameLogoContainer">
-            <img class="gameLogo" src="{% static 'img/boostin_dynamo.png' %}"/>
+            <img class="gameLogo" src="{% static 'img/no_image.png' %}"/>
             <table class="scheduleScores">
               <tr>
                 <td>{{ game.challenger }}</td>
@@ -274,7 +209,9 @@
       </div>
     </div>
 
+<script src="{% static 'js/stats_table.js' %}"></script>
 <script src="{% static 'js/drop_player.js' %}"></script>
+
 <script>
 
 $("#add_button").click(function(){
@@ -304,17 +241,17 @@ $("#add_button").click(function(){
   });
 });
 
-{% if stats.streak < 0 %}$('#streak').attr('id', 'negative');{% elif stats.streak > 0 %}$('#streak').attr('id', 'positive');{% else %}{% endif %}
-{% if stats.challengeOut == 2 %}$('#challengeOut').attr('id', 'negative');{% endif %}
-{% if stats.challengeIn == 2 %}$('#challengeIn').attr('id', 'negative');{% endif %}
-{% if stats.highestRank > 0 and stats.highestRank < 6 %}$('#highestRank').attr('id', 'diamond');
-{% elif stats.highestRank >= 6 and stats.highestRank < 21 %}$('#highestRank').attr('id', 'gold');
-{% elif stats.highestRank >= 21 and stats.highestRank < 36 %}$('#highestRank').attr('id', 'silver');
-{% elif stats.highestRank >= 36 %}$('#highestRank').attr('id', 'bronze');{% endif %}
-{% if stats.change < 0 %}
-  $('#change').attr('id','negative').replaceWith('<td class="change" id="negative">' + '▼' + String({{ stats.change|abs }}) + '</td>');{% endif %}
-{% if stats.change %}
-  $('#change').attr('id','positive').replaceWith('<td class="change" id="positive">' + '▲' + String({{ stats.change }}) + '</td>');{% endif %}
+// {% if stats.streak < 0 %}$('#streak').attr('id', 'negative');{% elif stats.streak > 0 %}$('#streak').attr('id', 'positive');{% else %}{% endif %}
+// {% if stats.challengeOut == 2 %}$('#challengeOut').attr('id', 'negative');{% endif %}
+// {% if stats.challengeIn == 2 %}$('#challengeIn').attr('id', 'negative');{% endif %}
+// {% if stats.highestRank > 0 and stats.highestRank < 6 %}$('#highestRank').attr('id', 'diamond');
+// {% elif stats.highestRank >= 6 and stats.highestRank < 21 %}$('#highestRank').attr('id', 'gold');
+// {% elif stats.highestRank >= 21 and stats.highestRank < 36 %}$('#highestRank').attr('id', 'silver');
+// {% elif stats.highestRank >= 36 %}$('#highestRank').attr('id', 'bronze');{% endif %}
+// {% if stats.change < 0 %}
+//   $('#change').attr('id','negative').replaceWith('<td class="change" id="negative">' + '▼' + String({{ stats.change|abs }}) + '</td>');{% endif %}
+// {% if stats.change %}
+//   $('#change').attr('id','positive').replaceWith('<td class="change" id="positive">' + '▲' + String({{ stats.change }}) + '</td>');{% endif %}
 </script>
 
 {% endblock %}

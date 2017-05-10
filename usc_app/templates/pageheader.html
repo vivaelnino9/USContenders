@@ -1,15 +1,15 @@
-<div class="headerwrap" {% if team.rank < 6 %} id="diamond"{% elif team.rank >= 6 and team.rank <= 20 %}id="gold"{% elif team.rank >= 20 and team.rank <= 35 %}id="silver"{% elif team.rank > 35 %}id="bronze"{% endif %}>
+<div class="headerwrap {% if team.rank < 6 %}diamond{% elif team.rank >= 6 and team.rank <= 20 %}gold{% elif team.rank >= 20 and team.rank <= 35 %}silver{% elif team.rank > 35 %}bronze{% endif %}">
 		<div class="container" id="header">
 			<div class="row">
 				<div class="col-lg-6">
 					<a class="homeButton" href="{% url 'index' %}">
-						<h1>{% if flavour == "mobile" %}Mobile{% else %}USContenders{% endif %}</h1>
+						{% if flavour == "full" %}<h1>USContenders</h1>{% else %}<h3>USContenders</h3>{% endif %}
 					</a>
 					<form class="form-inline" role="form" action="{% url 'search' %}" method="get">
 					  <div class="form-group">
-          		<input class="searchInput" type="search" name="s" placeholder={% if query %}{{ query }}{% else %}"e.g. Rattpack or Good Kid, C.A.P. City"{% endif %} onfocus="this.placeholder = ' '" value="">
+          		<input class="searchInput" type="search" name="s" placeholder={% if query %}{{ query }}{% else %}"i.e. Rattpack or Pup Fiction"{% endif %} onfocus="this.placeholder = ' '" value="">
 					  </div>
-					  <button type="submit" class="btn btn-warning btn-lg">Search</button>
+					  <button type="submit" class="btn btn-warning btn-{% if flavour == 'full' %}lg{% else %}sm{% endif %}">Search</button>
 					</form>
 				</div>
 				<div class="col-lg-6">

@@ -8,11 +8,19 @@ html, body {
     overflow-x: hidden;
 }
 body {
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
+    /*font-family: 'Lato', sans-serif;*/
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+    /*font-size: 13.5px;*/
 }
 thead a {
     color: #373a3c;
+}
+a:hover {
+    text-decoration: none;
+}
+button:focus {
+    outline: none!important;
 }
 .alert-debug {
     color: black;
@@ -31,29 +39,41 @@ thead a {
     /*background: url(/static/img/soviet_ballers.png);*/
     background-color: #d3d3d3;
     background-repeat: no-repeat;
-    background-size: 161px;
-    background-position: 50% 79%;
+    background-size: 140px;
+    background-position: 60% 70%;
     min-height: 300px;
     padding-top: 100px;
     margin-top: -20px;
     width: 100%;
 }
-.homeButton h1, .homeButton:hover {
+@media screen and (device-aspect-ratio: 40/71) {
+    .headerwrap {
+        padding: 50px 0px 20px 0px;
+        min-height: 200px;
+    }
+}
+.homeButton h1, .homeButton h3, .homeButton:hover {
     font-weight: 900;
     font-family: 'Lato', sans-serif;
     color: #373a3c;
     text-decoration: none;
 }
-#diamond {
+.form-group {
+    display: inline-block;
+}
+.btn-group-lg>.btn, .btn-lg {
+    padding: .5rem 1rem;
+}
+.diamond {
     background-color: #9fc5e8;
 }
-#gold {
+.gold {
     background-color: #ffe38e;
 }
-#silver {
+.silver {
     background-color: #dddddd;
 }
-#bronze {
+.bronze {
     background-color: #eab786;
 }
 .noshowteam {
@@ -101,34 +121,24 @@ thead a {
 .navbar-light .navbar-brand {
     color: white;
 }
-.navbar-light .navbar-nav .nav-link {
+.navbar-light .navbar-brand:hover {
+    color: rgb(70, 70, 70);
+}
+a.navbar-brand {
+    margin-right: 100px;
+}
+a.nav-link {
     color: rgba(255, 255, 255, .4);
-}
-.navbar-light .navbar-nav .nav-link.active {
-    color: rgba(255, 255, 255, 1);
-    font-weight: 600;
-}
-div#bs-navbar-collapse-1 {
     font-weight: 300;
 }
-@media (max-width: 47.9em) {
-    .navbar-nav .nav-item {
-        float: none;
-        width: 100%;
-        display: inline-block;
-    }
-    .navbar-nav .nav-item+.nav-item {
-        margin-left: 0;
-    }
-    .nav.navbar-nav.pull-xs-right {
-        float: none !important;
-    }
+a.nav-link.active {
+    color: rgba(255, 255, 255, 1);
+    font-weight: 600;
 }
 #active {
     color: rgba(255, 255, 255, .7);
 }
 div.container {
-    /*margin: 0px 0px 0px 0px;*/
     padding-left: 0;
     padding-right: 0;
     max-width: 1426px;
@@ -136,16 +146,75 @@ div.container {
 #header {
     margin-left: 100px;
 }
-a.navbar-brand {
-    margin-right: 100px;
+.nav-pills .nav-item.open .nav-link, .nav-pills .nav-item.open .nav-link:focus, .nav-pills .nav-item.open .nav-link:hover, .nav-pills .nav-link.active, .nav-pills .nav-link.active:focus, .nav-pills .nav-link.active:hover {
+    background-color: #6f6f6f;
+}
+.nav-link:hover {
+    background-color: #8c8c8c;
 }
 .nav-item.dropdown {
     float: right;
     padding-right: 100px;
 }
+.dropdown>.dropdown-menu {
+    display: none;
+    position: absolute;
+    border: 1px solid #bdc3c7;
+    min-width: 60px;
+    margin: 0;
+}
+.dropdown.open>.dropdown-menu {
+    display: inline-block;
+}
+
+/*~~~~iPhone 5:~~~~~*/
+
+@media screen and (device-aspect-ratio: 40/71) {
+    .homeButton h1 {
+        font-size: 35px;
+    }
+    .searchInput {
+        width: 10px;
+    }
+    .navbar.navbar-fixed-top.navbar-light.bg-faded {
+        width: 100%;
+    }
+    a.nav-link {
+        padding: 5px!important;
+        color: #373a3c;
+    }
+    li.nav-item.dropdown {
+        padding-right: 0px;
+    }
+    #header {
+        margin: 20px 0px 0px 10px;
+        ;
+    }
+}
+
+/*iPhone 6:*/
+
+
+/*@media screen and (device-aspect-ratio: 375/667) {}*/
+
+
+/*iPhone 6 Plus:*/
+
+
+/*@media screen and (device-aspect-ratio: 16/9) {}*/
+
+
+/*iPad:*/
+
+
+/*@media screen and (device-aspect-ratio: 3/4) {}*/
+
 
 /* endnav*/
 
+.form-wrapper {
+    margin: 15px 0px 15px 0px;
+}
 
 /* Roster Table */
 
@@ -155,8 +224,19 @@ a.navbar-brand {
 .table {
     /*width: 1360px;*/
     height: auto;
+    /*table-layout: fixed;*/
+    /*border-collapse: separate;
+    border-top: 3px solid grey;*/
     /*margin-left: 40px;*/
     /*margin-right: 40px;*/
+}
+.team_name {
+    /*position: absolute;*/
+    border-right: 0px none black;
+    border-top-width: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .tabcontent>.table-container {
     float: left;
@@ -206,9 +286,6 @@ thead tr {
     background-color: #d3d3d3;
     margin-top: 15px;
 }
-
-/* Style the links inside the tab */
-
 .tab a {
     float: left;
     display: block;
@@ -219,21 +296,12 @@ thead tr {
     transition: 0.3s;
     font-size: 17px;
 }
-
-/* Change background color of links on hover */
-
 .tab a:hover {
     background-color: #ddd;
 }
-
-/* Create an active/current tablink class */
-
 .tab a:focus, .activeTab {
     background-color: rgb(185, 185, 185);
 }
-
-/* Style the tab content */
-
 .tabcontent {
     display: none;
     /*padding: 6px 12px;*/
@@ -242,6 +310,9 @@ thead tr {
     border-top: none;
     border-right: none;
     border-left: none;
+}
+.tagpro_profile a, .reddit_info a, .tagpro_stats a {
+    text-decoration: underline;
 }
 
 /* endRosterTable*/
@@ -255,9 +326,10 @@ thead tr {
     background: white;
     display: flex;
 }
-.col-lg-2 {
-    padding-left: 10px;
-    padding-right: 10px;
+.col-sm-4 {
+    /*padding-left: 10px;
+    padding-right: 10px;*/
+    font-size: 10px;
 }
 #sideBar {
     box-shadow: 3px 4px 4px 1px rgba(0, 0, 0, .25);
@@ -316,7 +388,7 @@ thead tr {
 }
 #teamName {
     text-align: center;
-    padding: 10px;
+    padding: 10px 100px;
     margin-bottom: 15px;
     margin-top: 20px;
     margin-left: 0px;
@@ -325,21 +397,24 @@ thead tr {
     text-align: center;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
-    font-size: 48px;
+    /*font-size: 48px;*/
     margin-bottom: 10px;
     /*margin-top: 20px;*/
 }
-.subTeamName {
+.subTeamName, .subTeamStats {
     margin-bottom: 5px;
+}
+.subTeamName {
+    padding-left: 30px;
 }
 .subTeamNameRow {
     border-right: 1px #969696 solid;
     padding: 8px 20px 8px 20px;
 }
-#positive {
+.positive {
     background-color: #b6d7a8;
 }
-#negative {
+.negative {
     background-color: #ea9999;
 }
 .crown {
@@ -349,15 +424,6 @@ thead tr {
 #subTeamServer {
     border-right: 1px #fff solid;
 }
-#statTableHeader {
-    padding: 0px 5px 0px 5px;
-}
-
-/*.col-lg-3, .col-lg-6 {
-    padding: 0px 0px 0px 0px;
-    margin-left: 33px;
-}*/
-
 .roster {
     padding-bottom: 20px;
     width: 100%;
@@ -390,7 +456,7 @@ thead tr {
 .dropPlayer {
     display: none;
 }
-.dropPlayer, .addPlayer {
+.dropPlayer, .addPlayer, .emptySpot {
     border: none;
 }
 .dropButton {
@@ -430,12 +496,12 @@ thead tr {
     float: right;
     margin-right: 45px;
 }
-.test {
-    border: none;
-    float: right;
-    font-size: 21px;
-    background-color: white;
-    color: inherit;
+.current {
+    table-layout: fixed;
+}
+.current>.table-container {
+    float: left;
+    width: 100%;
 }
 .teamsToChallenge {
     height: 100%;
@@ -444,53 +510,12 @@ thead tr {
     margin-right: 5px;
     margin-bottom: 15px;
 }
-.challengeTable {
-    margin: 0 auto;
-}
-.challengeHeader {
-    padding: 0px 10px 0px 10px;
-    text-decoration: underline;
-}
-#challengeRank {
-    padding-right: 0px;
-    padding-left: 0px;
-}
-#challengeTeam {
-    padding-left: 20px;
-}
-.challengeRow {
-    text-align: center;
-    padding: 0px 10px 0px 10px;
-}
-#challengeCellRank {
-    max-width: 20px;
-    padding-left: 10px;
-}
-#challengeCellTeam {
-    padding-left: 20px;
-    font-weight: bold;
-    font-size: 20px;
-}
-.challengeTeamLink {
-    margin-left: 10px;
-    font-weight: bold;
-    font-size: 20px;
-    text-align: center;
-}
-@media only screen and (max-width: 700px) {
-    .subTeamNameRow {
-        padding: 4px 10px 4px 10px!important;
-        font-size: 12px;
-    }
-}
-.currentChallengesRow {
-    background-color: #d3d3d3;
-}
 .recentGames {
     height: 100%;
     padding-bottom: 20px;
     width: 100%;
     margin-right: 5px;
+    font-size: 10px;
 }
 .gameLogoContainer {
     text-align: center;
@@ -500,10 +525,59 @@ thead tr {
     max-width: 60%;
     max-height: 65px;
     vertical-align: middle;
+    /*border: 1px solid #9a9a9a;
+    border-radius: 12px;*/
 }
 .scheduleScores {
     width: 95%;
     margin: 10px auto 0px auto;
+}
+@media screen and (device-aspect-ratio: 40/71) {
+    .teamPage {
+        display: inline;
+    }
+    .table-container {
+        margin: 0px;
+    }
+    .subTeamName, .subTeamStats {
+        font-size: 10px;
+        display: block;
+        overflow-x: auto;
+        margin-bottom: 10px;
+        /*padding-left: 30px;*/
+    }
+    .statcard {
+        padding: 8px 0px;
+        /*padding-top: 1px;
+        padding-bottom: 1px;*/
+    }
+    .smallCardHeader {
+        padding: 0px;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    .player {
+        font-size: 15px;
+    }
+    .subTeamNameRow {
+        padding: 4px 10px 4px 10px;
+        font-size: 12px;
+    }
+    .roster {
+        padding-bottom: 0px;
+    }
+    .current {
+        display: block;
+        overflow-x: auto;
+        font-size: 10px;
+    }
+    .challengeHeader {
+        padding: 0px 2px;
+    }
+    .gameLogo {
+        max-width: 50%;
+        max-height: 55px;
+    }
 }
 
 /* endTeamPage */
@@ -670,6 +744,22 @@ thead tr {
     padding: 40px 0px 40px 0px;
 }
 
+/* iPhone 5: */
+
+@media screen and (device-aspect-ratio: 40/71) {
+    .searchInput {
+        height: 30px;
+        width: 230px;
+    }
+    .resultsTable {
+        margin: 0;
+        font-size: 18px;
+    }
+    .playerResults {
+        margin-top: 30px;
+    }
+}
+
 /* endSearchResults */
 
 
@@ -706,142 +796,206 @@ thead tr {
 
 /* endScoreSubmit */
 
-.playerInfoHeader {
-    text-align: center;
-}
-.playerBio {
-    font-size: 20px;
-    text-align: center;
-    color: #aaaaaa;
-}
-.trophyCase {
-    padding: 20px;
-    text-align: center;
-}
-.trophies, .trophies p {
-    text-align: center;
-    color: #aaaaaa;
-}
-.awards {
-    text-align: center;
-    padding-bottom: 20px;
-}
-.awards h2 {
-    text-align: center;
-    padding-top: 10px;
-}
-.awards p {
-    color: #aaaaaa;
-}
-#careerStats {
-    padding: 0px 15px 0px 15px;
-    margin: 0px;
-    float: left;
-}
-#careerStatCard {
-    margin-bottom: 20px;
-    margin-top: 40px;
-    padding: 20px;
-}
-.careerStatHeader {
-    text-align: center;
-    font-weight: bold;
-    font-size: 36px;
-}
-.careerStatTable {
-    margin-top: 15px;
-}
-.careernumber {
-    text-align: center;
-    width: 160px;
-    font-size: 40px;
-    color: rgba(150, 150, 150, 1.0);
-    padding: 8px 8px 8px 8px;
-}
 
-/* endPlayerPage */
+/* Inbox */
 
-
-/* Challenge */
-
-.thead-inverse th {
-    background-color: #0275d8;
+.inboxPage {
+    margin: 20px 0px 0px 500px;
 }
-#PTrue {
-    background-color: lightgrey;
-}
-
-/* endChallenge */
-
-
-/* SearchResults */
-
-.resultsPage {
-    background-color: #d3d3d3;
+.inboxForm {
     margin-top: 20px;
+}
+.inboxConversations {
+    margin-top: 10px;
     text-align: center;
+    padding: 10px 0px 5px 0px;
 }
-.searchBar {
-    padding: 20px 0px 0px 40px;
-}
-.searchInput {
-    text-indent: 10px;
-    height: 46px;
-    width: 300px;
-}
-.resultsTable {
-    margin: 0px 500px 40px 500px;
+.conversationBlock {
+    margin: 10px 0px 20px 0px;
     padding-bottom: 20px;
-    font-size: 30px;
+    font-size: 20px;
 }
-.playerResults {
-    margin-top: 40px;
-}
-.result {
-    padding: 10px 20px 10px 0px;
+.conversationRow {
+    background-color: rgba(198, 203, 204, 0.55);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    background-color: white;
 }
-.teamResults {
-    padding: 0px;
-    padding: 20px 0px 40px 0px;
+.conversationCheckBox {
+    border: 0;
 }
-.noResults {
-    padding: 40px 0px 40px 0px;
+.checkboxSpan {
+    margin-left: 15px;
+}
+.converationNotif {
+    border: 0;
+    padding-left: 120px;
+}
+.notificationImg {
+    width: 25px;
+    height: 25px;
+    allign: left;
+}
+.converationSubject {
+    border: 0;
+    padding: 10px 0px 10px 0px;
+    text-align: -webkit-auto;
+}
+.subjectLink {
+    padding: 10px 140px 10px 10px;
+}
+.subjectSender {
+    padding-left: 10px;
+    font-size: 20px;
+}
+.subjectSubject {
+    padding: 0px 10px 0px 5px;
+    font-size: 10px;
+    color: #040403;
+    font-weight: 100;
+}
+@media screen and (device-aspect-ratio: 40/71) {
+    .inboxPage {
+        margin-left: 10px;
+    }
+    .noMessages {
+        margin: 20px 50px;
+        text-align: center;
+    }
+    #pm_buttons {
+        font-size: 10px;
+    }
+    .converationNotif {
+        padding-left: 15px;
+    }
+    .subjectSender {
+        font-size: 18px;
+    }
+    .btn-secondary {
+        font-size: 10px;
+        margin-left: 2px;
+        padding: 5px 5px;
+    }
 }
 
-/* endSearchResults */
+/* endInbox */
 
 
-/* Score Submit */
+/* Conversation */
 
-.scoreForm {
+.conversationPage {
+    margin: 20px 10px 0px 10px;
+}
+.backInbox {
+    margin-bottom: 20px;
+}
+.backButton {
+    color: black;
+    font-size: 13px;
+}
+.conversationDiv {
+    width: 100%;
+    /*height: 400px;*/
+    padding: 20px 0px 20px 0px;
+}
+.conversationMessages {
+    /*width: 1400px;*/
+    height: 400px;
+    overflow: auto;
+    padding: 20px 0px 20px 0px;
+    border: 1px #bfbfbf solid;
+}
+#senderIsUser {
+    background-color: #efefef;
+}
+.messageBlock {
+    padding-left: 20px;
+}
+.messageSender {
+    font-size: 15px;
+    color: #c1b8b8;
+}
+.messageDate {
+    font-size: 10px;
     text-align: center;
-    padding-top: 20px;
+    color: #c2c2c2;
 }
-.scoreHeader {
-    padding-bottom: 10px;
+.messageBody {
+    padding: 0px 0px 10px 10px;
+    word-wrap: break-word;
+    font-size: 15px;
+    color: #3b3b3b;
 }
-.scoreSmall {
-    padding-bottom: 20px;
+.messageForm {
+    padding: 10px 0px 0px 10px;
 }
-.scoreTable {
-    width: 300px;
-    margin: 20px 0px 0px 550px;
+.messageReply {
+    margin: 20px 0px 0px 50px;
 }
-.scoreCell {
-    width: 200px;
+.messageTextArea {
+    resize: both;
+    width: 100%;
+    height: 100px;
 }
-.scoreInput {
-    width: 50px;
-    text-align: center;
+#send {
+    margin-left: 24px;
 }
-#submit {
-    margin-top: 50px;
-    display: none;
-}
-.scoreSuccessHeader {
-    padding: 50px 0px 20px 625px;
+@media screen and (device-aspect-ratio: 40/71) {
+    #pm_reply {
+        margin-left: 0px;
+    }
+    #send {
+        margin: 0px 0px 5px 24px;
+        float: right
+    }
 }
 
-/* endScoreSubmit */
+/* endConversation */
+
+
+/* Notifications */
+
+.notification-box-list {
+    margin-top: 10px;
+}
+.notificationMessage {
+    font-weight: 100;
+    display: inline-block;
+}
+.notificationLink {
+    font-weight: bold;
+}
+.notificationFooter {
+    margin: 50px 0px 0px 550px;
+}
+.mark-notification, .delete-notification {
+    border-radius: .25rem;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    line-height: 1.25;
+    font-weight: 400;
+    background-color: #e8e8e8;
+    border-color: #ccc;
+}
+
+/* iPhone 5: */
+
+@media screen and (device-aspect-ratio: 40/71) {
+    .notification-box-list {
+        font-size: 12px;
+    }
+    .list-group-item {
+        border-bottom: none;
+        padding: 3px 10px;
+        margin: 0px 3px;
+    }
+    .list-group-item:last-child {
+        border-bottom: 1px solid #ddd
+    }
+    .notificationMessage {
+        margin-bottom: 0px;
+    }
+    .mark-notification, .delete-notification {
+        font-size: 10px;
+    }
+}
+
+/* endNotifications */

@@ -20,6 +20,8 @@ from .forms import *
 from bs4 import BeautifulSoup
 from notify.signals import notify
 from notify.models import Notification
+from django_mobile import get_flavour
+from collections import OrderedDict
 
 def index(request):
     return render(request, 'index.html')
@@ -42,18 +44,20 @@ def roster_table(request):
         'FA_table':FA_table,
     })
 def team_page(request,team_name):
+    flavour = get_flavour()
     currentUser = request.user
     team = Roster.objects.filter(team_name=team_name).first()
     rosters = Roster.objects.all().order_by('rank')
     currentChallenges = Challenge.objects.filter(Q(challenger=team.id)|Q(challenged=team.id)).filter(played=False)
+    currentTable = CurrentChallenges(currentChallenges,empty_text="No current challenges!")
     stats = Stats.objects.filter(team=team_name)
     table = StatsTable(stats)
+    challengersTable = get_challengers(team_name)
     rank = int(team.rank)
     if Challenge.objects.all().count():
         recentGames = Challenge.objects.filter(Q(challenged=team.id)|Q(challenger=team.id),played=True).order_by('-pk')[:2]
     else:
         recentGames = []
-    challengersList = team.getChallengers
     if Captain.objects.filter(name=currentUser.username) and not currentUser.team == team_name:
         # If current user is captain, but is viewing another team page
         userTeam = Roster.objects.filter(team_name=currentUser.team).first()
@@ -72,20 +76,23 @@ def team_page(request,team_name):
             'table':table,
             'rank':rank,
             'recentGames':recentGames,
-            'challengersList':challengersList,
+            'current':currentTable,
+            'challengers':challengersTable,
             'userTeam':userTeam,
             'canChallenge':canChallenge,
         })
     else:
-        return render(request,'team_page.html',{
+        page = 'team_page.html' if flavour == 'full' else 'mobile_team_page.html'
+        return render(request,page,{
             'team':team,
             'rosters':rosters,
             'currentChallenges':currentChallenges,
             'stats':stats.first(),
             'table':table,
+            'current':currentTable,
+            'challengers':challengersTable,
             'rank':rank,
             'recentGames':recentGames,
-            'challengersList':challengersList,
         })
 def player_page(request,player_name,team_name):
     rosters = Roster.objects.all().order_by('rank')
@@ -181,7 +188,7 @@ def challenge_with_arg(request,team_challenged):
 @login_required
 def challenge_success(request):
     return render(request, 'challenge_success.html', {})
-def roster_register(request):
+def team_register(request):
     registered = False
     if request.method == 'POST':
         roster_form = RosterForm(request.POST,request.FILES)
@@ -198,7 +205,7 @@ def roster_register(request):
         roster_form = RosterForm()
 
     return render(request,
-                  'register.html',
+                  'team_register.html',
                   {'roster_form': roster_form,
                   'registered': registered,
                   'errors':roster_form.errors,
@@ -278,7 +285,7 @@ def search(request):
     if request.method == 'GET':
         query = request.GET.get('s',None)
         if query is not None and query is not '':
-            players = User.objects.filter(username__icontains=query)
+            players = Player.objects.filter(name__icontains=query)
             # teams = Roster.objects.filter(team_name__icontains=query,eligible=True)
             teams = Roster.objects.filter(team_name__icontains=query)
             total = players.count()+teams.count()
@@ -293,6 +300,14 @@ def notifications(request):
     notifications = Notification.objects.filter(recipient=request.user)
     return render(request,'notifications.html',{
         'notifications':notifications,
+    })
+
+def test(request,team_name):
+    team = Roster.objects.get(team_name=team_name)
+    challenges = Challenge.objects.filter(Q(challenger=team.id)|Q(challenged=team.id)).filter(played=False)
+    table = ResultsTable(challenges)
+    return render(request,'test.html',{
+        'table':table,
     })
 
 def score_submit(request,challenge_id):
@@ -454,3 +469,23 @@ def add_player(request):
     # player = Player.objects.filter(name=player_name) if Player.objects.filter(name=player_name).exists() else Player.objects.create(name=player_name)
     print('kek')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+########## HELPERS ###########
+def get_challengers(team_name):
+    team = Roster.objects.filter(team_name=team_name).first()
+    challengers = []
+    rosters = Roster.objects.all().order_by('rank')
+    for roster in rosters:
+        # Create list of challengers (teams 4 spots above current team)
+        if team.rank - roster.rank <= 4 and team.rank - roster.rank > 0:
+            challenger = OrderedDict()
+            team_stats = Stats.objects.filter(team=roster.team_name).first()
+            challenger["rank"]=roster.rank
+            challenger["team"] = roster.team_name
+            challenger["challengerIn"] = team_stats.challengeIn
+            challenger["challengerOut"] = team_stats.challengeOut
+            challenger["challengerStreak"] = team_stats.streak
+            challenger["lastActive"] = team_stats.lastActive
+            challengers.append(challenger)
+    return ChallengersTable(challengers,empty_text = "You can't challenge anyone!")

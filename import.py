@@ -213,7 +213,7 @@ def make_user(player,pk):
     u['model'] = 'usc_app.User'
     u['fields'] = OrderedDict()
     u['fields']['username'] = player
-    u['fields']['password'] = 'pbkdf2_sha256$24000$NzMo0xEOPckW$djY6Gmm1IP0gBhsUqlvkOpH3aCqc4vsFmzd3YW1RFC4='
+    u['fields']['password'] = 'pbkdf2_sha256$24000$hYndqK3AJv8T$NtDFdGkRdF606dhY8FkbJFzw0lzqCgBA129CMktLHsk='
     return u
 
 def stats_fields(dic,pointer,cells):
@@ -242,7 +242,8 @@ def stats_fields(dic,pointer,cells):
     else:
         s['fields']['streak'] = 0
     i+=1
-    s['fields']['highestRank'] = int(cells[i].string) #7/6
+
+    s['fields']['highestRank'] = int(cells[i].string) if cells[i].string is not None else 0  #7/6
     i+=1
     try: #/8/7
         int(cells[i].string)

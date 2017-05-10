@@ -7,11 +7,11 @@
   <h4>A moderator will let you know if/when your team is approved!</h4>
   {{ roster }}
   {% else %}
-  <h1>Team Registration</h1>
+  {% if flavour == "full" %}<h1>Team Registration</h1>{% else %}<h2>Team Registration</h2>{% endif %}
   {% for field in roster_form %}
   {{ field.errors}}
   {% endfor %}
-  <form enctype="multipart/form-data" method="post" action="{% url 'register' %}">
+  <form enctype="multipart/form-data" method="post" action="{% url 'team_register' %}">
       {% csrf_token %}
       <input class="form-control" type="text" name="team_name" placeholder="Team Name" required/>
       <select class="form-control" name="server" required>

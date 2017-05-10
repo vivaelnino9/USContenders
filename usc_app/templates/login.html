@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="form-wrapper">
-  <h1>Please login</h1>
+  {% if flavour == 'full' %}<h1>Please login</h1>{% else %}<h2>Please login</h2>{% endif %}
   <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
       <input class="form-control" type="text" name="username" placeholder="Username" required autofocus/>

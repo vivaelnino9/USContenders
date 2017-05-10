@@ -18,7 +18,7 @@ admin.site.register(Player,PlayerAdmin)
 class TeamRosterAdminForm(forms.ModelForm):
     model = Roster
 
-class TeamRosterAdmin(ModerationAdmin):
+class TeamRosterAdmin(admin.ModelAdmin):
     fields = ['team_name','abv','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','firstActive','daysActive','server','logo']
     list_display = (
         'team_name','server', 'rank',
