@@ -219,7 +219,7 @@ div.container {
 /* Roster Table */
 
 .table-container {
-    margin: 10px 0px 40px 0px;
+    margin: 10px -1px 40px 0px;
 }
 .table {
     /*width: 1360px;*/
@@ -238,14 +238,9 @@ div.container {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.tabcontent>.table-container {
-    float: left;
-    width: 100%;
-}
 .tabcontent {
     overflow: auto;
     margin-top: 10px;
-    /*or whatever float wrapping technique you want to use*/
 }
 .table {
     font-family: 'Open Sans', sans-serif;
@@ -499,9 +494,12 @@ thead tr {
 .current {
     table-layout: fixed;
 }
-.current>.table-container {
-    float: left;
-    width: 100%;
+.current, .subTeamStats {
+    border-right: none!important;
+    border-left: none!important;
+}
+.current th, .subTeamStats th {
+    border-bottom: 1px solid rgba(169, 158, 158, 0.98)!important;
 }
 .teamsToChallenge {
     height: 100%;
@@ -533,7 +531,7 @@ thead tr {
     margin: 10px auto 0px auto;
 }
 .scheduleRow {
-    font-size: 12px;
+    font-size: 13.5px;
 }
 @media screen and (device-aspect-ratio: 40/71) {
     .teamPage {
@@ -551,6 +549,7 @@ thead tr {
     }
     .statcard {
         padding: 8px 0px;
+        text-align: center;
         /*padding-top: 1px;
         padding-bottom: 1px;*/
     }
@@ -559,12 +558,19 @@ thead tr {
         font-size: 20px;
         margin-bottom: 5px;
     }
+    .addDropButtons {
+        margin-bottom: 20px;
+    }
     .player {
         font-size: 15px;
     }
-    .subTeamNameRow {
-        padding: 4px 10px 4px 10px;
+    .subTeamNameHeader {
+        padding: 4px 15px 4px 15px;
         font-size: 12px;
+    }
+    .headerImage {
+        margin-bottom: 0px;
+        margin-right: 2px;
     }
     .roster {
         padding-bottom: 0px;
@@ -576,6 +582,9 @@ thead tr {
     }
     .challengeHeader {
         padding: 0px 2px;
+    }
+    .scheduleRow {
+        font-size: 10px;
     }
     .gameLogo {
         max-width: 50%;
