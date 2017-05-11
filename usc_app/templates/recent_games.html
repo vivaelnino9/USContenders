@@ -1,0 +1,32 @@
+<table class="scheduleScores">
+  <tr class="scheduleRow">
+    <td>{{ game.challenger }}</td>
+    <td>{% if game.g1_results.team1 == game.challenger.abv %}
+      {{ game.g1_results.score1 }}
+      {% else %}
+      {{ game.g1_results.score2 }}
+      {% endif %}
+    </td>
+    <td>{% if game.g2_results.team1 == game.challenger.abv %}
+      {{ game.g2_results.score1 }}
+      {% else %}
+      {{ game.g2_results.score2 }}
+      {% endif %}
+    </td>
+  </tr>
+  <tr class="scheduleRow">
+    <td>{{ game.challenged }}</td>
+    <td>{% if game.g1_results.team1 == game.challenged.abv %}
+      {{ game.g1_results.score1 }}
+      {% else %}
+      {{ game.g1_results.score2 }}
+      {% endif %}
+    </td>
+    <td>{% if game.g2_results.team1 == game.challenged.abv %}
+      {{ game.g2_results.score1 }}
+      {% else %}
+      {{ game.g2_results.score2 }}
+      {% endif %}
+    </td>
+  </tr>
+</table>

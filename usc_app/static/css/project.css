@@ -407,9 +407,12 @@ thead tr {
 .subTeamName {
     padding-left: 30px;
 }
-.subTeamNameRow {
+.subTeamNameHeader {
     border-right: 1px #969696 solid;
     padding: 8px 20px 8px 20px;
+}
+.subTeamNameHeader:last-child {
+    border-right: none;
 }
 .positive {
     background-color: #b6d7a8;
@@ -417,12 +420,9 @@ thead tr {
 .negative {
     background-color: #ea9999;
 }
-.crown {
+.headerImage {
     margin-bottom: 3px;
     margin-right: 10px;
-}
-#subTeamServer {
-    border-right: 1px #fff solid;
 }
 .roster {
     padding-bottom: 20px;
@@ -531,6 +531,9 @@ thead tr {
 .scheduleScores {
     width: 95%;
     margin: 10px auto 0px auto;
+}
+.scheduleRow {
+    font-size: 12px;
 }
 @media screen and (device-aspect-ratio: 40/71) {
     .teamPage {

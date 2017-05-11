@@ -16,6 +16,7 @@ from urllib.request import urlopen
 from .models import *
 from .table import *
 from .forms import *
+from .decorators import *
 
 from bs4 import BeautifulSoup
 from notify.signals import notify
@@ -44,56 +45,30 @@ def roster_table(request):
         'FA_table':FA_table,
     })
 def team_page(request,team_name):
-    flavour = get_flavour()
-    currentUser = request.user
     team = Roster.objects.filter(team_name=team_name).first()
     rosters = Roster.objects.all().order_by('rank')
+    # Stats Table
+    stats = Stats.objects.filter(team=team_name)
+    statsTable = StatsTable(stats)
+    # Current Challenges Table
     currentChallenges = Challenge.objects.filter(Q(challenger=team.id)|Q(challenged=team.id)).filter(played=False)
     currentTable = CurrentChallenges(currentChallenges,empty_text="No current challenges!")
-    stats = Stats.objects.filter(team=team_name)
-    table = StatsTable(stats)
+    # Challengers Table
     challengersTable = get_challengers(team_name)
-    rank = int(team.rank)
-    if Challenge.objects.all().count():
-        recentGames = Challenge.objects.filter(Q(challenged=team.id)|Q(challenger=team.id),played=True).order_by('-pk')[:2]
-    else:
-        recentGames = []
-    if Captain.objects.filter(name=currentUser.username) and not currentUser.team == team_name:
-        # If current user is captain, but is viewing another team page
-        userTeam = Roster.objects.filter(team_name=currentUser.team).first()
-        userStats = Stats.objects.filter(team=userTeam.team_name).first()
-        canChallenge = False
-        for rank,roster in userTeam.getChallengers().items():
-            if roster.team == team.team_name:
-                if roster.challengeIn < 2 and userStats.challengeOut < 2:
-                    if not Challenge.objects.filter(Q(challenger=userTeam.id)&Q(challenged=team.id)&Q(played=False)):
-                        canChallenge = True
-        return render(request,'team_page.html',{
-            'team':team,
-            'rosters':rosters,
-            'currentChallenges':currentChallenges,
-            'stats':stats.first(),
-            'table':table,
-            'rank':rank,
-            'recentGames':recentGames,
-            'current':currentTable,
-            'challengers':challengersTable,
-            'userTeam':userTeam,
-            'canChallenge':canChallenge,
-        })
-    else:
-        page = 'team_page.html' if flavour == 'full' else 'mobile_team_page.html'
-        return render(request,page,{
-            'team':team,
-            'rosters':rosters,
-            'currentChallenges':currentChallenges,
-            'stats':stats.first(),
-            'table':table,
-            'current':currentTable,
-            'challengers':challengersTable,
-            'rank':rank,
-            'recentGames':recentGames,
-        })
+    # Recent Games
+    recentGames = get_recent_games(team)
+    # Page template either for browser or mobile
+    flavour = get_flavour()
+    page = 'team_page.html' if flavour == 'full' else 'team_page_mobile.html'
+    return render(request,page,{
+        'team':team,
+        'rosters':rosters, # for sidebar
+        'statsTable':statsTable,
+        'currentTable':currentTable,
+        'challengersTable':challengersTable,
+        'recentGames':recentGames,
+        'rank':int(team.rank), # for pageheader coloring
+    })
 def player_page(request,player_name,team_name):
     rosters = Roster.objects.all().order_by('rank')
     player = Player.objects.filter(name=player_name).first()
@@ -310,6 +285,7 @@ def test(request,team_name):
         'table':table,
     })
 
+@user_is_captain
 def score_submit(request,challenge_id):
     challenge = Challenge.objects.filter(pk=challenge_id)
     # challenger_roster = Roster.objects.filter(team_name=challenge[0].challenger.team_name,eligible=True)
@@ -459,6 +435,7 @@ def forfeit(request, challenge_id):
     challenge.delete()
 
     return HttpResponseRedirect(reverse('team',kwargs={'team_name':request.user.team}))
+@login_required
 def drop_player(request,team_name,player_name):
     player = Player.objects.filter(name=player_name)
     User.objects.filter(username=player.first().name).update(team='')
@@ -489,3 +466,8 @@ def get_challengers(team_name):
             challenger["lastActive"] = team_stats.lastActive
             challengers.append(challenger)
     return ChallengersTable(challengers,empty_text = "You can't challenge anyone!")
+def get_recent_games(team):
+    if Challenge.objects.all().count():
+        return Challenge.objects.filter(Q(challenged=team.id)|Q(challenger=team.id),played=True).order_by('-pk')[:2]
+    else:
+        return []

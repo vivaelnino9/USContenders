@@ -1,0 +1,82 @@
+<table class="rosterTable">
+  <form action="#" method="get">
+    <!-- Captain -->
+    <tr>
+      <td class="rosterInfo"><a class="player" href="{% url 'player' team team.captain %}">{{ team.captain }}</a></td>
+      <td class="dropPlayer" title="Drop Player"><button id="dropButton" class="btn btn-danger btn-sm">x</button></td>
+    </tr>
+    <!-- Co-Captain -->
+    {% if team.co_captain %}
+      <tr>
+        <td class="rosterInfo"><a class="player" href="{% url 'player' team team.co_captain %}">{{ team.co_captain }}</a></td>
+        <td class="dropPlayer" title="Drop {{ team.co_captain }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.co_captain }}" >x</button>
+      </tr>
+    {% else %}
+    <tr><td class="emptySpot">—</td></tr>
+    {% endif %}
+    <!-- Member1 -->
+    {% if team.member1 %}
+      <tr>
+        <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member1 %}">{{ team.member1 }}</a></td>
+        <td class="dropPlayer" title="Drop {{ team.member1 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member1 }}" >x</button>
+      </tr>
+    {% else %}
+    <tr><td class="emptySpot">—</td></tr>
+    {% endif %}
+    <!-- Member2 -->
+    {% if team.member2 %}
+      {% if team.member2.user.username != team.captain.name %}
+      <tr>
+        <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member2 %}">{{ team.member2 }}</a></td>
+        <td class="dropPlayer" title="Drop {{ team.member2 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member2 }}" >x</button>
+      </tr>
+      {% endif %}
+    {% else %}
+    <tr><td class="emptySpot">—</td></tr>
+    {% endif %}
+    <!-- Member3 -->
+    {% if team.member3 %}
+      {% if team.member3.user.username != team.captain.name %}
+      <tr>
+        <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member3 %}">{{ team.member3 }}</a></td>
+        <td class="dropPlayer" title="Drop {{ team.member3 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member3 }}" >x</button>
+      </tr>
+      {% endif %}
+    {% else %}
+    <tr><td class="emptySpot">—</td></tr>
+    {% endif %}
+    <!-- Member4 -->
+    {% if team.member4 %}
+      {% if team.member4.user.username != team.captain.name %}
+      <tr>
+        <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member4 %}">{{ team.member4 }}</a></td>
+        <td class="dropPlayer" title="Drop {{ team.member4 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member4 }}" >x</button>
+      </tr>
+      {% endif %}
+    {% else %}
+    <tr><td class="emptySpot">—</td></tr>
+    {% endif %}
+    <!-- Member5 -->
+    {% if team.member5 %}
+      {% if team.member5.user.username != team.captain.name %}
+      <tr>
+        <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member5 %}">{{ team.member5 }}</a></td>
+        <td class="dropPlayer" title="Drop {{ team.member5 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member5 }}" >x</button>
+      </tr>
+      {% endif %}
+    {% else %}
+    <tr><td class="emptySpot">—</td></tr>
+    {% endif %}
+    <!-- Member6 -->
+    {% if team.member6 %}
+      {% if team.member6.user.username != team.captain.name %}
+      <tr>
+        <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member6 %}">{{ team.member6 }}</a></td>
+        <td class="dropPlayer" title="Drop {{ team.member6 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member6 }}">x</button>
+      </tr>
+      {% endif %}
+    {% else %}
+    <tr><td class="emptySpot">—</td></tr>
+    {% endif %}
+  </form>
+</table>

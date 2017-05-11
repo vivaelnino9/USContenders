@@ -1,14 +1,11 @@
 {% extends "base.html" %}
-{% load staticfiles mathfilters django_tables2 %}
-
+{% load staticfiles mathfilters django_tables2 app_filters %}
 
 {% block content %}
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert.css' %}">
 {% endblock %}
-
-
 
 <div class="teamPage">
   {% if flavour == 'full' %}
@@ -17,31 +14,30 @@
   <div class="col-lg-10" id="teamInfo">
     <div class="col-lg-12 statcard" id="teamName">
       <h1 class="teamNameHeader">{{ team.team_name }}</h1>
-      {% if not request.user.is_anonymous %}
-        {% if rank in userTeam.getChallengers and canChallenge %}
+      {% if user|is_captain %}
+        {% if user|can_challenge:team %}
         <a href="{% url 'challenge_arg' team.team_name %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
-        {% elif team.team_name != request.user.team and request.user.username != 'admin'  %}
-        <button type="button" class="btn btn-lg btn-primary" disabled>Challenge</button><br><br>
         {% else %}
+        <button type="button" class="btn btn-lg btn-primary" disabled>Challenge</button><br><br>
         {% endif %}
       {% endif %}
       <table class="subTeamName" align='center'>
         <tr>
-          <th class="subTeamNameRow">
+          <th class="subTeamNameHeader">
             {{ team.rank }}{% if team.rank == 3 %}rd{% elif team.rank == 2 %}nd{% elif team.rank == 1 %}st{% else %}th{% endif %}</th>
-          <th class="subTeamNameRow">
-            <img class="crown" src="{% static 'img/crown.png' %}" width="16px" height="16px"/>{{ team.captain }}</th>
-          <th class="subTeamNameRow">{{ team.abv }}</th>
-          {% if not request.user.is_anonymous and request.user.pk != team.captain.user.pk %}
-          <th class="subTeamNameRow" >{{ team.get_server_display }}</th>
-          <th class="subTeamNameRow" id="subTeamServer">
-            <a href="{% url 'postman:write' team.captain %}?subject=USC Challenge"><img class="crown" src="{% static 'img/message_icon.png' %}" width="16px" height="16px"/></th>
-          {% else %}
-          <th class="subTeamNameRow" id="subTeamServer">{{ team.get_server_display }}</th>
+          <th class="subTeamNameHeader">
+            <img class="headerImage" src="{% static 'img/crown.png' %}" width="16px" height="16px"/>{{ team.captain }}</th>
+          <th class="subTeamNameHeader">{{ team.abv }}</th>
+          <th class="subTeamNameHeader" >{{ team.get_server_display }}</th>
+          {% if not user|own_team:team %}
+          <th class="subTeamNameHeader">
+            <a href="{% url 'postman:write' team.captain %}?subject=USC Challenge">
+            <img class="headerImage" src="{% static 'img/message_icon.png' %}" width="16px" height="16px"/>
+          </th>
           {% endif %}
         </tr>
       </table>
-      {% render_table table %}
+      {% render_table statsTable %}
     </div>
     <div class="col-lg-3">
       <div class="statcard">
@@ -49,89 +45,8 @@
           <div class="smallCardHeader">
             Roster
           </div>
-
-          <table class="rosterTable">
-            <form action="#" method="get">
-              <!-- Captain -->
-              <tr>
-                <td class="rosterInfo"><a class="player" href="{% url 'player' team team.captain %}">{{ team.captain }}</a></td>
-                <td class="dropPlayer" title="Drop Player"><button id="dropButton" class="btn btn-danger btn-sm">x</button></td>
-              </tr>
-              <!-- Co-Captain -->
-              {% if team.co_captain %}
-                <tr>
-                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.co_captain %}">{{ team.co_captain }}</a></td>
-                  <td class="dropPlayer" title="Drop {{ team.co_captain }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.co_captain }}" >x</button>
-                </tr>
-              {% else %}
-              <tr><td class="emptySpot">—</td></tr>
-              {% endif %}
-              <!-- Member1 -->
-              {% if team.member1 %}
-                <tr>
-                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member1 %}">{{ team.member1 }}</a></td>
-                  <td class="dropPlayer" title="Drop {{ team.member1 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member1 }}" >x</button>
-                </tr>
-              {% else %}
-              <tr><td class="emptySpot">—</td></tr>
-              {% endif %}
-              <!-- Member2 -->
-              {% if team.member2 %}
-                {% if team.member2.user.username != team.captain.name %}
-                <tr>
-                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member2 %}">{{ team.member2 }}</a></td>
-                  <td class="dropPlayer" title="Drop {{ team.member2 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member2 }}" >x</button>
-                </tr>
-                {% endif %}
-              {% else %}
-              <tr><td class="emptySpot">—</td></tr>
-              {% endif %}
-              <!-- Member3 -->
-              {% if team.member3 %}
-                {% if team.member3.user.username != team.captain.name %}
-                <tr>
-                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member3 %}">{{ team.member3 }}</a></td>
-                  <td class="dropPlayer" title="Drop {{ team.member3 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member3 }}" >x</button>
-                </tr>
-                {% endif %}
-              {% else %}
-              <tr><td class="emptySpot">—</td></tr>
-              {% endif %}
-              <!-- Member4 -->
-              {% if team.member4 %}
-                {% if team.member4.user.username != team.captain.name %}
-                <tr>
-                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member4 %}">{{ team.member4 }}</a></td>
-                  <td class="dropPlayer" title="Drop {{ team.member4 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member4 }}" >x</button>
-                </tr>
-                {% endif %}
-              {% else %}
-              <tr><td class="emptySpot">—</td></tr>
-              {% endif %}
-              <!-- Member5 -->
-              {% if team.member5 %}
-                {% if team.member5.user.username != team.captain.name %}
-                <tr>
-                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member5 %}">{{ team.member5 }}</a></td>
-                  <td class="dropPlayer" title="Drop {{ team.member5 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member5 }}" >x</button>
-                </tr>
-                {% endif %}
-              {% else %}
-              <tr><td class="emptySpot">—</td></tr>
-              {% endif %}
-              <!-- Member6 -->
-              {% if team.member6 %}
-                {% if team.member6.user.username != team.captain.name %}
-                <tr>
-                  <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member6 %}">{{ team.member6 }}</a></td>
-                  <td class="dropPlayer" title="Drop {{ team.member6 }}"><button id="dropButton" class="btn btn-danger btn-sm" value="{{ team.member6 }}">x</button>
-                </tr>
-                {% endif %}
-              {% else %}
-              <tr><td class="emptySpot">—</td></tr>
-              {% endif %}
-            </form>
-          </table>
+          {% include "team_roster.html" %}
+          {% if user|own_team:team %}
           <hr class="rosterDivider">
           <div class="addDropButtons">
             <span class="input-group-btn">
@@ -145,7 +60,7 @@
               </button>
             </span>
           </div>
-
+          {% endif %}
         </div>
       </div>
     </div>
@@ -153,13 +68,13 @@
       <div class="statcard">
         <div class="teamsToChallenge">
           <div class="smallCardHeader">Current Challenges</div>
-          {% render_table current %}
+          {% render_table currentTable %}
         </div>
       </div>
       <div class="statcard">
         <div class="teamsToChallenge">
           <div class="smallCardHeader">Teams to Challenge</div>
-            {% render_table challengers %}
+            {% render_table challengersTable %}
         </div>
       </div>
     </div>
@@ -171,38 +86,7 @@
           {% for game in recentGames %}
           <div class="gameLogoContainer">
             <img class="gameLogo" src="{% static 'img/no_image.png' %}"/>
-            <table class="scheduleScores">
-              <tr>
-                <td>{{ game.challenger }}</td>
-                <td>{% if game.g1_results.team1 == game.challenger.abv %}
-                  {{ game.g1_results.score1 }}
-                  {% else %}
-                  {{ game.g1_results.score2 }}
-                  {% endif %}
-                </td>
-                <td>{% if game.g2_results.team1 == game.challenger.abv %}
-                  {{ game.g2_results.score1 }}
-                  {% else %}
-                  {{ game.g2_results.score2 }}
-                  {% endif %}
-                </td>
-              </tr>
-              <tr>
-                <td>{{ game.challenged }}</td>
-                <td>{% if game.g1_results.team1 == game.challenged.abv %}
-                  {{ game.g1_results.score1 }}
-                  {% else %}
-                  {{ game.g1_results.score2 }}
-                  {% endif %}
-                </td>
-                <td>{% if game.g2_results.team1 == game.challenged.abv %}
-                  {{ game.g2_results.score1 }}
-                  {% else %}
-                  {{ game.g2_results.score2 }}
-                  {% endif %}
-                </td>
-              </tr>
-            </table>
+            {% include "recent_games.html" %}
           </div>
           {% endfor %}
         </div>
@@ -241,17 +125,6 @@ $("#add_button").click(function(){
   });
 });
 
-// {% if stats.streak < 0 %}$('#streak').attr('id', 'negative');{% elif stats.streak > 0 %}$('#streak').attr('id', 'positive');{% else %}{% endif %}
-// {% if stats.challengeOut == 2 %}$('#challengeOut').attr('id', 'negative');{% endif %}
-// {% if stats.challengeIn == 2 %}$('#challengeIn').attr('id', 'negative');{% endif %}
-// {% if stats.highestRank > 0 and stats.highestRank < 6 %}$('#highestRank').attr('id', 'diamond');
-// {% elif stats.highestRank >= 6 and stats.highestRank < 21 %}$('#highestRank').attr('id', 'gold');
-// {% elif stats.highestRank >= 21 and stats.highestRank < 36 %}$('#highestRank').attr('id', 'silver');
-// {% elif stats.highestRank >= 36 %}$('#highestRank').attr('id', 'bronze');{% endif %}
-// {% if stats.change < 0 %}
-//   $('#change').attr('id','negative').replaceWith('<td class="change" id="negative">' + '▼' + String({{ stats.change|abs }}) + '</td>');{% endif %}
-// {% if stats.change %}
-//   $('#change').attr('id','positive').replaceWith('<td class="change" id="positive">' + '▲' + String({{ stats.change }}) + '</td>');{% endif %}
 </script>
 
 {% endblock %}
