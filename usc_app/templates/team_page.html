@@ -29,7 +29,7 @@
             <img class="headerImage" src="{% static 'img/crown.png' %}" width="16px" height="16px"/>{{ team.captain }}</th>
           <th class="subTeamNameHeader">{{ team.abv }}</th>
           <th class="subTeamNameHeader" >{{ team.get_server_display }}</th>
-          {% if not user|own_team:team %}
+          {% if not user|own_team:team and not user.is_anonymous %}
           <th class="subTeamNameHeader">
             <a href="{% url 'postman:write' team.captain %}?subject=USC Challenge">
             <img class="headerImage" src="{% static 'img/message_icon.png' %}" width="16px" height="16px"/>
