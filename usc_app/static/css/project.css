@@ -987,6 +987,9 @@ thead tr {
     background-color: #e8e8e8;
     border-color: #ccc;
 }
+.mark-notification:active, .delete-notification:active {
+    background-color: #d4d4d4;
+}
 
 /* iPhone 5: */
 
