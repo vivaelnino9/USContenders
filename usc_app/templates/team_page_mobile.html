@@ -1,170 +1,76 @@
 {% extends "base.html" %}
-{% load staticfiles mathfilters django_tables2 %}
+{% load staticfiles mathfilters django_tables2 app_filters %}
 {% block content %}
 <div class="teamPage">
   <div class="col-md-4 statcard">
     <h3 class="teamNameHeader">{{ team.team_name }}</h3>
-    {% if not request.user.is_anonymous %}
-      {% if rank in userTeam.getChallengers and canChallenge %}
+    {% if user|is_captain and not user|own_team:team %}
+      {% if user|can_challenge:team %}
       <a href="{% url 'challenge_arg' team.team_name %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
-      {% elif team.team_name != request.user.team and request.user.username != 'admin'  %}
-      <button type="button" class="btn btn-lg btn-primary" disabled>Challenge</button><br><br>
       {% else %}
+      <button type="button" class="btn btn-sm btn-primary" disabled>Challenge</button><br><br>
       {% endif %}
     {% endif %}
-    <table class="subTeamName">
+    <table class="subTeamName" align='center'>
       <tr>
-        <th class="subTeamNameRow">
+        <th class="subTeamNameHeader">
           {{ team.rank }}{% if team.rank == 3 %}rd{% elif team.rank == 2 %}nd{% elif team.rank == 1 %}st{% else %}th{% endif %}</th>
-        <th class="subTeamNameRow">
-          <img class="crown" src="{% static 'img/crown.png' %}" width="16px" height="16px"/>{{ team.captain }}</th>
-        <th class="subTeamNameRow">{{ team.abv }}</th>
-        {% if not request.user.is_anonymous and request.user.pk != team.captain.user.pk %}
-        <th class="subTeamNameRow" >{{ team.get_server_display }}</th>
-        <th class="subTeamNameRow" id="subTeamServer">
-          <a href="{% url 'postman:write' team.captain %}?subject=USC Challenge"><img class="crown" src="{% static 'img/message_icon.png' %}" width="16px" height="16px"/></th>
-        {% else %}
-        <th class="subTeamNameRow" id="subTeamServer">{{ team.get_server_display }}</th>
+        <th class="subTeamNameHeader">
+          <img class="headerImage" src="{% static 'img/crown.png' %}" width="10px" height="10px"/>{{ team.captain }}</th>
+        <th class="subTeamNameHeader">{{ team.abv }}</th>
+        <th class="subTeamNameHeader" >{{ team.get_server_display }}</th>
+        {% if not user|own_team:team and not user.is_anonymous %}
+        <th class="subTeamNameHeader">
+          <a href="{% url 'postman:write' team.captain %}?subject=USC Challenge">
+          <img class="headerImage" src="{% static 'img/message_icon.png' %}" width="16px" height="16px"/>
+        </th>
         {% endif %}
       </tr>
     </table>
-    {% render_table table %}
+    {% render_table statsTable %}
   </div>
   <div class="col-md-4 statcard">
     <div class="roster">
       <div class="smallCardHeader">Roster</div>
-      <table class="rosterTable">
-        <form action="#" method="get">
-          <!-- Captain -->
-          <tr>
-            <td class="rosterInfo"><a class="player" href="{% url 'player' team team.captain %}">{{ team.captain }}</a></td>
-          </tr>
-          <!-- Co-Captain -->
-          {% if team.co_captain %}
-            <tr>
-              <td class="rosterInfo"><a class="player" href="{% url 'player' team team.co_captain %}">{{ team.co_captain }}</a></td>
-            </tr>
-          {% else %}
-          <tr><td class="emptySpot">—</td></tr>
-          {% endif %}
-          <!-- Member1 -->
-          {% if team.member1 %}
-            <tr>
-              <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member1 %}">{{ team.member1 }}</a></td>
-            </tr>
-          {% else %}
-          <tr><td class="emptySpot">—</td></tr>
-          {% endif %}
-          <!-- Member2 -->
-          {% if team.member2 %}
-            {% if team.member2.user.username != team.captain.name %}
-            <tr>
-              <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member2 %}">{{ team.member2 }}</a></td>
-            </tr>
-            {% endif %}
-          {% else %}
-          <tr><td class="emptySpot">—</td></tr>
-          {% endif %}
-          <!-- Member3 -->
-          {% if team.member3 %}
-            {% if team.member3.user.username != team.captain.name %}
-            <tr>
-              <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member3 %}">{{ team.member3 }}</a></td>
-            </tr>
-            {% endif %}
-          {% else %}
-          <tr><td class="emptySpot">—</td></tr>
-          {% endif %}
-          <!-- Member4 -->
-          {% if team.member4 %}
-            {% if team.member4.user.username != team.captain.name %}
-            <tr>
-              <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member4 %}">{{ team.member4 }}</a></td>
-            </tr>
-            {% endif %}
-          {% else %}
-          <tr><td class="emptySpot">—</td></tr>
-          {% endif %}
-          <!-- Member5 -->
-          {% if team.member5 %}
-            {% if team.member5.user.username != team.captain.name %}
-            <tr>
-              <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member5 %}">{{ team.member5 }}</a></td>
-            </tr>
-            {% endif %}
-          {% else %}
-          <tr><td class="emptySpot">—</td></tr>
-          {% endif %}
-          <!-- Member6 -->
-          {% if team.member6 %}
-            {% if team.member6.user.username != team.captain.name %}
-            <tr>
-              <td class="rosterInfo"><a class="player" href="{% url 'player' team team.member6 %}">{{ team.member6 }}</a></td>
-            </tr>
-            {% endif %}
-          {% else %}
-          <tr><td class="emptySpot">—</td></tr>
-          {% endif %}
-        </form>
-      </table>
+      {% include "team_roster.html" %}
+      {% if user|own_team:team %}
+      <hr class="rosterDivider">
+      <div class="addDropButtons">
+        <span class="input-group-btn">
+          <button type="button" id="drop_button"class="btn btn-danger btn-number" data-type="plus" data-field="quant[2]">
+              <span class="glyphicon glyphicon-plus">-</span>
+          </button>
+        </span>
+        <span class="input-group-btn">
+          <button type="button" id="add_button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+              <span class="glyphicon glyphicon-plus">+</span>
+          </button>
+        </span>
+      </div>
+      {% endif %}
     </div>
   </div>
   <div class="col-md-4 statcard">
     <div class="teamsToChallenge">
       <div class="smallCardHeader">Current Challenges</div>
-      {% render_table current %}
+      {% render_table currentTable %}
     </div>
   </div>
   <div class="col-md-4 statcard">
     <div class="teamsToChallenge">
       <div class="smallCardHeader">Teams to Challenge</div>
-      {% render_table challengers %}
+      {% render_table challengersTable %}
     </div>
   </div>
   <div class="col-md-4 statcard">
     <div class="recentGames">
       <div class="smallCardHeader">Recent Games</div>
-        <div class="gameLogoContainer">
-          <img class="gameLogo" src="{% static 'img/no_image.png' %}"/>
-          <table class="scheduleScores">
-            {% if not recentGames|length_is:"0" %}
-              {% for game in recentGames %}
-            <tr>
-              <td>{{ game.challenger }}</td>
-              <td>{% if game.g1_results.team1 == game.challenger.abv %}
-                {{ game.g1_results.score1 }}
-                {% else %}
-                {{ game.g1_results.score2 }}
-                {% endif %}
-              </td>
-              <td>{% if game.g2_results.team1 == game.challenger.abv %}
-                {{ game.g2_results.score1 }}
-                {% else %}
-                {{ game.g2_results.score2 }}
-                {% endif %}
-              </td>
-            </tr>
-            <tr>
-              <td>{{ game.challenged }}</td>
-              <td>{% if game.g1_results.team1 == game.challenged.abv %}
-                {{ game.g1_results.score1 }}
-                {% else %}
-                {{ game.g1_results.score2 }}
-                {% endif %}
-              </td>
-              <td>{% if game.g2_results.team1 == game.challenged.abv %}
-                {{ game.g2_results.score1 }}
-                {% else %}
-                {{ game.g2_results.score2 }}
-                {% endif %}
-              </td>
-            </tr>
-          </table>
-        </div>
-        {% endfor %}
-        {% else %}
-        <tr><td>No recent games!</tr></td>
-        {% endif %}
+      {% for game in recentGames %}
+      <div class="gameLogoContainer">
+        <img class="gameLogo" src="{% static 'img/no_image.png' %}"/>
+        {% include "recent_games.html" %}
+      </div>
+      {% endfor %}
     </div>
   </div>
 </div>
