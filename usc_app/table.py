@@ -208,7 +208,7 @@ class CurrentChallenges(tables.Table):
     class Meta:
         model = Challenge
         exclude = ('id','played','play_date','g1_results','g2_results')
-        attrs = {'class': 'table current','id':'current'}
+        attrs = {'class': 'table current'}
 
 
 
