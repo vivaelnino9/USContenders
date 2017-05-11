@@ -3,6 +3,7 @@ from usc_app.models import *
 from django.core.urlresolvers import reverse
 from django_tables2.utils import A
 from django.utils.html import format_html
+from datetime import date, timedelta
 
 class RosterTable(tables.Table):
     team_name = tables.LinkColumn(
@@ -209,6 +210,8 @@ class CurrentChallenges(tables.Table):
         exclude = ('id','played','play_date','g1_results','g2_results')
         attrs = {'class': 'table current','id':'current'}
 
+
+
 class ChallengersTable(tables.Table):
     rank = tables.Column(orderable=False,)
     team = tables.LinkColumn(
@@ -233,6 +236,17 @@ class ChallengersTable(tables.Table):
         verbose_name="Last Active",
         orderable=False,
     )
+    def render_lastActive(self,value):
+        delta = value - date.today()
+        if delta.days == 0:
+            return "Today"
+        elif delta.days < 1:
+            return "%s %s ago" % (abs(delta.days),
+                ("day" if abs(delta.days) == 1 else "days"))
+        elif delta.days == 1:
+            return "Tomorrow"
+        elif delta.days > 1:
+            return "In %s days" % delta.days
 
     class Meta:
         attrs = {'class': 'table current'}
