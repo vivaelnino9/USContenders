@@ -14,7 +14,7 @@
   <div class="col-lg-10" id="teamInfo">
     <div class="col-lg-12 statcard" id="teamName">
       <h1 class="teamNameHeader">{{ team.team_name }}</h1>
-      {% if user|is_captain %}
+      {% if user|is_captain and not user|own_team:team %}
         {% if user|can_challenge:team %}
         <a href="{% url 'challenge_arg' team.team_name %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
         {% else %}
@@ -42,9 +42,7 @@
     <div class="col-lg-3">
       <div class="statcard">
         <div class="roster">
-          <div class="smallCardHeader">
-            Roster
-          </div>
+          <div class="smallCardHeader">Roster</div>
           {% include "team_roster.html" %}
           {% if user|own_team:team %}
           <hr class="rosterDivider">
@@ -64,7 +62,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-6 ">
+    <div class="col-lg-6">
       <div class="statcard">
         <div class="teamsToChallenge">
           <div class="smallCardHeader">Current Challenges</div>
