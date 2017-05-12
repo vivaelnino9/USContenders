@@ -24,7 +24,8 @@ function add_player(team,field) {
         dataType: 'json',
         success: function (data) {
           if (data.is_taken){
-            alert("A player with this username already exists.");
+            swal.showInputError("A player with this username already exists!");
+            return false
           }
           else{
             swal("Nice!", inputValue + " is now added!", "success");
