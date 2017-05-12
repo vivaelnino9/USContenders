@@ -18,6 +18,7 @@ thead a {
 }
 a:hover {
     text-decoration: none;
+    cursor: pointer!important;
 }
 button:focus {
     outline: none!important;
@@ -425,7 +426,7 @@ thead tr {
 }
 .rosterTable {
     margin: 0 auto;
-    width: 30%;
+    /*width: 30%;*/
 }
 .smallCardHeader {
     margin-bottom: 20px;
@@ -451,8 +452,20 @@ thead tr {
 .dropPlayer {
     display: none;
 }
-.dropPlayer, .addPlayer, .emptySpot {
+.dropPlayer, .emptySpot, .addButton {
     border: none;
+}
+.addButton {
+    background-color: transparent;
+}
+.addPlayer {
+    padding: 2px;
+}
+.addPlayer:hover {
+    background-color: #ececec;
+}
+.btn-danger {
+    font-weight: 600;
 }
 .dropButton {
     color: red;

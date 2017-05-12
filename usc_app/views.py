@@ -1,11 +1,13 @@
 import json
 import random
 from datetime import date
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.core.validators import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.db.models import F
 from django.db.models import Q
 from django.shortcuts import render
@@ -54,7 +56,7 @@ def team_page(request,team_name):
     currentChallenges = Challenge.objects.filter(Q(challenger=team.id)|Q(challenged=team.id)).filter(played=False)
     currentTable = CurrentChallenges(currentChallenges,empty_text="No current challenges!")
     # Challengers Table
-    challengersTable = get_challengers(team_name)
+    challengersTable = get_challengers(team)
     # Recent Games
     recentGames = get_recent_games(team)
     # Page template either for browser or mobile
@@ -435,22 +437,37 @@ def forfeit(request, challenge_id):
     challenge.delete()
 
     return HttpResponseRedirect(reverse('team',kwargs={'team_name':request.user.team}))
+
+@login_required
+def add_player(request,team_name,field,player_name):
+    team = Roster.objects.get(team_name=team_name)
+    try:
+        user = User.objects.get(username=player_name)
+        assert user.team == ''
+        player = Player.objects.create(name=player_name,user=user)
+        place_player(player,team,field)
+        user.update(team=team_name)
+    except ObjectDoesNotExist:
+        user = User.objects.create(username=player_name,team=team_name)
+        player = Player.objects.create(name=player_name,user=user)
+        place_player(player,team,field)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 @login_required
 def drop_player(request,team_name,player_name):
-    player = Player.objects.filter(name=player_name)
-    User.objects.filter(username=player.first().name).update(team='')
-    player.delete()
+    User.objects.get(username=player_name).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-def add_player(request):
-    # player = Player.objects.filter(name=player_name) if Player.objects.filter(name=player_name).exists() else Player.objects.create(name=player_name)
-    print('kek')
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
+def check_username(request):
+    name = request.GET.get('name', None)
+    data = {
+        'is_taken': Player.objects.filter(name__iexact=name).exists()
+    }
+    return JsonResponse(data)
 
 ########## HELPERS ###########
-def get_challengers(team_name):
-    team = Roster.objects.filter(team_name=team_name).first()
+def get_challengers(team):
     challengers = []
     rosters = Roster.objects.all().order_by('rank')
     for roster in rosters:
@@ -471,3 +488,19 @@ def get_recent_games(team):
         return Challenge.objects.filter(Q(challenged=team.id)|Q(challenger=team.id),played=True).order_by('-pk')[:2]
     else:
         return []
+def place_player(player,team,field):
+    if field == 'co_captain':
+        team.co_captain = player
+    elif field == 'member1':
+        team.member1 = player
+    elif field == 'member2':
+        team.member2 = player
+    elif field == 'member3':
+        team.member3 = player
+    elif field == 'member4':
+        team.member4 = player
+    elif field == 'member5':
+        team.member5 = player
+    else:
+        team.member6 = player
+    team.save()

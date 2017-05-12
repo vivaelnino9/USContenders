@@ -44,17 +44,12 @@
         <div class="roster">
           <div class="smallCardHeader">Roster</div>
           {% include "team_roster.html" %}
-          {% if user|own_team:team %}
+          {% if user|own_team:team and team|can_remove_player %}
           <hr class="rosterDivider">
           <div class="addDropButtons">
             <span class="input-group-btn">
               <button type="button" id="drop_button"class="btn btn-danger btn-number" data-type="plus" data-field="quant[2]">
                   <span class="glyphicon glyphicon-plus">-</span>
-              </button>
-            </span>
-            <span class="input-group-btn">
-              <button type="button" id="add_button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
-                  <span class="glyphicon glyphicon-plus">+</span>
               </button>
             </span>
           </div>
@@ -92,37 +87,6 @@
     </div>
 
 <script src="{% static 'js/stats_table.js' %}"></script>
-<script src="{% static 'js/drop_player.js' %}"></script>
-
-<script>
-
-$("#add_button").click(function(){
-  event.preventDefault()
-  swal({
-    title: "Add a player!",
-    text: "Write the player's name:",
-    type: "input",
-    showCancelButton: true,
-    closeOnConfirm: false,
-    animation: "slide-from-top",
-    inputPlaceholder: "i.e. Rattpack"
-  },
-  function(inputValue){
-    if (inputValue === false) return false;
-
-    if (inputValue === "") {
-      swal.showInputError("You need to write something!");
-      return false
-    }
-    $.post({
-        url: {% url 'add_player' %},
-        success: function() {
-           swal("Nice!", "You wrote: " + inputValue, "success");
-        }
-    });
-  });
-});
-
-</script>
+<script src="{% static 'js/add_drop_player.js' %}"></script>
 
 {% endblock %}
