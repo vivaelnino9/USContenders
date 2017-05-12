@@ -20,11 +20,11 @@ class User(AbstractUser):
 class Player(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=50)
-    minutes = models.PositiveIntegerField(blank=True,null=True)
-    tags = models.PositiveIntegerField(blank=True,null=True)
-    captures = models.PositiveIntegerField(blank=True,null=True)
-    hold = models.CharField(max_length=10,blank=True,null=True)
-    returns = models.PositiveIntegerField(blank=True,null=True)
+    minutes = models.PositiveIntegerField(blank=True,null=True,default=0)
+    tags = models.PositiveIntegerField(blank=True,null=True,default=0)
+    captures = models.PositiveIntegerField(blank=True,null=True,default=0)
+    hold = models.CharField(max_length=10,blank=True,null=True,default=0)
+    returns = models.PositiveIntegerField(blank=True,null=True,default=0)
     class Meta:
         db_table = 'players'
 
@@ -153,7 +153,7 @@ class Roster(models.Model):
             if self.rank - roster.rank <= 4 and self.rank - roster.rank > 0:
                 roster_stats = Stats.objects.get(team=roster.team_name)
                 if roster_stats.challengeIn < 2:
-                    challengers[roster.rank] = roster_stats 
+                    challengers[roster.rank] = roster_stats
         return challengers
 
 class Stats(models.Model):
