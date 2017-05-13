@@ -10,52 +10,64 @@ class RosterTable(tables.Table):
         'team',
         args=[A('team_name')],
         verbose_name="Team",
-        )
-    rank = tables.Column(verbose_name="Rank")
-    captain = tables.LinkColumn('player',args=[A('team_name'),A('captain')],orderable=False, verbose_name="Captain")
+        attrs={'td': {'class': 'rosterTableCell'}},
+    )
+    rank = tables.Column(
+        verbose_name="Rank",
+        attrs={'td': {'class': 'rosterTableCell'}},
+    )
+    captain = tables.LinkColumn(
+        'player',args=[A('team_name'),A('captain')],
+        orderable=False,
+        verbose_name="Captain",
+        attrs={'td': {'class': 'rosterTableCell'}},
+    )
     co_captain = tables.LinkColumn(
         'player',args=[A('team_name'),A('co_captain')],
         orderable=False,
-        verbose_name="Co-Captain"
-        # default="",
+        verbose_name="Co-Captain",
+        attrs={'td': {'class': 'rosterTableCell'}},
     )
     member1 = tables.LinkColumn(
         'player',args=[A('team_name'),A('member1')],
         orderable=False,
         verbose_name="Member",
-        # default="",
+        attrs={'td': {'class': 'rosterTableCell'}},
     )
     member2 = tables.LinkColumn(
         'player',args=[A('team_name'),A('member2')],
         orderable=False,
         verbose_name="Member",
-        # default="",
+        attrs={'td': {'class': 'rosterTableCell'}},
     )
     member3 = tables.LinkColumn(
         'player',args=[A('team_name'),A('member3')],
         orderable=False,
         verbose_name="Member",
-        # default="",
+        attrs={'td': {'class': 'rosterTableCell'}},
     )
     member4 = tables.LinkColumn(
         'player',args=[A('team_name'),A('member4')],
         orderable=False,
         verbose_name="Member",
-        # default="",
+        attrs={'td': {'class': 'rosterTableCell'}},
     )
     member5 = tables.LinkColumn(
         'player',args=[A('team_name'),A('member5')],
         orderable=False,
         verbose_name="Member",
-        # default="",
+        attrs={'td': {'class': 'rosterTableCell'}},
     )
     member6 = tables.LinkColumn(
         'player',args=[A('team_name'),A('member6')],
         orderable=False,
         verbose_name="Member",
-        # default="",
+        attrs={'td': {'class': 'rosterTableCell'}},
     )
-    server = tables.Column(verbose_name="Server")
+    server = tables.Column(
+        verbose_name="Server",
+        attrs={'td': {'class': 'rosterTableCell'}},
+    )
     class Meta:
         model = Roster
         sequence = ('team_name','rank','captain','co_captain','member1','member2','member3','member4','member5','member6','server')

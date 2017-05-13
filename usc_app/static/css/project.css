@@ -310,6 +310,12 @@ thead tr {
 .tagpro_profile a, .reddit_info a, .tagpro_stats a {
     text-decoration: underline;
 }
+@media screen and (device-aspect-ratio: 40/71) {
+    td.rosterTableCell {
+        padding: 5px 3px;
+        white-space: nowrap;
+    }
+}
 
 /* endRosterTable*/
 
