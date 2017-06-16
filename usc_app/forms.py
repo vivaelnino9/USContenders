@@ -140,10 +140,10 @@ class RosterForm(forms.ModelForm):
                     self.cleaned_data[label] = Player.objects.create(name=player,user=user)
 
 class ScoresForm(forms.Form):
-    g1_t1_score = forms.IntegerField()
-    g1_t2_score = forms.IntegerField()
-    g2_t1_score = forms.IntegerField()
-    g2_t2_score = forms.IntegerField()
+    g1_t1_score = forms.IntegerField(label="Game 1 Team 1 Score")
+    g1_t2_score = forms.IntegerField(label="Game 1 Team 2 Score")
+    g2_t1_score = forms.IntegerField(label="Game 2 Team 1 Score")
+    g2_t2_score = forms.IntegerField(label="Game 2 Team 2 Score")
 
     def clean(self):
         cleaned_data = super(ScoresForm, self).clean()

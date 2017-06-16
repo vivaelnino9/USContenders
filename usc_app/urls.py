@@ -10,7 +10,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^rosters', views.roster_table, name='rosters'),
     url(r'^search', views.search, name='search'),
-    url(r'^test/(?P<team_name>[\w|\W]+)/$',views.test, name='test'), #temp
     url(r'^team/(?P<team_name>[\w|\W]+)/$',views.team_page, name='team'),
     url(r'^player/(?P<team_name>[\w|\W]+)/(?P<player_name>[\w|\W]+)/$',views.player_page, name='player'),
     url(r'^add/(?P<team_name>[\w|\W]+)/(?P<field>[\w|\W]+)/(?P<player_name>[\w|\W]+)/$', views.add_player, name='add_player'),
@@ -25,6 +24,8 @@ urlpatterns = [
     url(r'^logout/$', views.captain_logout, name='logout'),
     url(r'^notifications/$', views.notifications, name='notifications'),
     url(r'^submit/(?P<challenge_id>[\w|\W]+)/$', views.score_submit, name='submit'),
+    url(r'^accept_score/(?P<challenge_id>[\w|\W]+)//(?P<g1_id>[\w|\W]+)//(?P<g2_id>[\w|\W]+)/$', views.accept_score, name='accept_score'),
+    url(r'^reject_score/(?P<challenge_id>[\w|\W]+)/$', views.reject_score, name='reject_score'),
     url(r'^forfeit/(?P<challenge_id>[\w|\W]+)/$',views.forfeit, name='forfeit'),
     url(r'^success/$', views.challenge_success, name='success'),
     url(r'^messages/write/(?:(?P<recipients>[^/#]+)/)?$', WriteView.as_view(template_name='write.html'), name='write'),

@@ -156,6 +156,8 @@ class StatsTable(tables.Table):
         if value == 0:
             value = '-'
         return value
+    def render_CDperG(self,value):
+        return "{0:.2f}".format(self.data.data[0].get_cdperg())
 class ResultsTable(tables.Table):
     challenger = tables.LinkColumn('team',args=[A('challenger')])
     challenged = tables.LinkColumn('team',args=[A('challenged')])
@@ -163,7 +165,7 @@ class ResultsTable(tables.Table):
     g2_results = tables.URLColumn(orderable=False,)
     class Meta:
         model = Challenge
-        exclude = ('id',)
+        exclude = ('id','approved','g1_submitted','g2_submitted','submitted_by')
         attrs = {'class': 'table current'}
         row_attrs = {
             'id': lambda record: 'P' + str(record.played)
@@ -217,11 +219,19 @@ class CurrentChallenges(tables.Table):
         verbose_name="Void Date",
         orderable=False,
     )
+    id = tables.LinkColumn(
+        'submit',
+        args=[A('id')],
+        verbose_name="",
+        orderable=False,
+        text="submit score",
+        attrs={'a':{'class':'submitScore'}},
+    )
     class Meta:
         model = Challenge
-        exclude = ('id','played','play_date','g1_results','g2_results')
+        exclude = ('played','play_date','g1_results','g2_results','winner','loser','approved','g1_submitted','g2_submitted','submitted_by')
+        sequence = ('challenger','challenged','map','challenge_date','forfeit_date','void_date','id',)
         attrs = {'class': 'table current'}
-
 
 
 class ChallengersTable(tables.Table):

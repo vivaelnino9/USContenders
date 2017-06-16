@@ -520,7 +520,14 @@ thead tr {
 .current th, .subTeamStats th {
     border-bottom: 1px solid rgba(169, 158, 158, 0.98)!important;
 }
-.teamsToChallenge {
+.even td, .odd td {
+    padding: 12px 0px;
+    vertical-align: middle;
+}
+.submitScore {
+    color: #d9534f;
+}
+.teamsToChallenge, .currentChallenges {
     height: 100%;
     padding-bottom: 20px;
     width: 100%;
@@ -819,10 +826,9 @@ thead tr {
 }
 #submit {
     margin-top: 50px;
-    display: none;
 }
-.scoreSuccessHeader {
-    padding: 50px 0px 20px 625px;
+.approveButton {
+    color: white!important;
 }
 
 /* endScoreSubmit */

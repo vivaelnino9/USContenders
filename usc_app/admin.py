@@ -45,7 +45,7 @@ class ChallengeAdminForm(forms.ModelForm):
     model = Challenge
 
 class ChallengeAdmin(admin.ModelAdmin):
-    list_display = ('played','challenger', 'challenged','map','challenge_date','forfeit_date','void_date','play_date','g1_results','g2_results')
+    list_display = ('played','challenger', 'challenged','map','challenge_date','forfeit_date','void_date','play_date','g1_results','g2_results','winner','loser')
     list_filter = ['played','challenger','challenged']
     search_fields = ['played','challenger','challenged']
     list_per_page = 10
@@ -57,7 +57,7 @@ class ResultAdminForm(forms.ModelForm):
     model = Result
 
 class ResultAdmin(admin.ModelAdmin):
-    list_display = ('match_id','team1','team2','score1','score2')
+    list_display = ('match_id','team1','team2','team1_score','team2_score')
     list_filter = ['match_id','team1','team2']
     search_fields = ['match_id','team1','team2']
     list_per_page = 10

@@ -19,6 +19,7 @@ from .models import *
 from .table import *
 from .forms import *
 from .decorators import *
+from .score_handler import *
 
 from bs4 import BeautifulSoup
 from notify.signals import notify
@@ -273,134 +274,50 @@ def search(request):
         'total':total
     })
 
+@user_is_captain
 def notifications(request):
     notifications = Notification.objects.filter(recipient=request.user)
     return render(request,'notifications.html',{
         'notifications':notifications,
     })
 
-def test(request,team_name):
-    team = Roster.objects.get(team_name=team_name)
-    challenges = Challenge.objects.filter(Q(challenger=team.id)|Q(challenged=team.id)).filter(played=False)
-    table = ResultsTable(challenges)
-    return render(request,'test.html',{
-        'table':table,
-    })
-
 @user_is_captain
 def score_submit(request,challenge_id):
-    challenge = Challenge.objects.filter(pk=challenge_id)
-    # challenger_roster = Roster.objects.filter(team_name=challenge[0].challenger.team_name,eligible=True)
-    # challenged_roster = Roster.objects.filter(team_name=challenge[0].challenged.team_name,eligible=True)
-    challenger_roster = Roster.objects.filter(team_name=challenge[0].challenger.team_name)
-    challenged_roster = Roster.objects.filter(team_name=challenge[0].challenged.team_name)
-    challenger_stats = Stats.objects.filter(team=challenge[0].challenger.team_name)
-    challenged_stats = Stats.objects.filter(team=challenge[0].challenged.team_name)
-    submitted=False
+    user = request.user
+    challenge = Challenge.objects.get(pk=challenge_id)
+    challenge_stats = Challenge.objects.filter(pk=challenge_id)
     if request.method == 'POST':
         form = ScoresForm(request.POST)
         if form.is_valid():
-            challenger_stats.update(GP=F('GP')+1)
-            challenged_stats.update(GP=F('GP')+1)
-            challenger_stats.update(challengeOut=F('challengeOut')-1)
-            challenged_stats.update(challengeIn=F('challengeIn')-1)
-
-            challenger_g1_score = form.cleaned_data['g1_t1_score']
-            challenger_g2_score = form.cleaned_data['g2_t1_score']
-            challenged_g1_score = form.cleaned_data['g1_t2_score']
-            challenged_g2_score = form.cleaned_data['g2_t2_score']
-
-            g1_results = Result(
-                match_id=random.randint(1111111,9999999),
-                team1=challenger_roster[0].abv,
-                team2=challenged_roster[0].abv,
-                score1=challenger_g1_score,
-                score2=challenged_g1_score,
-            )
-            g2_results = Result(
-                match_id=random.randint(1111111,9999999),
-                team1=challenger_roster[0].abv,
-                team2=challenged_roster[0].abv,
-                score1=challenger_g2_score,
-                score2=challenged_g2_score,
-            )
-
-            g1_results.save()
-            g2_results.save()
-
-            challenge.update(g1_results=g1_results)
-            challenge.update(g2_results=g2_results)
-            challenge.update(play_date=date.today())
-            challenge.update(played=True)
-
-            challenger_final_score = challenger_g1_score + challenger_g2_score
-            challenged_final_score = challenged_g1_score + challenged_g2_score
-
-            if challenger_final_score != challenged_final_score:
-                if challenger_final_score > challenged_final_score:
-                    winner_roster = challenger_roster
-                    winner_stats = challenger_stats
-                    loser_roster = challenged_roster
-                    loser_stats = challenged_stats
-                else:
-                    loser_roster = challenger_roster
-                    loser_stats = challenger_stats
-                    winner_roster = challenged_roster
-                    winner_stats = challenged_stats
-
-                winner_stats.update(W=F('W')+1)
-                loser_stats.update(L=F('L')+1)
-
-                if winner_stats[0].streak < 0:
-                    winner_stats.update(streak=1)
-                else:
-                    winner_stats.update(streak=F('streak')+1)
-                if loser_stats[0].streak > 0:
-                    loser_stats.update(streak=-1)
-                else:
-                    loser_stats.update(streak=F('streak')-1)
-
-                wrank = winner_roster[0].rank
-                lrank = loser_roster[0].rank
-
-                changes = []
-                if wrank > lrank:
-                    for i in range((lrank+1),wrank):
-                        changes.append(Roster.objects.filter(rank=i).first())
-                    winner_roster.update(rank=lrank)
-                    loser_roster.update(rank=lrank+1)
-                    Roster.objects.filter(team_name__in=changes).update(rank=F('rank')+1)
-                    Stats.objects.filter(team__in=changes).update(change=-1)
-                winner_stats.update(change=(wrank-winner_roster[0].rank))
-                loser_stats.update(change=(lrank-loser_roster[0].rank))
-
-            else:
-                challenger_stats.update(D=F('D')+1)
-                challenged_stats.update(D=F('D')+1)
-
-                challenger_stats.update(streak=0)
-                challenged_stats.update(streak=0)
-
-                challenger_stats.update(change=0)
-                challenged_stats.update(change=0)
-
-
-            submitted=True
-            return render(request, 'score_submit.html',{
-                'challenge':challenge[0],
-                'submitted':submitted,
-            })
-        else:
-            print(form.errors)
+            prepared_games = prepare_games(challenge,form)
+            g1 = prepared_games['g1']
+            g2 = prepared_games['g2']
+            challenge_stats.update(g1_submitted=g1)
+            challenge_stats.update(g2_submitted=g2)
+            challenge_stats.update(submitted_by=user)
+            return HttpResponseRedirect(reverse('submit',kwargs={'challenge_id':challenge_id}))
     else:
         form = ScoresForm()
     return render(request, 'score_submit.html', {
+        'challenge':challenge,
         'form': form,
-        'challenge':challenge[0],
-        'challenger':challenger_roster[0],
-        'challenged':challenged_roster[0],
-        'submitted':submitted,
+        'user':user,
     })
+@user_is_captain
+def accept_score(request,challenge_id,g1_id,g2_id):
+    user = request.user
+    g1 = Result.objects.get(pk=g1_id)
+    g2 = Result.objects.get(pk=g2_id)
+    final_score = finialize_game(g1,g2)
+    update_challenge(challenge_id,g1,g2,final_score)
+    return HttpResponseRedirect(reverse('team',kwargs={'team_name':user.team}))
+@user_is_captain
+def reject_score(request,challenge_id):
+    user = request.user
+    challenge_stats = Challenge.objects.filter(pk=challenge_id)
+    challenge_stats.update(g1_submitted=None)
+    challenge_stats.update(g2_submitted=None)
+    return HttpResponseRedirect(reverse('team',kwargs={'team_name':user.team}))
 
 def forfeit(request, challenge_id):
     challenge = Challenge.objects.filter(pk=challenge_id)

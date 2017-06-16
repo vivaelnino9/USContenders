@@ -1,32 +1,41 @@
-<table class="scheduleScores">
-  <tr class="scheduleRow">
-    <td>{{ game.challenger }}</td>
-    <td>{% if game.g1_results.team1 == game.challenger.abv %}
-      {{ game.g1_results.score1 }}
-      {% else %}
-      {{ game.g1_results.score2 }}
-      {% endif %}
-    </td>
-    <td>{% if game.g2_results.team1 == game.challenger.abv %}
-      {{ game.g2_results.score1 }}
-      {% else %}
-      {{ game.g2_results.score2 }}
-      {% endif %}
-    </td>
-  </tr>
-  <tr class="scheduleRow">
-    <td>{{ game.challenged }}</td>
-    <td>{% if game.g1_results.team1 == game.challenged.abv %}
-      {{ game.g1_results.score1 }}
-      {% else %}
-      {{ game.g1_results.score2 }}
-      {% endif %}
-    </td>
-    <td>{% if game.g2_results.team1 == game.challenged.abv %}
-      {{ game.g2_results.score1 }}
-      {% else %}
-      {{ game.g2_results.score2 }}
-      {% endif %}
-    </td>
-  </tr>
-</table>
+{% load staticfiles %}
+
+{% for game in recentGames %}
+<div class="gameLogoContainer">
+  <img class="gameLogo" src="{% static 'img/no_image.png' %}"/>
+  <table class="scheduleScores">
+    <tr class="scheduleRow">
+      <td><a href="{% url 'team' game.challenger %}">{{ game.challenger }}</a></td>
+      <td>{% if game.g1_results.team1 == game.challenger.team_name %}
+        {{ game.g1_results.team1_score }}
+        {% else %}
+        {{ game.g1_results.team2_score }}
+        {% endif %}
+      </td>
+      <td>{% if game.g2_results.team1 == game.challenger.team_name %}
+        {{ game.g2_results.team1_score }}
+        {% else %}
+        {{ game.g2_results.team2_score }}
+        {% endif %}
+      </td>
+    </tr>
+    <tr class="scheduleRow">
+      <td><a href="{% url 'team' game.challenged %}">{{ game.challenged }}</a></td>
+      <td>{% if game.g1_results.team1 == game.challenged.team_name %}
+        {{ game.g1_results.team1_score }}
+        {% else %}
+        {{ game.g1_results.team2_score }}
+        {% endif %}
+      </td>
+      <td>{% if game.g2_results.team1 == game.challenged.team_name %}
+        {{ game.g2_results.team1_score }}
+        {% else %}
+        {{ game.g2_results.team2_score }}
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+</div>
+{% empty %}
+<p style="font-size:13.5px;">No recent games!</p>
+{% endfor %}

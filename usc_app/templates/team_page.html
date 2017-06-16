@@ -59,7 +59,7 @@
     </div>
     <div class="col-lg-6">
       <div class="statcard">
-        <div class="teamsToChallenge">
+        <div class="currentChallenges">
           <div class="smallCardHeader">Current Challenges</div>
           {% render_table currentTable %}
         </div>
@@ -74,19 +74,20 @@
     <!--  -->
     <div class="col-lg-3">
       <div class="statcard">
-        <div class="recentGames">
+        <div class="recentGames" style="text-align:center;">
           <div class="smallCardHeader">Recent Games</div>
-          {% for game in recentGames %}
-          <div class="gameLogoContainer">
-            <img class="gameLogo" src="{% static 'img/no_image.png' %}"/>
-            {% include "recent_games.html" %}
-          </div>
-          {% endfor %}
+          {% include "recent_games.html" %}
         </div>
       </div>
     </div>
 
 <script src="{% static 'js/stats_table.js' %}"></script>
 <script src="{% static 'js/add_drop_player.js' %}"></script>
-
+<script>
+function show_hide_column() {
+  var header_rows = $('.currentChallenges table').find('> thead > tr > th');
+  $('th.id').remove()
+}
+{% if not user|own_team:team %}show_hide_column(){% endif %}
+</script>
 {% endblock %}

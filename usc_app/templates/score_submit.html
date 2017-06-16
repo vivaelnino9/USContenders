@@ -1,11 +1,29 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-{% if not submitted %}
+
+{% if not challenge.approved %}
 <div class="scoreForm">
+{% if not challenge.g1_submitted and not challenge.g2_submitted %}
+<!-- submit scores form -->
   <form method="post" action="{% url 'submit' challenge.id %}">
     {% csrf_token %}
-    {{ form.errors }}
+    {% for field in form %}
+      {% if field.errors %}
+      <!-- check for form errors -->
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>
+                  {% if error == 'This field is required.' %}
+                  Please enter a {{ field.label }}
+                  {% else %}
+                  {{ error }}
+                  {% endif %}
+                </strong>
+            </div>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
     <h2 class="scoreHeader">{{ challenge }}</h2>
     <small class="scoreSmall"> please fill in the scores</small>
     <table class="scoreTable">
@@ -15,7 +33,7 @@
         <th>G2</th>
       </tr>
       <tr>
-        <td class="scoreCell">{{ challenger }}</td>
+        <td class="scoreCell">{{ challenge.challenger }}</td>
         <td>
           <li style="list-style-type:none;">
             <input class="scoreInput" id="g1_t1_score" min="0" name="g1_t1_score" type="number" />
@@ -28,7 +46,7 @@
         </td>
       </tr>
       <tr>
-        <td class="scoreCell">{{ challenged }}</td>
+        <td class="scoreCell">{{ challenge.challenged }}</td>
         <td>
           <li style="list-style-type:none;">
             <input class="scoreInput" id="g1_t2_score" min="0" name="g1_t2_score" type="number" />
@@ -43,9 +61,48 @@
     </table>
     <button id="submit" class="form-submit btn btn-lg btn-primary btn-block" type="submit" name="submit">Submit</button>
   </form>
-</div>
+{% elif challenge.g1_submitted and challenge.g2_submitted and challenge.submitted_by.id != user.id  %}
+<!-- Other captain already submitted scores -->
+<h2 class="scoreHeader">{{ challenge }}</h2>
+<small class="scoreSmall">submitted by {{ challenge.submitted_by }}</small>
+<table class="scoreTable" style="margin-bottom:20px;">
+  <tr class="scheduleRow">
+    <td><a href="{% url 'team' challenge.challenger %}">{{ challenge.challenger }}</a></td>
+    <td>{% if challenge.g1_submitted.team1 == challenge.challenger.team_name %}
+      {{ challenge.g1_submitted.team1_score }}
+      {% else %}
+      {{ challenge.g1_submitted.team2_score }}
+      {% endif %}
+    </td>
+    <td>{% if challenge.g2_submitted.team1 == challenge.challenger.team_name %}
+      {{ challenge.g2_submitted.team1_score }}
+      {% else %}
+      {{ challenge.g2_submitted.team2_score }}
+      {% endif %}
+    </td>
+  </tr>
+  <tr class="scheduleRow">
+    <td><a href="{% url 'team' challenge.challenged %}">{{ challenge.challenged }}</a></td>
+    <td>{% if challenge.g1_submitted.team1 == challenge.challenged.team_name %}
+      {{ challenge.g1_submitted.team1_score }}
+      {% else %}
+      {{ challenge.g1_submitted.team2_score }}
+      {% endif %}
+    </td>
+    <td>{% if challenge.g2_results.team1 == challenge.challenged.team_name %}
+      {{ challenge.g2_submitted.team1_score }}
+      {% else %}
+      {{ challenge.g2_submitted.team2_score }}
+      {% endif %}
+    </td>
+  </tr>
+</table>
+<a class="approveButton btn btn-lg btn-primary btn-block" href="{% url 'accept_score' challenge.id challenge.g1_submitted.id challenge.g2_submitted.id %}">Accept?</a>
+<a class="approveButton btn btn-lg btn-danger btn-block" href="{% url 'reject_score' challenge.id %}">Reject?</a>
 {% else %}
-<h2 class="scoreSuccessHeader">Submitted!</h2>
+<!-- current captain submitted scores already -->
+<h2>Submitted!</h2>
 {% endif %}
-<script src="{% static 'js/score_submit.js' %}"></script>
+{% endif %}
+</div>
 {% endblock %}

@@ -242,8 +242,11 @@ class Stats(models.Model):
     def __str__(self):
         return self.team
 
-    def diff(self):
-        return self.CF - self.CA
+    def get_cdperg(self):
+        if self.GP == 0:
+            return 0
+        else:
+            return self.CD/self.GP
 
 class Challenge(models.Model):
     played = models.BooleanField(default=False,verbose_name='Played?')
@@ -262,18 +265,49 @@ class Challenge(models.Model):
     forfeit_date = models.DateField(default=datetime.date.today()+timedelta(days=5), verbose_name='Forfeit Date')
     void_date = models.DateField(default=datetime.date.today()+timedelta(days=14), verbose_name='Void Date')
     play_date = models.DateField(blank=True,null=True, verbose_name='Date Played')
-    g1_results = models.OneToOneField(
+    g1_results = models.ForeignKey(
         'usc_app.Result',
         related_name='g1_results',
         verbose_name='Game 1 Results',
         null=True,blank=True,
     )
-    g2_results = models.OneToOneField(
+    g2_results = models.ForeignKey(
         'usc_app.Result',
         related_name='g2_results',
         verbose_name='Game 2 Results',
         null=True,blank=True,
     )
+    g1_submitted = models.ForeignKey(
+        'usc_app.Result',
+        related_name='g1_submitted',
+        verbose_name='Game 1 Submitted',
+        null=True,blank=True,
+    )
+    g2_submitted = models.ForeignKey(
+        'usc_app.Result',
+        related_name='g2_submitted',
+        verbose_name='Game 2 Submitted',
+        null=True,blank=True,
+    )
+    submitted_by = models.OneToOneField(
+        User,
+        related_name='submitted_by',
+        verbose_name='Submitted By',
+        null=True,blank=True,
+    )
+    winner = models.ForeignKey(
+        Roster,
+        related_name='winner',
+        verbose_name='Winner',
+        null=True,blank=True,
+    )
+    loser = models.ForeignKey(
+        Roster,
+        related_name='loser',
+        verbose_name='Loser',
+        null=True,blank=True,
+    )
+    approved = models.BooleanField(default=False,verbose_name='Approved?')
     class Meta:
         db_table = 'challenges'
 
@@ -299,12 +333,12 @@ class Result(models.Model):
         verbose_name='Team 2',
         blank=True,null=True
     )
-    score1 = models.PositiveIntegerField(
+    team1_score = models.PositiveIntegerField(
         default=0,
         verbose_name='Score 1',
         blank=True,null=True
     )
-    score2 = models.PositiveIntegerField(
+    team2_score = models.PositiveIntegerField(
         default=0,
         verbose_name='Score 2',
         blank=True,null=True
@@ -316,23 +350,9 @@ class Result(models.Model):
     def __str__(self):
         return str(self.match_id)
 
-    def save(self, *args, **kwargs):
-        team1 = Stats.objects.filter(abv=self.team1)
-        team2 = Stats.objects.filter(abv=self.team2)
-
-        team1.update(CF=F('CF')+self.score1)
-        team1.update(CA=F('CA')+self.score2)
-
-        team2.update(CF=F('CF')+self.score2)
-        team2.update(CA=F('CA')+self.score1)
-
-        team1.update(CD=F('CD')+(int(self.score1)-int(self.score2)))
-        team2.update(CD=F('CD')+(int(self.score2)-int(self.score1)))
-
-        super(Result, self).save(*args, **kwargs)
-
     def show_server(self):
         return self.server.lower()
+
 
 class Captain(Player):
     team = models.ForeignKey(
