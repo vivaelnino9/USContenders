@@ -44,7 +44,6 @@ INSTALLED_APPS = (
     'notify',
     'postman',
     'el_pagination',
-    'moderation',
     'django_mobile',
 )
 

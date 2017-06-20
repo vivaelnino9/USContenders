@@ -142,7 +142,8 @@ class StatsTable(tables.Table):
     )
     class Meta:
         model = Stats
-        exclude = ('id','lastActive','team','abv','rank')
+        sequence = ('change','streak','highestRank','uscmRank','challengeIn','challengeOut')
+        exclude = ('id','lastActive','team','abv','rank','rankPoints')
         attrs = {
             'class': 'subTeamStats table',
             'align': 'center',
@@ -163,19 +164,29 @@ class ResultsTable(tables.Table):
     challenged = tables.LinkColumn('team',args=[A('challenged')])
     g1_results = tables.URLColumn(orderable=False,)
     g2_results = tables.URLColumn(orderable=False,)
+    winner = tables.LinkColumn(
+        'team',
+        args=[A('winner')],
+        verbose_name="Winner",
+    )
     class Meta:
         model = Challenge
-        exclude = ('id','approved','g1_submitted','g2_submitted','submitted_by')
+        exclude = ('id','approved','g1_submitted','g2_submitted','submitted_by','loser')
         attrs = {'class': 'table current'}
         row_attrs = {
             'id': lambda record: 'P' + str(record.played)
         }
 
     def render_g1_results(self,value):
-        return format_html('<a target="_blank" href="https://tagpro.eu/?match={}" />#{}', value,value)
+        if not self.data.data[0].submitted_by:
+            return format_html('<a target="_blank" href="https://tagpro.eu/?match={}" disabled/>#{}', value,value)
+        else:
+            return "submitted"
     def render_g2_results(self,value):
-        return format_html('<a target="_blank" href="https://tagpro.eu/?match={}" />#{}', value,value)
-
+        if not self.data.data[0].submitted_by:
+            return format_html('<a target="_blank" href="https://tagpro.eu/?match={}" />#{}', value,value)
+        else:
+            return "submitted"
 class FATable(tables.Table):
     tagpro_profile = tables.URLColumn(attrs={'a':{'target':'_blank'}},orderable=False,)
     reddit_info = tables.URLColumn(attrs={'a':{'target':'_blank'}},orderable=False,)
@@ -224,7 +235,7 @@ class CurrentChallenges(tables.Table):
         args=[A('id')],
         verbose_name="",
         orderable=False,
-        text="submit score",
+        text=lambda record: 'approve score' if record.submitted_by else 'submit score',
         attrs={'a':{'class':'submitScore'}},
     )
     class Meta:

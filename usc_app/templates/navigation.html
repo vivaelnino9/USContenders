@@ -38,9 +38,8 @@
           {% if user.is_authenticated %}
           {% if user.username != 'admin' %}
           <a class="dropdown-item" href="{% url 'team' user.team %}">Team Page</a>
-          <a class="dropdown-item" href="{% url 'challenge' %}">Make Challenge</a>
+          <a class="dropdown-item" href="{% url 'challenge' -1 %}">Make Challenge</a>
           {% endif %}
-          <a class="dropdown-item" href="#">Submit Scores</a>
           <a class="dropdown-item" href="{% url 'notifications' %}"
             {% if user.notifications.unread.count > 0 %}
             style="background-image: url({% static 'img/notification_icon.png' %});background-repeat: no-repeat;background-size: 25px 25px;background-position: 105px 1px;"

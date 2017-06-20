@@ -16,7 +16,7 @@
       <h1 class="teamNameHeader">{{ team.team_name }}</h1>
       {% if user|is_captain and not user|own_team:team %}
         {% if user|can_challenge:team %}
-        <a href="{% url 'challenge_arg' team.team_name %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
+        <a href="{% url 'challenge' team.id %}" class="btn btn-primary btn-lg" role="button" >Challenge</a><br><br>
         {% else %}
         <button type="button" class="btn btn-lg btn-primary" disabled>Challenge</button><br><br>
         {% endif %}
@@ -84,6 +84,9 @@
 <script src="{% static 'js/stats_table.js' %}"></script>
 <script src="{% static 'js/add_drop_player.js' %}"></script>
 <script>
+$('#challengeOut.challengeOut').text({{ stats.0.get_challengeOut }});
+$('#challengeIn.challengeIn').text({{ stats.0.get_challengeIn }});
+{% if not user|own_team:team %}$('.id').hide();{% endif %}
 function show_hide_column() {
   var header_rows = $('.currentChallenges table').find('> thead > tr > th');
   $('th.id').remove()

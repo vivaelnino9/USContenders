@@ -18,19 +18,20 @@ class ChallengeForm(forms.ModelForm):
         fields = ('challenged', 'map')
 
     def __init__(self, *args, **kwargs):
+        print(kwargs)
         request = kwargs.pop('request', None)
+        challenged_id = kwargs.pop('team_id', None)
+        if challenged_id is not None:
+            kwargs.update(initial={
+                'challenged': challenged_id
+            })
         super(ChallengeForm, self).__init__(*args, **kwargs)
         challenger = Roster.objects.filter(team_name=request.user.team).first()
-        canChallenge = challenger.getChallengers()
-        ranks = []
-        for rank,challenged in canChallenge.items():
-            existingChallenge = Challenge.objects.filter(Q(challenger=challenger.id)|Q(challenged=challenged.id)).filter(played=False)
-            if challenged.challengeIn < 2 and not existingChallenge:
-                ranks.append(rank)
-        self.fields['challenged'] = forms.ModelChoiceField(queryset=Roster.objects.exclude(team_name=challenger.team_name).filter(rank__in=ranks), required=True, help_text="Choose who to challenge!")
+        challenge_list = Roster.objects.filter(team_name__in=challenger.getChallengers().values())
+        self.fields['challenged'] = forms.ModelChoiceField(queryset=challenge_list, required=True, help_text="Choose who to challenge!")
     def clean_challenged(self):
         challenged = self.cleaned_data['challenged']
-        challengeIn = Stats.objects.filter(team=challenged.team_name).first().challengeIn
+        challengeIn = Stats.objects.get(team=challenged.team_name).get_challengeIn()
         if (challengeIn + 1) > 2:
             raise ValidationError(
                         _('%(team)s already has 2 challenges in! '),

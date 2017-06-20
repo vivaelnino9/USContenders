@@ -30,7 +30,7 @@ def can_challenge(user,current_team):
         userTeam = Roster.objects.get(team_name=user.team)
         userStats = Stats.objects.get(team=user.team)
         currentStats = Stats.objects.get(team=current_team.team_name)
-        if currentStats in userTeam.getChallengers().values() and userStats.challengeOut < 2:
+        if currentStats in userTeam.getChallengers().values() and userStats.get_challengeOut() < 2:
             return not Challenge.objects.filter(Q(challenger=userTeam.id)&Q(challenged=current_team.id)&Q(played=False)).exists()
         else:
             return False

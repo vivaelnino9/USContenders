@@ -152,7 +152,7 @@ class Roster(models.Model):
             # Create list of challengers (teams 4 spots above current team)
             if self.rank - roster.rank <= 4 and self.rank - roster.rank > 0:
                 roster_stats = Stats.objects.get(team=roster.team_name)
-                if roster_stats.challengeIn < 2:
+                if roster_stats.get_challengeIn() < 2:
                     challengers[roster.rank] = roster_stats
         return challengers
 
@@ -180,16 +180,6 @@ class Stats(models.Model):
         default=0
     )
     lastActive = models.DateField(blank=True,null=True)
-    challengeOut = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
-    challengeIn = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
     GP = models.PositiveIntegerField(
         null=True,
         blank=True,
@@ -236,6 +226,11 @@ class Stats(models.Model):
         blank=True,
         default=0
     )
+    rankPoints = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
     class Meta:
         db_table = 'stats'
 
@@ -247,6 +242,14 @@ class Stats(models.Model):
             return 0
         else:
             return self.CD/self.GP
+
+    def get_challengeIn(self):
+        self_roster = Roster.objects.get(pk=self.id)
+        return Challenge.objects.filter(challenged=self_roster).filter(played=False).count()
+
+    def get_challengeOut(self):
+        self_roster = Roster.objects.get(pk=self.id)
+        return Challenge.objects.filter(challenger=self_roster).filter(played=False).count()
 
 class Challenge(models.Model):
     played = models.BooleanField(default=False,verbose_name='Played?')
@@ -289,7 +292,7 @@ class Challenge(models.Model):
         verbose_name='Game 2 Submitted',
         null=True,blank=True,
     )
-    submitted_by = models.OneToOneField(
+    submitted_by = models.ForeignKey(
         User,
         related_name='submitted_by',
         verbose_name='Submitted By',

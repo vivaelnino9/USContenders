@@ -3,7 +3,6 @@ import random
 from datetime import date
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.core.validators import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -13,7 +12,6 @@ from django.db.models import Q
 from django.shortcuts import render
 from django_tables2 import RequestConfig
 from django.utils.translation import gettext as _
-from urllib.request import urlopen
 
 from .models import *
 from .table import *
@@ -21,7 +19,6 @@ from .forms import *
 from .decorators import *
 from .score_handler import *
 
-from bs4 import BeautifulSoup
 from notify.signals import notify
 from notify.models import Notification
 from django_mobile import get_flavour
@@ -48,7 +45,7 @@ def roster_table(request):
         'FA_table':FA_table,
     })
 def team_page(request,team_name):
-    team = Roster.objects.filter(team_name=team_name).first()
+    team = Roster.objects.get(team_name=team_name)
     rosters = Roster.objects.all().order_by('rank')
     # Stats Table
     stats = Stats.objects.filter(team=team_name)
@@ -65,6 +62,7 @@ def team_page(request,team_name):
     page = 'team_page.html' if flavour == 'full' else 'team_page_mobile.html'
     return render(request,page,{
         'team':team,
+        'stats':stats,
         'rosters':rosters, # for sidebar
         'statsTable':statsTable,
         'currentTable':currentTable,
@@ -86,82 +84,27 @@ def player_page(request,player_name,team_name):
         'rank':rank,
     })
 @login_required
-def challenge(request):
-    challenger = Stats.objects.filter(team=request.user.team).first()
-    challengeOut = challenger.challengeOut
-    error = (challengeOut + 1) > 2
+def challenge(request,team_id):
+    user = request.user
     if request.method == 'POST': # If the form has been submitted...
-        form = ChallengeForm(request.POST,request=request) # A form bound to the POST data
-        if form.is_valid() and not error:
-            challenge= form.save(commit=False)
-            captain = Captain.objects.filter(name=request.user.username).first()
-            challenge.challenger = Roster.objects.filter(captain=captain.id).first()
-            challenge.save()
+        form = ChallengeForm(request.POST,request=request,team_id=team_id) # A form bound to the POST data
+        if form.is_valid():
+            challenge = process_challenge(form,user)
             return render(request, 'challenge_success.html',{
                 'challenge':challenge,
             })
-        else:
-            print(form.errors)
     else:
-        if error:
+        if cannot_challenge(user):
             return render(request, 'redirect.html', {
                 'title': 'Invalid Challenge',
                 'content': 'You already have 2 challenges out!',
                 'url_arg': 'index',
                 'url_text': 'Back to homepage',
-        })
-        form = ChallengeForm(request=request)
+            })
+        form = ChallengeForm(request=request,team_id=team_id)
     return render(request, 'challenge.html', {
         'form': form,
-    })
-@login_required
-def challenge_with_arg(request,team_challenged):
-    challenger = Stats.objects.filter(team=request.user.team)
-    challenged = Stats.objects.filter(team=team_challenged)
-    challengingTeam = Roster.objects.filter(team_name=challenger[0].team).first()
-    challengedTeam = Roster.objects.filter(team_name=team_challenged).first()
-    existingChallenge = Challenge.objects.filter(challenger=challengingTeam.id).filter(challenged=challengedTeam.id).filter(played=False)
-    challengeOut = challenger[0].challengeOut
-    error = (challengeOut + 1) > 2
-    if request.method == 'POST': # If the form has been submitted...
-        form = ChallengeArgForm(request.POST) # A form bound to the POST data
-        if form.is_valid() and not error and not existingChallenge:
-            challenge= form.save(commit=False)
-            challenge.challenger = challengingTeam
-            challenge.challenged = challengedTeam
-            challenge.save()
-            challenger.update(challengeOut=F('challengeOut')+1)
-            challenged.update(challengeIn=F('challengeIn')+1)
-            notify.send(challengingTeam.captain.user, recipient=challengedTeam.captain.user, actor=challengingTeam,
-                        verb='challenged you', nf_type='received_challenge')
-            notify.send(challengedTeam.captain.user, recipient=challengingTeam.captain.user, actor=challengedTeam,
-                        verb='challenged', nf_type='challenged_user')
-            return render(request, 'challenge_success.html',{
-                'challenge':challenge,
-            })
-        else:
-            if existingChallenge:
-                return render(request, 'redirect.html', {
-                    'title': 'Invalid Challenge',
-                    'content': 'You already have a challenge out against that team!',
-                    'url_arg': 'index',
-                    'url_text': 'Back to homepage',
-            })
-            else:
-                print(form.errors)
-    else:
-        if error:
-            return render(request, 'redirect.html', {
-                'title': 'Invalid Challenge',
-                'content': 'You already have 2 challenges out!',
-                'url_arg': 'index',
-                'url_text': 'Back to homepage',
-        })
-        form = ChallengeArgForm()
-    return render(request, 'challenge.html', {
-        'form': form,
-        'challenger':challenger[0],
-        'challenged':challenged[0],
+        'team_id':team_id
     })
 @login_required
 def challenge_success(request):
@@ -264,7 +207,6 @@ def search(request):
         query = request.GET.get('s',None)
         if query is not None and query is not '':
             players = Player.objects.filter(name__icontains=query)
-            # teams = Roster.objects.filter(team_name__icontains=query,eligible=True)
             teams = Roster.objects.filter(team_name__icontains=query)
             total = players.count()+teams.count()
     return render(request,'search.html',{
@@ -391,11 +333,11 @@ def get_challengers(team):
         # Create list of challengers (teams 4 spots above current team)
         if team.rank - roster.rank <= 4 and team.rank - roster.rank > 0:
             challenger = OrderedDict()
-            team_stats = Stats.objects.filter(team=roster.team_name).first()
+            team_stats = Stats.objects.get(team=roster.team_name)
             challenger["rank"]=roster.rank
             challenger["team"] = roster.team_name
-            challenger["challengerIn"] = team_stats.challengeIn
-            challenger["challengerOut"] = team_stats.challengeOut
+            challenger["challengerIn"] = team_stats.get_challengeIn
+            challenger["challengerOut"] = team_stats.get_challengeOut
             challenger["challengerStreak"] = team_stats.streak
             challenger["lastActive"] = team_stats.lastActive
             challengers.append(challenger)
@@ -421,3 +363,18 @@ def place_player(player,team,field):
     else:
         team.member6 = player
     team.save()
+
+def cannot_challenge(user):
+    # check to see if user cannot challenge (2 challenges out already)
+    return Stats.objects.get(team=user.team).get_challengeOut() > 1
+
+def process_challenge(form,user):
+    # process challenge form after validation, send notifications
+    challenge = form.save(commit=False)
+    challenge.challenger = Roster.objects.filter(team_name=user.team).first()
+    challenge.save()
+    notify.send(user, recipient=challenge.challenged.captain.user, actor=challenge.challenger,
+                verb='challenged you', nf_type='received_challenge')
+    notify.send(challenge.challenged.captain.user, recipient=user, actor=challenge.challenged,
+                verb='challenged', nf_type='challenged_user')
+    return challenge

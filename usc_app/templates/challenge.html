@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post" style="margin-top:10px;" action="{% if challenged %}{% url 'challenge_arg' challenged.team %}{% else %}{% url 'challenge' %}{% endif %}">
+<form method="post" style="margin-top:10px;" action="{% url 'challenge' team_id %}">
   {% csrf_token %}
   {{ form }}
-  <button class="form-submit btn btn-lg btn-primary btn-block" {% if flavour == "mobile" %}style="margin-top:10px;"{% endif %} type="submit" name="submit">Register</button>
+  <button class="form-submit btn btn-lg btn-primary btn-block" {% if flavour == "mobile" %}style="margin-top:10px;"{% endif %} type="submit" name="submit">Submit</button>
 </form>
 {% endblock %}

@@ -40,11 +40,14 @@ def update_draw_stats(team1,team2,team1_score,team2_score):
     Stats.objects.filter(team__in=[team1,team2]).update(D=F('D')+1)
     Stats.objects.filter(team__in=[team1,team2]).update(streak=0)
     Stats.objects.filter(team__in=[team1,team2]).update(change=0)
+    t1_rank = Roster.objects.get(team_name=team1).rank
+    t2_rank = Roster.objects.get(team_name=team2).rank
+    points = (100/(1+min(t1_rank,t2_rank)))/3
+    Stats.objects.filter(team__in=[team1,team2]).update(rankPoints=F('rankPoints')+points)
 
 def update_stats(winner,loser,final_score):
     # update winner and loser stats
     winner_stats = Stats.objects.filter(team=winner)
-    print(winner)
     loser_stats = Stats.objects.filter(team=loser)
     Stats.objects.filter(team__in=[winner,loser]).update(GP=F('GP')+1)
 
@@ -78,6 +81,7 @@ def update_rank_change(winner,loser):
         loser_roster.update(rank=loser_rank+1)
         Roster.objects.filter(team_name__in=changes).update(rank=F('rank')+1)
         Stats.objects.filter(team__in=changes).update(change=-1)
+        winner_stats.update(rank_points=F('rankPoints')+(100/(1+loser_rank)))
     winner_stats.update(change=(winner_rank-winner_roster[0].rank))
     loser_stats.update(change=(loser_rank-loser_roster[0].rank))
 
@@ -130,5 +134,3 @@ def update_challenge(challenge_id,g1,g2,final_score):
     else:
         challenge.update(winner=Roster.objects.get(team_name=final_score['winner']))
         challenge.update(loser=Roster.objects.get(team_name=final_score['loser']))
-    Stats.objects.filter(team=challenge[0].challenger).update(challengeOut=F('challengeOut')-1)
-    Stats.objects.filter(team=challenge[0].challenged).update(challengeIn=F('challengeIn')-1)

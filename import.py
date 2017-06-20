@@ -255,9 +255,9 @@ def stats_fields(dic,pointer,cells):
     fixed_date = date[2]+'-'+date[0]+'-'+date[1]
     s['fields']['lastActive'] = fixed_date
     i+=1
-    s['fields']['challengeOut'] = int(cells[i].string)
+    # s['fields']['challengeOut'] = int(cells[i].string)
     i+=1
-    s['fields']['challengeIn'] = int(cells[i].string)
+    # s['fields']['challengeIn'] = int(cells[i].string)
     i+=1
     s['fields']['GP'] = int(cells[i].string)
     i+=1

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django import forms
 from .models import *
-from moderation.admin import ModerationAdmin
 
 class PlayerAdminForm(forms.ModelForm):
     model = Player
@@ -33,7 +32,7 @@ class TeamStatsAdminForm(forms.ModelForm):
     model = Stats
 
 class TeamStatsAdmin(admin.ModelAdmin):
-    fields = ['change','team','abv','streak','highestRank','uscmRank','lastActive','challengeOut','challengeIn','GP','W','L','D','F','CF','CA','CD','CDperG']
+    fields = ['change','team','abv','streak','highestRank','uscmRank','lastActive','GP','W','L','D','F','CF','CA','CD','CDperG']
     list_display = ['team']
     list_filter = ['team',]
     search_fields = ['team',]
@@ -88,7 +87,7 @@ admin.site.register(Captain,CaptainAdmin)
 class FreeAgentAdminForm(forms.ModelForm):
     model = FreeAgent
 
-class FreeAgentAdmin(ModerationAdmin):
+class FreeAgentAdmin(admin.ModelAdmin):
     list_display = ('name','eligible','server','position')
     search_fields = ['name']
     list_per_page = 20
